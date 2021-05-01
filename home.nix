@@ -60,6 +60,43 @@
     };
   };
 
+  xresources.properties = {
+    "urxvt.background" = "#96b4c6";
+    "urxvt.foreground" = "#e0dce6";
+    # Black, bright black
+    "urxvt.color0" = "#583653";
+    "urxvt.color8" = "#5e3c59";
+    # Red, bright red
+    "urxvt.color1" = "#b88e85";
+    "urxvt.color9" = "#dcc7c3";
+    # Green, bright green
+    "urxvt.color2" = "#85b88e";
+    "urxvt.color10" = "#c3dcc7";
+    # Yellow, bright yellow
+    "urxvt.color3" = "#aeb885";
+    "urxvt.color11" = "#d7dcc3";
+    # Blue. bright blue
+    "urxvt.color4" = "#8e85b8";
+    "urxvt.color12" = "#c7c3dc";
+    # Magenta, bright magenta
+    "urxvt.color5" = "#b885ae";
+    "urxvt.color13" = "#dcc3d7";
+    # Cyan, bright cyan
+    "urxvt.color6" = "#85aeb8";
+    "urxvt.color14" = "#c3d7dc";
+    # White, bright white
+    "urxvt.color7" = "#6e4c6a";
+    "urxvt.color15" = "#765471";
+
+    "URxvt.transparent" = true;
+    "URxvt.shading" = 80;
+    "URxvt.blurRadius" = 5;
+    "URxvt.fading" = 30;
+
+    "URxvt.scrollBar" = false;
+    "URxvt.font" = "xft:SourceCodePro\\-Regular:size=10";
+  };
+
   home.file = {
     ".emacs.d" = {
       recursive = true;
