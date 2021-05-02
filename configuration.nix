@@ -24,7 +24,7 @@
   networking = {
       useDHCP = false;
       hostName = "euclid";
-  
+
       interfaces.enp0s3.useDHCP = true;
   };
 
@@ -45,21 +45,19 @@
       xkbVariant = "deadacute";
       xkbOptions = "compose:caps";
       libinput.enable = true;
- 
+
       windowManager.i3 =  {
           enable = true;
-	  package = pkgs.i3-gaps;
+          package = pkgs.i3-gaps;
       };
-      
+
       displayManager = {
         lightdm.enable = true;
         autoLogin.enable = true;
         autoLogin.user = "glyph";
         defaultSession = "none+i3";
-      };    
+      };
     };
-       
-    
     mingetty.autologinUser = "glyph";
   };
 
