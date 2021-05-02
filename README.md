@@ -1,7 +1,7 @@
 # Rough installation instructions
 
 1. Boot NixOS installer and follow instructions up to and including nixos-generate-config
-2. `curl https://raw.githubusercontent.com/strangeglyph/nix-home/configuration.nix -o /etc/nixos/configuration.nix`
+2. `curl https://raw.githubusercontent.com/strangeglyph/nix-home/master/configuration.nix -o /etc/nixos/configuration.nix`
 3. `nixos-rebuild boot`, reboot and veryify installation
 4. In home `git clone git@github.com:strangeglyph/nix-home.git`
 5. `ln -s ~/nixos-home ~/.config/nixpkgs`
