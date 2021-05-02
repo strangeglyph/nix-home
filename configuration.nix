@@ -123,6 +123,7 @@
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM xsel
     glib gcc binutils gnumake
+    parted
     wget curl ncurses which git htop lsof pv ripgrep exa
     zip unzip
     termite
