@@ -13,7 +13,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.blacklistedKernelModules = [ "mei_wdt" ];
+  boot.tmpOnTmpfs = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
@@ -37,8 +37,8 @@
 
   virtualisation.virtualbox.guest.enable = true;
 
-  # Enable the X11 windowing system.
   services = {
+    fstrim.enable = true;
     xserver = {
       enable = true;
       layout = "de";
@@ -57,6 +57,11 @@
         autoLogin.user = "glyph";
         defaultSession = "none+i3";
       };
+    };
+    compton = {
+      enable = true;
+      shadow = true;
+      inactiveOpacity = 0.8;
     };
     mingetty.autologinUser = "glyph";
   };
