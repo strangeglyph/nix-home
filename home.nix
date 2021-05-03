@@ -52,6 +52,9 @@
     };
   };
 
+  xsession.windowManager.i3.enable = true;
+  xsession.windowManager.i3.config = import ./dotfiles/i3.nix { inherit pkgs; };
+
   services = {
     gpg-agent = {
       enable = true;
