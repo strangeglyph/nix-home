@@ -19,7 +19,7 @@
   sizeHints = true;
   scrollbar = "off";
 
-  backgroundColor = "rgba(7, 54, 66, 0.85)";
+  backgroundColor = "rgba(7, 54, 66, 0.6)";
   cursorColor = "#eee8d5";
   foregroundColor = "#eee8d5";
   foregroundBoldColor = "#eee8d5";
