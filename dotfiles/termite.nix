@@ -9,7 +9,7 @@
   scrollOnKeystroke = true;
   urgentOnBell = true;
 
-  font = "Source Code Pro Regular 10";
+  font = "Source Code Pro Regular 11";
 
   browser = "${pkgs.firefox}/bin/firefox";
 
