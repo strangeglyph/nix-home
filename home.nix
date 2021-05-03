@@ -54,8 +54,11 @@
     termite = import ./dotfiles/termite.nix { inherit pkgs; };
   };
 
-  xsession.windowManager.i3.enable = true;
-  xsession.windowManager.i3.config = import ./dotfiles/i3.nix { inherit pkgs; };
+  xsession.windowManager.i3 = {
+    enable = true;
+    config = import ./dotfiles/i3.nix { inherit pkgs; };
+    extraConfig = ''exec i3-msg workspace 1'';
+  };
 
   services = {
     gpg-agent = {
