@@ -50,6 +50,8 @@
       enable = true;
       enableFishIntegration = true;
     };
+
+    termite = import ./dotfiles/termite.nix { inherit pkgs; };
   };
 
   xsession.windowManager.i3.enable = true;
