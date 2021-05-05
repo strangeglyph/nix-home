@@ -135,7 +135,7 @@
     zathura
     basic-python-install
     pipenv
-    texlive.combined.scheme-medium haskellPackages.lhs2tex
+    texlive.combined.scheme-full haskellPackages.lhs2tex
   ];
 
   environment.sessionVariables = {
