@@ -118,7 +118,7 @@
     cantarell-fonts
   ];
 
-  environment.systemPackages = with pkgs; 
+  environment.systemPackages = with pkgs;
   let
     basic-python-install = python3.withPackages (python-packages: with python-packages; [
       pip wheel virtualenv
@@ -135,7 +135,7 @@
     zathura
     basic-python-install
     pipenv
-    texlive.combined.scheme-medium
+    texlive.combined.scheme-medium haskellPackages.lhs2tex
   ];
 
   environment.sessionVariables = {
