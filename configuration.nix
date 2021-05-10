@@ -123,6 +123,9 @@
     basic-python-install = python3.withPackages (python-packages: with python-packages; [
       pip wheel virtualenv
     ]);
+    agda-with-stdlib = agda.withPackages (agda-packages: with agda-packages; [
+      standard-library
+    ]);
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM xsel
     glib gcc binutils gnumake
@@ -136,6 +139,7 @@
     basic-python-install
     pipenv
     texlive.combined.scheme-full haskellPackages.lhs2tex
+    agda-with-stdlib
   ];
 
   environment.sessionVariables = {

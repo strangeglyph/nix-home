@@ -80,6 +80,9 @@
       };
     };
     ".spacemacs".source = ./dotfiles/spacemacs;
+    ".agda/defaults".text = ''
+       standard-library
+    '';
   };
 
 
