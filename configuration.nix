@@ -141,6 +141,7 @@
     texlive.combined.scheme-full haskellPackages.lhs2tex
     agda-with-stdlib
     ghc
+    inotify-tools
   ];
 
   environment.sessionVariables = {
