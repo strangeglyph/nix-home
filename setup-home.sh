@@ -46,7 +46,7 @@ if [ -f "${nixhome_file}" ] ; then
     mv "${nixhome_file}" "${nixhome_file}.old"
 fi
 
-echo "Writing new configuration.nix"
+echo "Writing new home.nix"
 cat > "${nixhome_file}" <<EOF
 # This file has been auto-generated. Please modify the default
 # in ./nix-home.d/home/default.nix or the host specific configuration
