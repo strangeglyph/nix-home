@@ -113,7 +113,7 @@
     parted
     wget curl ncurses which git htop lsof pv ripgrep exa
     zip unzip
-    termite
+    alacritty
     vim emacs
     firefox
     zathura
@@ -126,7 +126,7 @@
   ];
 
   environment.sessionVariables = {
-    TERMINAL = [ "termite" ];
+    TERMINAL = [ "alacritty" ];
   };
 
   system.copySystemConfiguration = true;

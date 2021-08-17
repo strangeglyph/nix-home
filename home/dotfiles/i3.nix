@@ -10,7 +10,7 @@ in {
     size = 12.0;
   };
 
-  terminal = "${pkgs.termite}/bin/termite";
+  terminal = "${pkgs.alacritty}/bin/alacritty";
   menu = "${pkgs.dmenu}/bin/dmenu_run";
   gaps = {
     outer = 0;
@@ -19,7 +19,7 @@ in {
   floating = {
     criteria = [
       { class = "KeePass2"; }
-      { window_role = "floatingTerm"; }
+      { class = "floatingTerm"; }
     ];
   };
   bars = [

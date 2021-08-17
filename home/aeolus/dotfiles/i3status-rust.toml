@@ -23,7 +23,7 @@ interval = 1
 
 [[block]]
 block = "net"
-on_click = "exec --no-startup-id --role floatingTerm termite -e nmtui" 
+on_click = "exec --no-startup-id alacritty --class floatingTerm,floatingTerm -e nmtui" 
 format = "{ssid} ({signal_strength}) | {graph_up} {graph_down}"
 interval = 5
 

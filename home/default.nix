@@ -46,7 +46,7 @@
       enableFishIntegration = true;
     };
 
-    termite = import ./dotfiles/termite.nix { inherit pkgs; };
+    alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
   };
 
   xsession.windowManager.i3 = {
