@@ -16,6 +16,12 @@ in {
     outer = 0;
     inner = 10;
   };
+  floating = {
+    criteria = [
+      { class = "KeePass2"; }
+      { window_role = "floatingTerm"; }
+    ];
+  };
   bars = [
     {
       fonts = {

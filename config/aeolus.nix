@@ -17,7 +17,7 @@
     layout = lib.mkForce "us";
     xkbVariant = lib.mkForce "altgr-intl";
     xkbOptions = lib.mkForce "eurosign:e,compose:caps";
-    libinput.naturalScrolling = true;
+    libinput.touchpad.naturalScrolling = true;
   };
 
   users.users.lschuetze = {
@@ -25,6 +25,12 @@
     extraGroups = [ "wheel" "networkmanager" ];
     shell = pkgs.fish;
   };
+
+  environment.systemPackages = with pkgs; let
+    keepassWithRpc = keepass.override { plugins = [ keepass-keepassrpc ]; };
+  in [
+    keepassWithRpc
+  ];
 
   system.stateVersion = "21.05";
 }
