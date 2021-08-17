@@ -148,6 +148,7 @@
     agda-with-stdlib
     ghc
     inotify-tools
+    feh scrot imgur-screenshot
   ];
 
   environment.sessionVariables = {
