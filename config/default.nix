@@ -98,6 +98,28 @@
     source-code-pro
     cantarell-fonts
   ];
+  fonts.fontconfig.defaultFonts = {
+    sansSerif = [
+      "Noto Sans"
+      "Noto Color Emoji"
+      "Noto Emoji"
+    ];
+    serif = [
+      "Noto Serif"
+      "Noto Color Emoji"
+      "Noto Emoji"
+    ];
+    monospace = [
+      "Source Code Pro"
+      "FontAwesome"
+      "Noto Color Emoji"
+      "Noto Emoji"
+    ];
+    emoji = [
+      "Noto Color Emoji"
+      "Noto Emoji"
+    ];
+  };
 
   environment.systemPackages = with pkgs;
   let
