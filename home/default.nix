@@ -4,11 +4,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "glyph";
-  home.homeDirectory = "/home/glyph";
-
   programs = {
     git = {
       enable = true;
@@ -57,7 +52,6 @@
   xsession.windowManager.i3 = {
     enable = true;
     config = import ./dotfiles/i3.nix { inherit pkgs; };
-    extraConfig = ''exec i3-msg workspace 1'';
   };
 
   services = {
@@ -94,5 +88,7 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "21.03";
+  #
+  # (should be specified in the user config)
+  # home.stateVersion = "21.03";
 }
