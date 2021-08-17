@@ -67,6 +67,9 @@
   };
 
 
+  security.sudo.extraConfig = "Defaults timestamp_timeout=30";
+
+
   programs = {
     light.enable = true;
     vim.defaultEditor = true;
