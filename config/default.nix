@@ -124,6 +124,15 @@
     ];
   };
 
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = let
+    moz-rev = "master";
+    moz-nix = builtins.fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/${moz-rev}.tar.gz"; };
+    ff-nightly-overlay = import "${moz-nix}/firefox-overlay.nix";
+  in [
+    ff-nightly-overlay
+  ];
+
   environment.systemPackages = with pkgs;
   let
     basic-python-install = python3.withPackages (python-packages: with python-packages; [
@@ -140,7 +149,8 @@
     zip unzip
     alacritty
     vim emacs
-    firefox
+    latest.firefox-nightly-bin
+    thunderbird
     zathura
     basic-python-install
     pipenv
