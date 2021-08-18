@@ -49,6 +49,7 @@
       enable = true;
       shadow = true;
       inactiveOpacity = 0.8;
+      menuOpacity = 1.0;
     };
   };
 
