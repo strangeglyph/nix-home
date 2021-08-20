@@ -5,7 +5,7 @@
   settings = {
     opacity = 0.8;
     font = {
-      normal.family = "Source Code Pro";
+      normal.family = "SauceCodePro Nerd Font";
       size = 8.0;
     };
   };
