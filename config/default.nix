@@ -92,30 +92,29 @@
   };
 
   fonts.fonts = with pkgs; [
-    font-awesome-ttf
-    noto-fonts
+    (nerdfonts.override { fonts = [
+      "Noto"
+      "SourceCodePro"
+      "DejaVuSansMono"
+                          ]; })
     noto-fonts-cjk
     noto-fonts-emoji
     noto-fonts-extra
-    dejavu_fonts
-    powerline-fonts
-    source-code-pro
     cantarell-fonts
   ];
   fonts.fontconfig.defaultFonts = {
     sansSerif = [
-      "Noto Sans"
+      "Noto Sans Nerd Font"
       "Noto Color Emoji"
       "Noto Emoji"
     ];
     serif = [
-      "Noto Serif"
+      "Noto Serif Nerd Font"
       "Noto Color Emoji"
       "Noto Emoji"
     ];
     monospace = [
-      "Source Code Pro"
-      "FontAwesome"
+      "SauceCodePro Nerd Font"
       "Noto Color Emoji"
       "Noto Emoji"
     ];
@@ -143,11 +142,12 @@
       standard-library
     ]);
   in [
-    xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM xsel
+    xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM 
+    xorg.xmodmap xsel
     libnotify
     glib gcc binutils gnumake
     parted
-    wget curl ncurses which git htop lsof pv ripgrep exa
+    wget curl ncurses which git htop lsof pv ripgrep exa file
     zip unzip
     alacritty
     vim emacs
