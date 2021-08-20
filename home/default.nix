@@ -49,6 +49,7 @@ in {
     };
 
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
+    starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
   };
 
   xsession.windowManager.i3 = {
