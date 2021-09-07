@@ -1,6 +1,10 @@
 { config, pkgs, ... }:
 
 {
+  imports = [
+    ./presets/headful.nix
+  ];
+
   networking = {
     hostName = "euclid";
     interfaces.enp0s3.useDHCP = true;
@@ -14,7 +18,7 @@
     shell = pkgs.fish;
   };
 
-  services.xserver.displazManager.autologin = {
+  services.xserver.displayManager.autologin = {
     enable = true;
     user = "glyph";
   };

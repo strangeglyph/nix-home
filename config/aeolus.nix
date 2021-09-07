@@ -1,6 +1,15 @@
 { config, pkgs, lib, ... }:
 
 {
+  imports = [
+    ./presets/headful.nix
+    ./presets/workstation.nix
+  ];
+
+  boot.extraModprobeConfig = ''
+    options iwlwifi 11n_disable=1
+  '';
+
   networking = {
     hostName = "aeolus";
     interfaces = {
@@ -8,7 +17,6 @@
       enp5s0.useDHCP = true;
       wlp3s0.useDHCP = true;
     };
-    networkmanager.enable = true;
   };
 
   console.keyMap = lib.mkForce "us";
@@ -17,20 +25,17 @@
     layout = lib.mkForce "us";
     xkbVariant = lib.mkForce "altgr-intl";
     xkbOptions = lib.mkForce "eurosign:e,compose:caps";
-    libinput.touchpad.naturalScrolling = true;
   };
+  services.printing.browsedConf = ''
+    CreateRemoteRawPrinterQueues Yes
+    BrowsePoll cups.mpi-klsb.mpg.de:631
+  '';
 
   users.users.lschuetze = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "scanner" "lp" ];
     shell = pkgs.fish;
   };
-
-  environment.systemPackages = with pkgs; let
-    keepassWithRpc = keepass.override { plugins = [ keepass-keepassrpc ]; };
-  in [
-    keepassWithRpc
-  ];
 
   system.stateVersion = "21.05";
 }
