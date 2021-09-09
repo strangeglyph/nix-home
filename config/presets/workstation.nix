@@ -7,6 +7,9 @@
 
   services = {
     xserver.libinput.touchpad.naturalScrolling = true;
+    xserver.libinput.touchpad.disableWhileTyping = true;
+    xserver.wacom.enable = true;
+
     acpid.enable = true;
     logind.extraConfig = "HandlePowerKey=suspend";
     printing = {
