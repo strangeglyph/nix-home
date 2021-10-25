@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
-  home.userName = "glyph";
+  home.username = "glyph";
   home.homeDirectory = "/home/glyph";
 
-  home.stateVersion = "21.03"
+  home.stateVersion = "21.03";
 }
