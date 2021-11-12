@@ -3,6 +3,7 @@
 {
   imports = [
     ./presets/server.nix
+    ./services/fompf.nix
   ];
 
   boot.loader.grub.enable = true;
