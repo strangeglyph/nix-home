@@ -67,6 +67,7 @@
     pipenv
     ghc
     inotify-tools
+    screen
   ];
 
   system.copySystemConfiguration = true;
