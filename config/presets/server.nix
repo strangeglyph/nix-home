@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  networking.firewall.allowedTCPPorts = [ 90 443 ];
+  networking.firewall.allowedTCPPorts = [ 80 443 ];
 
   security.acme = {
     acceptTerms = true;
