@@ -7,7 +7,9 @@
   ];
 
   boot.extraModprobeConfig = ''
-    options iwlwifi 11n_disable=1
+    options iwlwifi 11n_disable=8
+    options iwlwifi power_save=0
+    options iwlmvm  power_scheme=1
   '';
 
   networking = {
@@ -33,7 +35,7 @@
 
   users.users.lschuetze = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "scanner" "lp" ];
+    extraGroups = [ "wheel" "networkmanager" "scanner" "lp" "wireshark" ];
     shell = pkgs.fish;
   };
 
