@@ -11,6 +11,7 @@ in {
       enable = true;
       userName = "glyph";
       userEmail = "mail@strangegly.ph";
+      extraConfig.init.defaultBranch = "main";
     };
 
     vim = {
@@ -73,8 +74,8 @@ in {
       source = pkgs.fetchFromGitHub {
         owner = "syl20bnr";
         repo = "spacemacs";
-        rev = "2182be9440dc2f862c4248b43bb7c74a30e9c308";
-        sha256 = "1gvyn0d5c49m5rqm5db4fcs4vpf30jiyijivy83xyvic056yb1dn";
+        rev = "develop";
+        sha256 = "16qnz7nvp712gph1wwgznpk1bia4rggq3flr89ps0b26b95yhcww";
       };
     };
     ".spacemacs".source = ./dotfiles/spacemacs;
