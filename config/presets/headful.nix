@@ -47,6 +47,7 @@
     (nerdfonts.override { fonts = [ "Noto" "SourceCodePro" "DejaVuSansMono" ]; })
     noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
     cantarell-fonts
+    liberation_ttf
   ];
   fonts.fontconfig.defaultFonts = {
     sansSerif = [
@@ -78,7 +79,24 @@
   ];
 
   environment.systemPackages = with pkgs; let
-    agda-with-stdlib = agda.withPackages (agda-packages: [ agda-packages.standard-library ]);
+    agda-with-stdlib = agda.withPackages (agda-packages: [ 
+      agda-packages.standard-library 
+      #(agda-packages.mkDerivation {
+      #  pname = "agda-ring-solver";
+      #  version = "0.1.0";
+      #  src = fetchFromGitHub {
+      #    owner = "strangeglyph";
+      #    repo = "agda-ring-solver";
+      #    rev = "master";
+      #    sha256 = "13aavsaf0qmipwh3wypm3v8ni7a24wfddfhp7xw7q1qkx8bwq06x";
+      #  };
+      #  buildInputs = [ agda-packages.standard-library ];
+      #  preBuild = ''
+      #    echo "module Everything where" > Everything.agda
+      #    find src -name '*.agda' | sed 's|^src/|import |g' | sed 's|.agda$||g' | sed 's|/|.|g' >> Everything.agda
+      #  '';
+      #})
+    ]);
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
     xorg.xmodmap xsel
@@ -88,6 +106,7 @@
     thunderbird
     zathura
     texlive.combined.scheme-full
+    texstudio
     haskellPackages.lhs2tex
     agda-with-stdlib
     feh
