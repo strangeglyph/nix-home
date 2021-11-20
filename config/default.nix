@@ -28,6 +28,7 @@
 
   services = {
     fstrim.enable = true;
+    lorri.enable = true;
   };
 
   users.users = {
@@ -69,6 +70,7 @@
     ghc
     inotify-tools
     screen
+    direnv
   ];
 
   system.copySystemConfiguration = true;
