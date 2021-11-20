@@ -42,6 +42,9 @@ in {
           sha256 = "1r3d4wgdylnc857j08lbdscqbm9lxbm1wqzbkqz1jf8bgq2rvk03";
         };
       }];
+      interactiveShellInit = ''
+        direnv hook fish | source
+      '';
     };
 
     fzf = {
