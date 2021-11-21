@@ -62,7 +62,7 @@
     pciutils lshw wirelesstools
     glib gcc binutils gnumake
     parted
-    wget curl ncurses which git htop lsof pv ripgrep exa file
+    wget curl ncurses which git htop lsof pv ripgrep exa file jq
     zip unzip
     vim emacs
     basic-python-install
