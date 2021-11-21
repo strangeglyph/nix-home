@@ -4,6 +4,7 @@
   imports = [
     ./presets/server.nix
     ./services/fompf.nix
+    ./services/cookbook.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -17,6 +18,15 @@
   nix = {
     trustedUsers = [ "root" "@wheel" ];
     nrBuildUsers = 10;
+  };
+
+  security.acme.challenge-host = "acme.strangegly.ph";
+
+  services = {
+    cookbook = {
+      enable = true;
+      vhost = "cookbook.strangegly.ph";
+    };
   };
 
   users.users = {
