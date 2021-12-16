@@ -58,7 +58,7 @@ in {
 
   xsession.windowManager.i3 = {
     enable = true;
-    config = import ./dotfiles/i3.nix { inherit pkgs; };
+    config = import ./dotfiles/i3.nix { inherit pkgs lib; };
   };
 
   services = {
