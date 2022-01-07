@@ -99,7 +99,7 @@
     ]);
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
-    xorg.xmodmap xsel
+    xorg.xmodmap xsel xorg.xbacklight
     libnotify
     alacritty
     latest.firefox-nightly-bin
@@ -112,6 +112,7 @@
     feh
     scrot
     imgur-screenshot
+    playerctl
     gnome.networkmanagerapplet
     libreoffice
   ];
