@@ -5,6 +5,7 @@
     ./presets/server.nix
     ./services/fompf.nix
     ./services/cookbook.nix
+    ./services/nextcloud.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -17,7 +18,7 @@
   
   nix = {
     trustedUsers = [ "root" "@wheel" ];
-    nrBuildUsers = 10;
+    nrBuildUsers = 100;
   };
 
   security.acme.challenge-host = "acme.strangegly.ph";
@@ -26,6 +27,11 @@
     cookbook = {
       enable = true;
       vhost = "cookbook.strangegly.ph";
+    };
+    nextcloud = {
+      enable = true;
+      hostName = "cloud.strangegly.ph";
+      package = pkgs.nextcloud22;
     };
   };
 

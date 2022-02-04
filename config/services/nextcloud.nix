@@ -1,50 +1,61 @@
 { config, pkgs, lib, ... }:
-
+with lib;
+let
+  cfg = config.services.nextcloud;
+  acme = config.security.acme;
+  further-cfg = config.services.nextcloud-personal;
+in
 {
-  services.nextcloud = {
-    enable = true;
-    hostName = undefined;
-    nginx.enable = true;
-    https = true;
-    autoUpdateApps.enable = true;
- fs
-    config = {
-      dbtype = "pgsql";
-      dbuser = "nextcloud";
-      dbhost = "/run/postgresql";
-      dbname = "nextcloud";
-      dbPassFile = undefined;
-      adminpassFile = undefined;
-      adminuser = root;
+  imports = [
+    ./nginx-common.nix
+  ];
+
+
+  config = mkIf cfg.enable {
+    security.acme.certs."${ acme.challenge-host }".extraDomainNames = [ cfg.hostName ];
+
+    services.nextcloud = {
+      https = true;
+      autoUpdateApps.enable = true;
+      autoUpdateApps.startAt = "05:00:00";
+
+      config = {
+        dbtype = "pgsql";
+        dbuser = "nextcloud";
+        dbhost = "/run/postgresql";
+        dbname = "nextcloud";
+        dbpassFile = "/var/nextcloud/db-pass";
+
+        adminuser = "glyph";
+        adminpassFile = "/var/nextcloud/admin-pass";
+
+        defaultPhoneRegion = "de";
+      };
     };
-  };
 
-  services.postgresql = {
-    enable = true;
-    ensureDatabases = [ "nextcloud" ];
-    ensureUsers = [
-      {
-        name = "nextcloud";
-        ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-      }
-    ];
-  };
+    services.postgresql = {
+      enable = true;
+      ensureDatabases = [ "nextcloud" ];
+      ensureUsers = [
+        {
+          name = "nextcloud";
+          ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+        }
+      ];
+    };
 
-  services.nginx = {
-    enable = true;
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
+    services.nginx = {
+      enable = true;
 
-    virtualHosts."${config.services.nextcloud.hostName}" = {
-      forceSSL = true;
-      enableAcme = true;
-    }
-  };
+      virtualHosts."${cfg.hostName}" = {
+        forceSSL = true;
+        useACMEHost = acme.challenge-host;
+      };
+    };
 
-  systemd.services."nextcloud-setup" = {
-    requires = [ "postgresql.service" ];
-    after = [ "postgresql.service" ];
+    systemd.services."nextcloud-setup" = {
+      requires = [ "postgresql.service" ];
+      after = [ "postgresql.service" ];
+    };
   };
 }
