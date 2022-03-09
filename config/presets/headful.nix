@@ -115,6 +115,7 @@
     playerctl
     gnome.networkmanagerapplet
     libreoffice
+    mendeley
   ];
 
   environment.sessionVariables = {
