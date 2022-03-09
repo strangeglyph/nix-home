@@ -39,5 +39,9 @@
     shell = pkgs.fish;
   };
 
+  environment.systemPackages = with pkgs; [
+    jetbrains.idea-ultimate
+  ];
+
   system.stateVersion = "21.05";
 }
