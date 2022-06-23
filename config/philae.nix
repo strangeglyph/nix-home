@@ -6,6 +6,7 @@
     ./services/fompf.nix
     ./services/cookbook.nix
     ./services/nextcloud.nix
+    ./services/minecraft.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -33,6 +34,7 @@
       hostName = "cloud.strangegly.ph";
       package = pkgs.nextcloud22;
     };
+    minecraft.enable = true;
   };
 
   users.users = {
@@ -47,6 +49,10 @@
       ];
     };
     fompf = {
+      isNormalUser = true;
+      shell = pkgs.fish;
+    };
+    minecraft = {
       isNormalUser = true;
       shell = pkgs.fish;
     };
