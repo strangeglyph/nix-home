@@ -7,14 +7,14 @@ let
     owner = "strangeglyph";
     repo = "cookbook";
     rev = "master";
-    sha256 = "0lz4p0vbavy7r678cx652vrh5qr0pcjvfi9np9d72n9sq4sg46m1";
+    hash = "sha256-xPClo0xvltwvnBG0Y0DR45dRjjRjtYYfqktzlwd/LvA=";
   };
   cookbook = pkgs.python3Packages.callPackage "${ cookbook-repo }/derivation.nix" {};
   cookbook-recipes = pkgs.fetchFromGitHub {
     owner = "strangeglyph";
     repo = "cookbook-recipes";
     rev = "master";
-    sha256 = "0xgzl8r7h3n3iadahlc81y4j0mb3csbl5b6kcr64fj8pi4pvra2g";
+    sha256 = "sha256-FHeMPwEwIF0beQn6KVwrvUIBidjIilgGzkom1moQbGI=";
   };
   cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
     SECRET_KEY = builtins.readFile ../secrets/cookbook-session-key;
@@ -46,6 +46,13 @@ in
         forceSSL = true;
         useACMEHost = acme.challenge-host;
         locations."/static/".alias = "${cookbook}/static/";
+        locations."/images/" = {
+          alias = "${cfg.recipe-folder}/images/";
+          extraConfig = ''
+            expires 7d;
+            add_header Cache-Control "public";
+          '';
+        };
         locations."/" = {
           extraConfig = ''
             uwsgi_pass unix:${config.services.uwsgi.runDir}/cookbook.sock;
