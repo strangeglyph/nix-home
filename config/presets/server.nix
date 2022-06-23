@@ -5,7 +5,7 @@
 
   security.acme = {
     acceptTerms = true;
-    email = "admin@strangegly.ph";
+    defaults.email = "admin@strangegly.ph";
   };
 
   services = {

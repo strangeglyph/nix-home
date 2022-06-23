@@ -32,7 +32,7 @@
     nextcloud = {
       enable = true;
       hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud22;
+      package = pkgs.nextcloud24;
     };
     minecraft.enable = true;
   };
