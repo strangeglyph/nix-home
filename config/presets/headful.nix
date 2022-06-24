@@ -100,11 +100,13 @@
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
     xorg.xmodmap xsel xorg.xbacklight
+    arandr
     libnotify
     alacritty
     latest.firefox-nightly-bin
     thunderbird
-    zathura
+    zathura pdfpc
+    xournalpp
     texlive.combined.scheme-full
     texstudio
     haskellPackages.lhs2tex
@@ -113,9 +115,10 @@
     scrot
     imgur-screenshot
     playerctl
-    gnome.networkmanagerapplet
+    networkmanagerapplet
     libreoffice
     mendeley
+    zoom-us
   ];
 
   environment.sessionVariables = {

@@ -12,6 +12,8 @@
     options iwlmvm  power_scheme=1
   '';
 
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+
   networking = {
     hostName = "aeolus";
     interfaces = {
