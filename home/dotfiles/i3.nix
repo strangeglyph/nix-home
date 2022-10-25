@@ -16,12 +16,33 @@ in {
     outer = 0;
     inner = 10;
   };
+  assigns = {
+    "8" = [{ class = "(?i)firefox"; }];
+    "9" = [{ class = "(?i)thunderbird"; }];
+  };
+  workspaceOutputAssign = [
+    { workspace = "8"; output = "DisplayPort-2"; }
+    { workspace = "9"; output = "DisplayPort-2"; }
+  ];
+  # Fitting for gruvbox-dark
+  # currently disabled as colors cannot be set individually
+  #colors = {
+  #  focused.border = "#d65d0e";
+  #  focusedInactive.border = "#fe8019";
+  #  unfocused.border = "#fe8019";
+  #  urgent.border = "#cc241d";
+  #};
   floating = {
     criteria = [
       { class = "KeePass2"; }
       { class = "floatingTerm"; }
     ];
   };
+  startup = [
+    { command = "firefox"; }
+    { command = "thunderbird"; }
+    { command = "alacritty"; workspace = "1"; }
+  ];
   keybindings = lib.mkOptionDefault {
     "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
     "XF86AudioLowerVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%";
@@ -39,6 +60,13 @@ in {
       fonts = {
         names = [ "SauceCodePro Nerd Font" ];
         size = 12.0;
+      };
+      # Fitting for gruvbox-dark
+      colors = {
+        focusedBackground = "#282828";
+        activeWorkspace = "#98971a";
+        inactiveWorkspace = "#282828";
+        urgentWorkspace = "#cc241d";
       };
       statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ${./i3status-rust.toml}";
     }

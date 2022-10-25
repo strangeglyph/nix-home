@@ -47,6 +47,7 @@ in {
       '';
     };
 
+    # Fuzzy cli search
     fzf = {
       enable = true;
       enableFishIntegration = true;
@@ -67,6 +68,7 @@ in {
       enableSshSupport = true;
       defaultCacheTtl = 1800;
     };
+    # popup notification daemon
     dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
   };
 
