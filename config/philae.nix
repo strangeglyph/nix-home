@@ -28,6 +28,7 @@
     cookbook = {
       enable = true;
       vhost = "cookbook.strangegly.ph";
+      site-name = "Glyph's Cookbook";
     };
     nextcloud = {
       enable = true;

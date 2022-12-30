@@ -7,19 +7,21 @@ let
     owner = "strangeglyph";
     repo = "cookbook";
     rev = "master";
-    hash = "sha256-xPClo0xvltwvnBG0Y0DR45dRjjRjtYYfqktzlwd/LvA=";
+    hash = "sha256-dlsq2wzf5mvZyqgbliUUpxkvu0FnjMZzpOZLGBuoTHY=";
   };
   cookbook = pkgs.python3Packages.callPackage "${ cookbook-repo }/derivation.nix" {};
   cookbook-recipes = pkgs.fetchFromGitHub {
     owner = "strangeglyph";
     repo = "cookbook-recipes";
     rev = "master";
-    sha256 = "sha256-FHeMPwEwIF0beQn6KVwrvUIBidjIilgGzkom1moQbGI=";
+    sha256 = "sha256-Zg5vrj0xMYXev94c9FSk1Kx3yCYz8d0X78bAG05PxCg=";
   };
   cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
     SECRET_KEY = builtins.readFile ../secrets/cookbook-session-key;
     COOKBOOK_LOCATION = cfg.recipe-folder;
-    defaultlang = cfg.default-language;
+    DEFAULT_LANG = cfg.default-language;
+    SITE_NAME = cfg.site-name;
+    BASE_URL = "https://${cfg.vhost}";
   });
 in
 {
@@ -32,6 +34,7 @@ in
     vhost = mkOption { type = types.str; };
     recipe-folder = mkOption { type = types.str; default = "${ cookbook-recipes }"; };
     default-language = mkOption { type = types.str; default = "en"; };
+    site-name = mkOption { type = types.str; default = "Cookbook"; };
   };
 
   config = mkIf cfg.enable {
@@ -79,7 +82,7 @@ in
           pythonPackages = self: with self; [ cookbook ];
           socket = "${config.services.uwsgi.runDir}/cookbook.sock";
           module = "cookbook:app";
-          pyargv = cookbook-config;
+          env = ["COOKBOOK_CONFIG=${cookbook-config}"];
         };
       };
     };
