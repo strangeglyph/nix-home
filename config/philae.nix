@@ -18,7 +18,7 @@
   networking.interfaces.ens3.useDHCP = true;
   
   nix = {
-    trustedUsers = [ "root" "@wheel" ];
+    settings.trusted-users = [ "root" "@wheel" ];
     nrBuildUsers = 100;
   };
 
@@ -33,7 +33,8 @@
     nextcloud = {
       enable = true;
       hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud24;
+      package = pkgs.nextcloud25;
+      enableBrokenCiphersForSSE = false;
     };
     minecraft.enable = true;
   };
