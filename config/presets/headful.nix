@@ -27,13 +27,18 @@
       inactiveOpacity = 0.8;
       menuOpacity = 1.0;
     };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
   };
 
-  sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    package = pkgs.pulseaudioFull;
-  };
+
+  security.rtkit.enable = true;
 
   programs = {
     light.enable = true;

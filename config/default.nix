@@ -9,7 +9,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.tmpOnTmpfs = true;
+  boot.tmp.useTmpfs = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";

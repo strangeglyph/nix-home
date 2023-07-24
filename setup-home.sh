@@ -23,10 +23,12 @@ fi
 
 home="$(homedir $user)"
 nixpkgs="$home/.config/nixpkgs"
-nixhome_file="$nixpkgs/home.nix"
-nixhome_dir="$nixpkgs/nix-home.d"
+homemanager="$home/.config/home-manager"
+nixhome_file="$homemanager/home.nix"
+nixhome_dir="$homemanager/nix-home.d"
 
 mkdir -p "$nixpkgs"
+mkdir -p "$homemanger"
 
 if ! [ -d "${nixhome_dir}" ]; then
     echo "Unable to find extended configuration directory nix-home.d in ${nixpkgs}"

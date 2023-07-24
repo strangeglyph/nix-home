@@ -1,0 +1,79 @@
+* {
+  border: none;
+  border-radius: 10;
+  font-family: "SauceCodePro Nerd Font";
+  font-size: 15px;
+  min-height: 10px;
+}
+
+window#navbar {
+  background: transparent;
+}
+
+window#navbar.hidden {
+  opacity: 0.2;
+}
+
+#window {
+  margin-top: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 10px;
+  transition: none;
+  color: transparent;
+  background: transparent;
+}
+
+#workspaces {
+  margin-top: 6px;
+  margin-left: 12px;
+  margin-bottom: 0px;
+  font-size: 4px;
+  border-radius: 10px;
+  background: #161320;  
+}
+
+#workspaces button {
+  transition: none;
+  color: #B5E8E0;
+  background: transparent;
+  font-size: 16px;
+  border-radius: 2px;
+}
+
+#workspaces button:hover {
+  transition: none;
+  box-shadow: inherit;
+  text-shadow: inherit;
+  color: #E8A2AF;
+  border-color: #E8A2AF;  
+}
+
+#workspaces button.focused {
+  color: #ABE9B3;
+  border-top: 2px solid #ABE9B3;
+  border-bottom: 2px solid #ABE9B3;
+}
+
+#workspaces button.focused:hover {
+  color: #E8A2AF;
+}
+
+#workspaces button.urgent {
+  color: #eb4d4d;
+  border-top: 2px solid #eb4d4d;
+  border-bottom: 2px solid #eb4d4d;
+}
+
+#workspaces button.urgent:hover {
+  color: #e8a2af;
+}
+
+#mode {
+  background: #161320;
+  border-radius: 10px;
+  margin-top: 6px;
+  margin-left: 12px;
+  margin-bottom: 0px;
+}
+

@@ -55,12 +55,17 @@ in {
 
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
     starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
+    #waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
+    swaylock = import ./dotfiles/swaylock.nix { inherit pkgs lib; };
+    wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
   };
 
   xsession.windowManager.i3 = {
     enable = true;
     config = import ./dotfiles/i3.nix { inherit pkgs lib; };
   };
+
+  wayland.windowManager.sway = import ./dotfiles/sway.nix { inherit pkgs lib; };
 
   services = {
     gpg-agent = {
@@ -70,6 +75,7 @@ in {
     };
     # popup notification daemon
     dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
+    swayidle = import ./dotfiles/swayidle.nix { inherit pkgs; };
   };
 
 

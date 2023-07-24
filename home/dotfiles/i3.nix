@@ -41,7 +41,7 @@ in {
   startup = [
     { command = "firefox"; }
     { command = "thunderbird"; }
-    { command = "alacritty"; workspace = "1"; }
+    { command = "alacritty"; }
   ];
   keybindings = lib.mkOptionDefault {
     "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";

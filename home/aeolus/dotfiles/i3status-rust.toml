@@ -1,4 +1,6 @@
+[theme]
 theme = "gruvbox-dark"
+[icons]
 icons = "material-nf"
 
 [[block]]
