@@ -124,6 +124,7 @@
     libreoffice
     mendeley
     zoom-us
+    pulseaudio # for pactl (https://nixos.wiki/wiki/PipeWire#Troubleshooting)
   ];
 
   environment.sessionVariables = {

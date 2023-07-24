@@ -24,6 +24,7 @@
       enable = true;
       nssmdns = true;
     };
+    udisks2.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
