@@ -37,7 +37,16 @@
 
   users.users.lschuetze = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "scanner" "lp" "wireshark" ];
+    extraGroups = [ 
+      "wheel"
+      "networkmanager"
+      "scanner"
+      "lp"
+      "wireshark"
+      "audio"
+      "video"
+      "input"
+    ];
     shell = pkgs.fish;
   };
 
