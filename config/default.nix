@@ -40,7 +40,10 @@
 
 
   security.sudo.extraConfig = "Defaults timestamp_timeout=30";
-
+  security.polkit.enable = true;
+  security.pam.services.swaylock.text = ''
+    auth.include login
+  '';
 
   programs = {
     vim.defaultEditor = true;
