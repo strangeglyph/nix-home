@@ -16,8 +16,17 @@
       };
 
       displayManager = {
-        lightdm.enable = true;
+        lightdm.enable = false; # For sway, use greetd
         defaultSession = "none+i3";
+      };
+    };
+
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.greetd}/bin/agreety --cmd sway";
+        };
       };
     };
 
