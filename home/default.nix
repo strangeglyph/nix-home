@@ -55,7 +55,7 @@ in {
 
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
     starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
-    #waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
+    waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
     swaylock = import ./dotfiles/swaylock.nix { inherit pkgs lib; };
     wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
   };

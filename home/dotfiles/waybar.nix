@@ -18,25 +18,25 @@
             
             cpu = {
                 interval = 5;
-                format = "龍 {usage}%";
+                format = " {usage}%";
             };
 
             memory = {
                 interval = 5;
-                format = " {used:0.1f}GB ({percentage}%)"; 
+                format = " {used:0.1f}GB ({percentage}%)"; 
             };
 
             disk = {
                 interval = 5;
-                format = " {used}GB ({percentage_used}%)";
+                format = "󰋊 {used}GB ({percentage_used}%)";
             };
 
             network = {
                 interval = 5;
-                format-ethernet = " {}";
+                format-ethernet = "󰈀 {}";
                 format-wifi = " {essid} ({signalStrength}%)";
-                format-disconnected = "睊";
-                onclick = "${pkgs.networkmanagerapplet}/bin/nm-connection-editor";
+                format-disconnected = "󰤮";
+                onclick = "${pkgs.networkmanagerapplet}/bin/nm-applet";
             };
 
             "sway/workspaces" = {
@@ -45,8 +45,8 @@
                     "1" = "";
                     "2" = "";
                     "8" = "";
-                    "9" = "";
-                    "urgent" = "";
+                    "9" = "";
+                    "urgent" = "󰀦";
                     "default" = "";
                 };
             };
@@ -59,13 +59,13 @@
                 format = "{icon} {percent}%";
                 on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl set +10%";
                 on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl set -10%";
-                format-icons = [ "" "" "" ];
+                format-icons = [ "󰃞" "󰃟" "󰃠" ];
             };
 
             pulseaudio = {
                 scroll-step = 5;
                 format = "{icon} {volume}%";
-                format-muted = "ﱝ {volume}%";
+                format-muted = "󰝟 {volume}%";
                 on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
                 format-icons.default = [ "" "" "" ];
             };
@@ -73,14 +73,14 @@
             battery = {
                 interval = 5;
                 format = "{icon} {capacity}%";
-                format-charging = " {capacity}%";
-                format-plugged = " {capacity}%";
-                format-icons = [ "" "" "" "" "" "" "" "" "" "" "" ];
+                format-charging = "󰂄 {capacity}%";
+                format-plugged = "󱟢 {capacity}%";
+                format-icons = [ "󰂎" "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
             };
 
             clock = {
                 interval = 5;
-                format = " {:%d.%m. %H:%M}";
+                format = "{:%d.%m. %H:%M}";
                 locale = "de_DE";
                 timezone = "Europe/Berlin";
             };

@@ -4,6 +4,7 @@ let
   mod = "Mod4";
 in {
   enable = true;
+  package = pkgs.swayfx;
   config = {
     modifier = "${mod}";
     defaultWorkspace = "workspace number 1";
@@ -14,21 +15,21 @@ in {
     # gruvbox-dark compatible colors
     colors = rec {
       focused = rec {
-        border = "#d65d0e"; # strong orange
+        border = "#fe8019"; # soft orange
         background = "#282828"; # gruvbox "bg0"
         text = "#ebdbb2"; # gruvbox "fg" (offwhite)
         indicator = border;
         childBorder = border;
       };
       focusedInactive = rec {
-        border = "#fe8019"; # soft orange
+        border = "#d65d0e"; # strong orange
         childBorder = border;
         indicator = border;
         text = "#ebdbb2";
         background = "#3c3836"; # gruvbox "bg1"
       };
       unfocused = rec {
-        border = "#fe8019";
+        border = "#835397"; # purple
         childBorder = border;
         indicator = border;
         text = "#d5c4a1"; # gruvbox "fg2" (darkened fg)
@@ -77,6 +78,7 @@ in {
       { command = "firefox"; }
       { command = "thunderbird"; }
       { command = "alacritty"; }
+      { command = "${pkgs.python3} ${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency --opacity .80"; }
     ];
     keybindings = lib.mkOptionDefault {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
@@ -94,6 +96,7 @@ in {
     };
     window = {
      titlebar = false;
+     border = 1;
     };
 
     bars = [
@@ -102,6 +105,13 @@ in {
       }
     ];
   };
+
+  # swayfx
+  extraConfig = ''
+    blur enable
+    corner_radius 2
+    shadows enable
+  '';
 
   wrapperFeatures = {
     gtk = true;
