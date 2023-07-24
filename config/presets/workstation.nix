@@ -26,10 +26,8 @@
     };
   };
 
-  environment.systemPackages = with pkgs; let
-    keepassWithRpc = keepass.override { plugins = [ keepass-keepassrpc ]; };
-  in [
-    keepassWithRpc
+  environment.systemPackages = with pkgs; [
+    keepassxc
     cups
   ];
 }
