@@ -7,12 +7,5 @@
     programs.git.userName = lib.mkForce "lschuetze";
     programs.git.userEmail = lib.mkForce "lschuetze@mpi-sws.org";
 
-    services = {
-      udiskie = {
-        enable = true;
-        automount = true;  
-      };
-    };
-
     home.stateVersion = "21.05"; 
 }

@@ -65,7 +65,7 @@ in {
     };
     focus.mouseWarping = false;
     input = {
-      "type:keyboard" = { xkb_layout = "en"; xkb_variant = "altgr-intl"; xkb_options = "eurosign:e,compose:caps"; };
+      "type:keyboard" = { xkb_layout = "us"; xkb_variant = "altgr-intl"; xkb_options = "eurosign:e,compose:caps"; };
       # dwt = disable while typing
       "type:touchpad" = { drag = "enabled"; dwt = "enabled"; scroll_method = "two_finger"; natural_scroll = "enabled"; };
     };
@@ -88,7 +88,7 @@ in {
       "XF86AudioPause" = "exec playerctl pause";
       "XF86AudioNext" = "exec playerctl next";
       "XF86AudioPrev" = "exec playerctl previous";
-      "${mod}+L" = "${pkgs.swaylock-effects}/bin/swaylock -f";
+      "${mod}+l" = "${pkgs.swaylock-effects}/bin/swaylock -f";
       "${mod}+Alt+Left" = "move workspace to output left"; 
       "${mod}+Alt+Right" = "move workspace to output right"; 
     };

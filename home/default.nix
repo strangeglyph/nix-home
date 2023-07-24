@@ -73,6 +73,10 @@ in {
       enableSshSupport = true;
       defaultCacheTtl = 1800;
     };
+    udiskie = {
+      enable = true;
+      automount = true;
+    };
     # popup notification daemon
     dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
     swayidle = import ./dotfiles/swayidle.nix { inherit pkgs; };
