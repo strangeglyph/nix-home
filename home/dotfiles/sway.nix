@@ -68,7 +68,7 @@ in {
     input = {
       "type:keyboard" = { xkb_layout = "us"; xkb_variant = "altgr-intl"; xkb_options = "eurosign:e,compose:caps"; };
       # dwt = disable while typing
-      "type:touchpad" = { drag = "enabled"; dwt = "enabled"; scroll_method = "two_finger"; natural_scroll = "enabled"; };
+      "type:touchpad" = { drag = "enabled"; dwt = "enabled"; tap = "enabled"; scroll_method = "two_finger"; natural_scroll = "enabled"; };
     };
     output = {
       "CMN 1409 0" = { position = "1920,0"; };
@@ -78,7 +78,7 @@ in {
       { command = "firefox"; }
       { command = "thunderbird"; }
       { command = "alacritty"; }
-      { command = "${pkgs.python3} ${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency --opacity .80"; }
+      { command = "${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency --opacity .80"; }
     ];
     keybindings = lib.mkOptionDefault {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
@@ -111,6 +111,7 @@ in {
     blur enable
     corner_radius 2
     shadows enable
+    shadow_blur_radius 7
   '';
 
   wrapperFeatures = {
