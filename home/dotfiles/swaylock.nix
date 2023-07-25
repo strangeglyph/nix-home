@@ -8,7 +8,7 @@
     font-size = 32;
 
     screenshots = true;
-    fade-in = 5;
-    effect-pixelate = 10;
+    fade-in = 1;
+    effect-pixelate = 8;
   };
 }
