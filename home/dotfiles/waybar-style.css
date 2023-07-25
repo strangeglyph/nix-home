@@ -1,9 +1,10 @@
 * {
   border: none;
-  border-radius: 10;
+  border-radius: 10px;
   font-family: "SauceCodePro Nerd Font";
   font-size: 15px;
   min-height: 10px;
+  background: transparent;  
 }
 
 window#navbar {
@@ -27,10 +28,10 @@ window#navbar.hidden {
 #workspaces {
   margin-top: 6px;
   margin-left: 12px;
-  margin-bottom: 0px;
+  margin-bottom: 6px;
   font-size: 4px;
   border-radius: 10px;
-  background: #161320;  
+  background: #161320;
 }
 
 #workspaces button {
@@ -55,6 +56,18 @@ window#navbar.hidden {
   border-bottom: 2px solid #ABE9B3;
 }
 
+#workspaces button.focused:first-child {
+  border-left: 2px solid #ABE9B3;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+#workspaces button.focused:last-child {
+  border-right: 2px solid #ABE9B3;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
 #workspaces button.focused:hover {
   color: #E8A2AF;
 }
@@ -74,6 +87,102 @@ window#navbar.hidden {
   border-radius: 10px;
   margin-top: 6px;
   margin-left: 12px;
-  margin-bottom: 0px;
+  margin-bottom: 6px;
+  color: #eb4d4d;
 }
 
+
+#network {
+  color: #161320;
+  background: #f28fad;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin: 6px;
+}
+
+#battery {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #b5e8e0;
+}
+
+#battery.charging, #battery.plugged {
+  color: #161320;
+  background: #b5e8e0;
+}
+
+#battery.critical:not(.charging) {
+  color: #161320;
+  background: #e8a2af;
+  border: 2px solid #e8a2af;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;  
+}
+
+@keyframes blink {
+  to {
+    color: #e8a2af;
+    background: #161320;
+  }
+}
+
+#backlight {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #f8db96;
+}
+
+#pulseaudio  {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #fae380;
+}
+
+#clock {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #abe9b3;
+}
+
+#disk {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #bd93f9;
+}
+
+#memory {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #ddb6f2;
+}
+
+#cpu {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #161320;
+  background: #96cdfb;
+}
+
+#tray {
+  margin: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #b5e8e0;
+  background: #161320;
+}

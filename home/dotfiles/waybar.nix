@@ -34,7 +34,7 @@
             network = {
                 interval = 5;
                 format-ethernet = "󰈀 {}";
-                format-wifi = " {essid} ({signalStrength}%)";
+                format-wifi = "  {essid} ({signalStrength}%)";
                 format-disconnected = "󰤮";
                 onclick = "${pkgs.networkmanagerapplet}/bin/nm-applet";
             };
