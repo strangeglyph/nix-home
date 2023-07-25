@@ -90,7 +90,7 @@ in {
       "XF86AudioPause" = "exec playerctl pause";
       "XF86AudioNext" = "exec playerctl next";
       "XF86AudioPrev" = "exec playerctl previous";
-      "${mod}+l" = "${pkgs.swaylock-effects}/bin/swaylock -f";
+      "${mod}+l" = "exec ${pkgs.swaylock-effects}/bin/swaylock -f";
       "${mod}+Alt+Left" = "move workspace to output left"; 
       "${mod}+Alt+Right" = "move workspace to output right"; 
     };

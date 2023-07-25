@@ -28,7 +28,7 @@
 
             disk = {
                 interval = 5;
-                format = "󰋊 {used}GB ({percentage_used}%)";
+                format = "󰋊 {used:1f} ({percentage_used}%)";
             };
 
             network = {
@@ -52,7 +52,7 @@
             };
 
             "sway/mode" = {
-                "format" = "<span style=\"italic\">{}</span>";
+                "format" = "<span style=\"monospace\">{}</span>";
             };
 
             backlight = {
