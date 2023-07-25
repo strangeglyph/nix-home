@@ -22,7 +22,7 @@ in {
         childBorder = border;
       };
       focusedInactive = rec {
-        border = "#d65d0e"; # strong orange
+        border = "#835397"; # purple
         childBorder = border;
         indicator = border;
         text = "#ebdbb2";
@@ -46,7 +46,6 @@ in {
     };
 
     terminal = "${pkgs.alacritty}/bin/alacritty";
-    menu = "${pkgs.wofi}/bin/wofi --show=drun";
     gaps = {
       outer = 10;
       inner = 10;
@@ -78,6 +77,7 @@ in {
       { command = "firefox"; }
       { command = "thunderbird"; }
       { command = "alacritty"; }
+      { command = "nm-applet"; }
       { command = "${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency --opacity .80"; }
     ];
     keybindings = lib.mkOptionDefault {
