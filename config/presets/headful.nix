@@ -134,6 +134,7 @@
     mendeley
     zoom-us
     pulseaudio # for pactl (https://nixos.wiki/wiki/PipeWire#Troubleshooting)
+    deadd-notification-center
   ];
 
   environment.sessionVariables = {
