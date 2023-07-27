@@ -53,6 +53,11 @@ in {
       enableFishIntegration = true;
     };
 
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
     starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
     waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
