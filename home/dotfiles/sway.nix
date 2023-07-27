@@ -79,6 +79,7 @@ in {
       { command = "alacritty"; }
       { command = "nm-applet"; }
       { command = "${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency.py --opacity .80"; }
+      { command = "${pkgs.deadd-notification-center}"; }
     ];
     keybindings = lib.mkOptionDefault {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
