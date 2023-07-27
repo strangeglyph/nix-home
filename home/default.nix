@@ -83,7 +83,7 @@ in {
       automount = true;
     };
     # popup notification daemon
-    dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
+    # dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
     swayidle = import ./dotfiles/swayidle.nix { inherit pkgs; };
   };
 
