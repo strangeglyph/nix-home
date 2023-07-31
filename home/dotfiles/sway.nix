@@ -49,6 +49,7 @@ in {
     gaps = {
       outer = 10;
       inner = 10;
+      bottom = 5;
     };
     assigns = {
       "2" = [{ app_id = "(?i)texstudio"; }];
@@ -56,8 +57,8 @@ in {
       "9" = [{ app_id = "(?i)thunderbird"; }];
     };
     workspaceOutputAssign = [
-      { workspace = "2"; output = "Dell Inc. DELL C2422HE 3W56Z83"; }
-      { workspace = "8"; output = "Dell Inc. DELL C2422HE 6066Z83"; }
+      { workspace = "2"; output = "DP-5"; }
+      { workspace = "8"; output = "DP-4"; }
     ];
     floating = {
       criteria = [
@@ -77,6 +78,7 @@ in {
     startup = [
       { command = "firefox"; }
       { command = "thunderbird"; }
+      { command = "texstudio"; }
       { command = "alacritty"; }
       { command = "nm-applet"; }
       { command = "${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency.py --opacity .80"; }

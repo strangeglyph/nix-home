@@ -5,15 +5,9 @@
   font-size: 15px;
   min-height: 10px;
   background: transparent;  
+  min-width: 2em;
 }
 
-window#navbar {
-  background: transparent;
-}
-
-window#navbar.hidden {
-  opacity: 0.2;
-}
 
 #window {
   margin-top: 6px;
@@ -42,12 +36,18 @@ window#navbar.hidden {
   border-radius: 2px;
 }
 
+#workspaces button:not(.focused) {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+
 #workspaces button:hover {
   transition: none;
   box-shadow: inherit;
   text-shadow: inherit;
   color: #E8A2AF;
-  border-color: #E8A2AF;  
+  border-color: #E8A2AF; 
 }
 
 #workspaces button.focused {
