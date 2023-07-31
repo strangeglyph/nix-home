@@ -22,6 +22,7 @@ in {
       '';
     };
 
+    # Shell
     fish = {
       enable = true;
       shellAliases = {
@@ -53,16 +54,27 @@ in {
       enableFishIntegration = true;
     };
 
+    # Locate packages in store
     nix-index = {
       enable = true;
       enableFishIntegration = true;
     };
 
+    # Terminal
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
+
+    # Shell prompt
     starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
+
+    # Status bar (check here also for color scheme)
     waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
+
+    # Lockscreen
     swaylock = import ./dotfiles/swaylock.nix { inherit pkgs lib; };
-    wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
+
+    # Mode+D launcher for sway
+    # (Switched for bemenu)
+    # wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
   };
 
   xsession.windowManager.i3 = {
@@ -78,13 +90,20 @@ in {
       enableSshSupport = true;
       defaultCacheTtl = 1800;
     };
+    # Automount usb sticks
     udiskie = {
       enable = true;
       automount = true;
     };
     # popup notification daemon
+    # Switched for deadd-notification-center (not styled yet)
     # dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
+
+    # Lock screen when idling
     swayidle = import ./dotfiles/swayidle.nix { inherit pkgs; };
+
+    # Automatic monitor configuration
+    kanshi = import ./dotfiles/kanshi.nix { inherit pkgs lib; };
   };
 
 

@@ -7,7 +7,7 @@ in {
   package = pkgs.swayfx;
   config = {
     modifier = "${mod}";
-    defaultWorkspace = "workspace number 1";
+    defaultWorkspace = "workspace 1";
     fonts = {
       names = [ "SauceCodePro Nerd Font" ];
       size = 12.0;
@@ -51,12 +51,13 @@ in {
       inner = 10;
     };
     assigns = {
-      "8" = [{ class = "(?i)firefox"; }];
-      "9" = [{ class = "(?i)thunderbird"; }];
+      "2" = [{ app_id = "(?i)texstudio"; }];
+      "8" = [{ app_id = "(?i)firefox"; }];
+      "9" = [{ app_id = "(?i)thunderbird"; }];
     };
     workspaceOutputAssign = [
-      { workspace = "8"; output = "DisplayPort-2 eDP"; }
-      { workspace = "9"; output = "DisplayPort-2 eDP"; }
+      { workspace = "2"; output = "Dell Inc. DELL C2422HE 3W56Z83"; }
+      { workspace = "8"; output = "Dell Inc. DELL C2422HE 6066Z83"; }
     ];
     floating = {
       criteria = [
