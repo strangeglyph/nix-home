@@ -3,7 +3,7 @@
 {
   imports = [
     ./presets/server.nix
-    ./services/fompf.nix
+#    ./services/fompf.nix
     ./services/cookbook.nix
     ./services/nextcloud.nix
     ./services/minecraft.nix
