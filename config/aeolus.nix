@@ -6,11 +6,11 @@
     ./presets/workstation.nix
   ];
 
-  boot.extraModprobeConfig = ''
-    options iwlwifi 11n_disable=8
-    options iwlwifi power_save=0
-    options iwlmvm  power_scheme=1
-  '';
+  # boot.extraModprobeConfig = ''
+  #  options iwlwifi 11n_disable=8
+  #  options iwlwifi power_save=0
+  #   options iwlmvm  power_scheme=1
+  #'';
 
   boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
@@ -27,8 +27,8 @@
 
   services.xserver = {
     layout = lib.mkForce "us";
-    xkbVariant = lib.mkForce "altgr-intl";
-    xkbOptions = lib.mkForce "eurosign:e,compose:caps";
+    xkb.variant = lib.mkForce "altgr-intl";
+    xkb.options = lib.mkForce "eurosign:e,compose:caps";
   };
   services.printing.browsedConf = ''
     CreateRemoteRawPrinterQueues Yes
@@ -52,6 +52,8 @@
 
   environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
+    openscad
+    prusa-slicer
   ];
 
   system.stateVersion = "21.05";

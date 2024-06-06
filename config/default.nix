@@ -1,13 +1,26 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
+let
+  lix = fetchGit {
+    url = "git@git.lix.systems:lix-project/lix.git";
+    ref = "main";
+    rev = "71b32bb87cd48dbbd672c8ca6b041ed36f3bae11";
+  };
+  lix-module = fetchGit {
+    url = "git@git.lix.systems:lix-project/nixos-module.git";
+    ref = "main";
+  };
+  lix-overlay = import "${lix-module}/overlay.nix" { inherit lix; };
+in
 
 { config, pkgs, lib, ... }:
-
 {
+  nixpkgs.overlays = [ lix-overlay ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
+  boot.loader.systemd-boot.configurationLimit = 4;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.tmp.useTmpfs = true;
 
@@ -34,6 +47,13 @@
 
   nix = {
     extraOptions = "experimental-features = nix-command flakes";
+    gc = {
+      automatic = true;
+      dates = "weekly";
+    };
+    optimise = {
+      automatic = true;
+    };
   };
 
   users.users = {

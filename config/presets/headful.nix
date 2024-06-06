@@ -16,13 +16,13 @@
       };
 
       displayManager = {
-        lightdm.enable = false; # For sway, use greetd
+        lightdm.enable = false; # For sway, use greetd below
         defaultSession = "none+i3";
       };
     };
 
     greetd = {
-      enable = true;
+      enable = true; # For i3, use displayManager.lightdm above
       settings = {
         default_session = {
           command = "${pkgs.greetd.greetd}/bin/agreety --cmd sway";
@@ -55,11 +55,15 @@
       enable = true;
       package = pkgs.wireshark-qt;
     };
+    firefox = {
+      enable = true;
+      # package = pkgs.latest.firefox-nightly-bin;
+    };
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "Noto" "SourceCodePro" "DejaVuSansMono" ]; })
-    noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+    noto-fonts-cjk noto-fonts-color-emoji noto-fonts-extra
     cantarell-fonts
     liberation_ttf
   ];
@@ -95,21 +99,6 @@
   environment.systemPackages = with pkgs; let
     agda-with-stdlib = agda.withPackages (agda-packages: [ 
       agda-packages.standard-library 
-      #(agda-packages.mkDerivation {
-      #  pname = "agda-ring-solver";
-      #  version = "0.1.0";
-      #  src = fetchFromGitHub {
-      #    owner = "strangeglyph";
-      #    repo = "agda-ring-solver";
-      #    rev = "master";
-      #    sha256 = "13aavsaf0qmipwh3wypm3v8ni7a24wfddfhp7xw7q1qkx8bwq06x";
-      #  };
-      #  buildInputs = [ agda-packages.standard-library ];
-      #  preBuild = ''
-      #    echo "module Everything where" > Everything.agda
-      #    find src -name '*.agda' | sed 's|^src/|import |g' | sed 's|.agda$||g' | sed 's|/|.|g' >> Everything.agda
-      #  '';
-      #})
     ]);
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
@@ -117,7 +106,6 @@
     arandr
     libnotify
     alacritty
-    latest.firefox-nightly-bin
     thunderbird
     zathura pdfpc
     xournalpp

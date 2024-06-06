@@ -4,6 +4,7 @@
   networking.networkmanager.enable = true;
 
   hardware.sane.enable = true;
+  hardware.opengl.enable = true;
 
   services = {
     xserver.libinput.touchpad.naturalScrolling = true;
@@ -26,6 +27,8 @@
     };
     udisks2.enable = true;
   };
+
+  programs.steam.enable = true;
 
   environment.systemPackages = with pkgs; [
     keepassxc
