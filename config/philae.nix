@@ -7,6 +7,7 @@
     ./services/cookbook.nix
     ./services/nextcloud.nix
     ./services/minecraft.nix
+#    ./utils/pgsql_update.nix
   ];
 
   boot.loader.grub.enable = true;
@@ -33,9 +34,9 @@
     nextcloud = {
       enable = true;
       hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud25;
-      enableBrokenCiphersForSSE = false;
+      package = pkgs.nextcloud29;
     };
+    postgresql.package = pkgs.postgresql_15;
     minecraft.enable = true;
   };
 

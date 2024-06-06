@@ -71,7 +71,7 @@
     ethtool socat
     glib gcc binutils gnumake
     parted
-    wget curl ncurses which git htop lsof pv ripgrep exa file jq
+    wget curl ncurses which git htop lsof pv ripgrep eza file jq
     zip unzip
     vim emacs
     basic-python-install
