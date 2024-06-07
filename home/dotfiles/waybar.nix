@@ -57,7 +57,7 @@
             backlight = {
                 format = "{icon} {percent}%";
                 on-scroll-up = "${pkgs.brightnessctl}/bin/brightnessctl set +10%";
-                on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl set -10%";
+                on-scroll-down = "${pkgs.brightnessctl}/bin/brightnessctl set 10%-";
                 format-icons = [ "󰃞" "󰃟" "󰃠" ];
             };
 

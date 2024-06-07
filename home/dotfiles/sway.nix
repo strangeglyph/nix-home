@@ -3,6 +3,7 @@
 let
   mod = "Mod4";
 in {
+  checkConfig = false; # bugfix for nix-community/home-manager #5379
   enable = true;
   package = pkgs.swayfx;
   config = {
