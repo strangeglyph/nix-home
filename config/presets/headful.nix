@@ -4,10 +4,9 @@
   services = {
     xserver = {
       enable = true;
-      layout = "de";
-      xkbVariant = "deadacute";
-      xkbOptions = "compose:caps";
-      libinput.enable = true;
+      xkb.layout = "de";
+      xkb.variant = "deadacute";
+      xkb.options = "compose:caps";
 
       windowManager.i3 = {
         enable = true;
@@ -15,11 +14,16 @@
         extraPackages = [ pkgs.i3lock ];
       };
 
-      displayManager = {
-        lightdm.enable = false; # For sway, use greetd below
-        defaultSession = "none+i3";
-      };
+      displayManager.lightdm.enable = false; # For sway, use greetd below
+
     };
+
+    displayManager = {
+      defaultSession = "none+i3";
+    };
+
+
+    libinput.enable = true;
 
     greetd = {
       enable = true; # For i3, use displayManager.lightdm above
@@ -66,6 +70,7 @@
     noto-fonts-cjk noto-fonts-color-emoji noto-fonts-extra
     cantarell-fonts
     liberation_ttf
+    lmodern
   ];
   fonts.fontconfig.defaultFonts = {
     sansSerif = [

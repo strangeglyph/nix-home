@@ -26,7 +26,7 @@
   console.keyMap = lib.mkForce "us";
 
   services.xserver = {
-    layout = lib.mkForce "us";
+    xkb.layout = lib.mkForce "us";
     xkb.variant = lib.mkForce "altgr-intl";
     xkb.options = lib.mkForce "eurosign:e,compose:caps";
   };

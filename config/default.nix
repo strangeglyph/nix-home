@@ -5,11 +5,14 @@ let
   lix = fetchGit {
     url = "git@git.lix.systems:lix-project/lix.git";
     ref = "main";
-    rev = "71b32bb87cd48dbbd672c8ca6b041ed36f3bae11";
+    # Pin to keep rebuilds fast, update irregularly
+    rev = "79246a37337c5df2224dbc2461c722e1e678f6de";
   };
   lix-module = fetchGit {
     url = "git@git.lix.systems:lix-project/nixos-module.git";
     ref = "main";
+    # Do not pin, keep up to date
+    #rev = "b0e6f359500d66670cc16f521e4f62d6a0a4864e";
   };
   lix-overlay = import "${lix-module}/overlay.nix" { inherit lix; };
 in

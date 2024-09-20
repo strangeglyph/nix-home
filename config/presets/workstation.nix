@@ -7,8 +7,8 @@
   hardware.opengl.enable = true;
 
   services = {
-    xserver.libinput.touchpad.naturalScrolling = true;
-    xserver.libinput.touchpad.disableWhileTyping = true;
+    libinput.touchpad.naturalScrolling = true;
+    libinput.touchpad.disableWhileTyping = true;
     xserver.wacom.enable = true;
 
     acpid.enable = true;
@@ -23,7 +23,7 @@
     };
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
     };
     udisks2.enable = true;
   };
