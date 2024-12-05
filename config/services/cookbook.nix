@@ -10,11 +10,8 @@ let
     hash = "sha256-dlsq2wzf5mvZyqgbliUUpxkvu0FnjMZzpOZLGBuoTHY=";
   };
   cookbook = pkgs.python3Packages.callPackage "${ cookbook-repo }/derivation.nix" {};
-  cookbook-recipes = pkgs.fetchFromGitHub {
-    owner = "strangeglyph";
-    repo = "cookbook-recipes";
-    rev = "master";
-    sha256 = "sha256-Zg5vrj0xMYXev94c9FSk1Kx3yCYz8d0X78bAG05PxCg=";
+  cookbook-recipes = builtins.fetchGit {
+    url = "https://github.com/strangeglyph/cookbook-recipes";
   };
   cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
     SECRET_KEY = builtins.readFile ../secrets/cookbook-session-key;
