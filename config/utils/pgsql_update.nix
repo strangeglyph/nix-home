@@ -2,7 +2,7 @@
 let
   # XXX specify the postgresql package you'd like to upgrade to.
   # Do not forget to list the extensions you need.
-  psql = pkgs.postgresql_15.withPackages (pp: []);
+  psql = pkgs.postgresql_16.withPackages (pp: []);
 in
 {
   environment.systemPackages = [

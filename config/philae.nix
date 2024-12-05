@@ -37,10 +37,10 @@
     nextcloud = {
       enable = true;
       hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud29;
+      package = pkgs.nextcloud30;
     };
-    postgresql.package = pkgs.postgresql_15;
-    minecraft.enable = true;
+    postgresql.package = pkgs.postgresql_16;
+    minecraft.enable = false;
   };
 
   users.users = {

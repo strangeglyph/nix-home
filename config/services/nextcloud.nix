@@ -28,8 +28,10 @@ in
 
         adminuser = "glyph";
         adminpassFile = "/var/nextcloud/admin-pass";
+      };
 
-        defaultPhoneRegion = "de";
+      settings = {
+        default_phone_region = "de";
       };
     };
 
