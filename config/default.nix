@@ -1,27 +1,8 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-let
-  lix = fetchGit {
-    url = "git@git.lix.systems:lix-project/lix.git";
-    ref = "main";
-    # Pin to keep rebuilds fast, update irregularly
-    rev = "64e33a7e09a0d1faacf2fd3f6ebd647fe4d8346a";
-  };
-  lix-module = fetchGit {
-    url = "git@git.lix.systems:lix-project/nixos-module.git";
-    ref = "main";
-    # Do not pin, keep up to date
-    #rev = "b0e6f359500d66670cc16f521e4f62d6a0a4864e";
-  };
-  lix-overlay = import "${lix-module}/overlay.nix" { inherit lix; };
-in
-
 { config, pkgs, lib, inputs, ... }:
 {
-  nixpkgs.overlays = [ lix-overlay ];
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 4;
@@ -64,7 +45,6 @@ in
       automatic = true;
     };
     registry.nixpkgs.flake = inputs.nixpkgs;
-    trusted-users = [ "root" "@wheel" ];
   };
 
   users.users = {
@@ -113,7 +93,5 @@ in
     screen
     direnv
   ];
-
-  system.copySystemConfiguration = true;
 }
 

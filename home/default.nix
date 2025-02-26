@@ -106,17 +106,17 @@
 
 
   home.file = {
-    ".emacs.d" = {
-      recursive = true;
-      source = fetchGit {
-        url = "git@github.com:syl20bnr/spacemacs.git";
-        ref = "develop";
-      };
-    };
-    ".spacemacs".source = ./dotfiles/spacemacs;
-    ".agda/defaults".text = ''
-       standard-library
-    '';
+    #".emacs.d" = {
+    #  recursive = true;
+    #  source = fetchGit {
+    #    url = "git@github.com:syl20bnr/spacemacs.git";
+    #    ref = "develop";
+    #  };
+    #};
+    #".spacemacs".source = ./dotfiles/spacemacs;
+    #".agda/defaults".text = ''
+    #   standard-library
+    #'';
   };
 
   nixpkgs.config.allowUnfree = true;
