@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 {
+    imports = [ ./default.nix ];
+
     home.username = "lschuetze";
     home.homeDirectory = "/home/lschuetze";
 

@@ -13,6 +13,7 @@ let
 
     exec = [
       "swaymsg 'workspace 2, move workspace to ${left_mon_id}'"
+      "swaymsg 'workspace 3, move workspace to ${left_mon_id}'"
       "swaymsg 'workspace 8, move workspace to ${right_mon_id}'"
     ];
   };
@@ -36,7 +37,30 @@ in
 
         exec = [
           "swaymsg 'workspace 2, move workspace to eDP-1'"
+          "swaymsg 'workspace 3, move workspace to eDP-1'"
           "swaymsg 'workspace 8, move workspace to eDP-1'"
+        ];
+      };
+    }
+    {
+      profile = {
+        # Might require manual switch with 'kanshictl switch present-hdmi'
+        name = "present-hdmi";
+        outputs = [
+          {
+            criteria = "eDP-1";
+            position = "0,0";
+            status = "enable";
+          }
+          {
+            criteria = "HDMI-A-1";
+            position = "1920,0";
+            status = "enable";
+          }
+        ];
+
+        exec = [
+          "${pkgs.wl-mirror}/bin/wl-present mirror eDP-1 --fullscreen-output HDMI-A-1 --fullscreen"
         ];
       };
     }

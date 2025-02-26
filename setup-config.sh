@@ -1,5 +1,5 @@
 
-usage() { echo "Usage: $0 -r <system root> -h <hostname>" 1>&2; exit 1; }
+usage() { echo "Usage: $0 -r <system root> -h <hostname> -u <user>" 1>&2; exit 1; }
 
 while getopts ":r:h:" o; do
     case "${o}" in
@@ -9,6 +9,9 @@ while getopts ":r:h:" o; do
         h)
             new_hostname=${OPTARG}
             ;;
+        u)
+            default_user=${OPTARG}
+            ;;
         *)
             usage
             ;;
@@ -16,7 +19,7 @@ while getopts ":r:h:" o; do
 done
 shift $((OPTIND-1))
 
-if [ -z "${sys_root}" ] || [ -z "${new_hostname}" ]; then
+if [ -z "${sys_root}" ] || [ -z "${new_hostname}" || [ -z "${default_user}" ] ]; then
     usage
 fi
 
@@ -64,7 +67,77 @@ if ! [ -f "${sys_root}/etc/nixos/nixos.d/config/${new_hostname}.nix" ]; then
 
 {
   networking.hostname = "${new_hostname}";
+
+  users.users.${default_user} = {
+    isNormalUser = true;
+    shell = pkgs.fish;
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+      "input"
+    ];
+  };
+  home-manager.users.root.imports = [ ../home/${new_hostname}/root.nix ];
+  home-manager.users.${default_user}.imports = [ ../home/${new_hostname}/${default_user}.nix ];
+
+  # TODO change me
+  system.stateVersion = builtins.throw "Please provide a state version";
 }
 EOF
-    echo "Please customize this file to your liking"
 fi
+
+# Home setup
+#
+
+mkdir -p "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}"
+
+if ! [ -f "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/default.nix" ]; then
+    echo "home/${new_hostname}/default.nix does not exist - initializing empty"
+    cat > "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/default.nix <<EOF
+{ config, pkgs, lib, ... }:
+
+{
+  imports = [ ../default.nix ];
+}
+EOF
+fi
+
+if ! [ -f "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/root.nix" ]; then
+    echo "home/${new_hostname}/root.nix does not exist - initializing empty"
+    cat > "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/root.nix <<EOF
+{ config, pkgs, ... }:
+{
+  imports = [ ./default.nix ];
+
+  home.username = "root";
+  home.homeDirectory = "/root";
+
+  # TODO change me
+  home.stateVersion = builtins.throw "Please provide a state version";
+}
+EOF
+fi
+
+if ! [ -f "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/${default_user}.nix" ]; then
+    echo "home/${new_hostname}/${default_user}.nix does not exist - initializing empty"
+    cat > "${sys_root}/etc/nixos/nixos.d/home/${new_hostname}/${default_user}.nix <<EOF
+{ config, pkgs, ... }:
+{
+  imports = [ ./default.nix ];
+
+  home.username = "${default_user}";
+  home.homeDirectory = "/home/${default_user}";
+
+  # TODO change me
+  home.stateVersion = builtins.throw "Please provide a state version";
+}
+EOF
+fi
+
+
+
+echo "------- [ Done ] -------"
+echo "Please customize config/${new_hostname}.nix and home/${new_hostname}/\{${default_user},root\}.nix to your liking"
+echo "Please remember to add the home-manager channel and set a state version"

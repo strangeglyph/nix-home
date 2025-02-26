@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  mozilla-overlays = fetchTarball { url = https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz; };
+  mozilla-overlays = fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz"; };
 in {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -77,10 +77,10 @@ in {
     # wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
   };
 
-  xsession.windowManager.i3 = {
-    enable = true;
-    config = import ./dotfiles/i3.nix { inherit pkgs lib; };
-  };
+  # xsession.windowManager.i3 = {
+  #  enable = true;
+  #  config = import ./dotfiles/i3.nix { inherit pkgs lib; };
+  # };
 
   wayland.windowManager.sway = import ./dotfiles/sway.nix { inherit pkgs lib; };
 
@@ -110,11 +110,9 @@ in {
   home.file = {
     ".emacs.d" = {
       recursive = true;
-      source = pkgs.fetchFromGitHub {
-        owner = "syl20bnr";
-        repo = "spacemacs";
-        rev = "develop";
-        sha256 = "16qnz7nvp712gph1wwgznpk1bia4rggq3flr89ps0b26b95yhcww";
+      source = fetchGit {
+        url = "git@github.com:syl20bnr/spacemacs.git";
+        ref = "develop";
       };
     };
     ".spacemacs".source = ./dotfiles/spacemacs;

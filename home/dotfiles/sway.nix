@@ -54,6 +54,7 @@ in {
     };
     assigns = {
       "2" = [{ app_id = "(?i)texstudio"; }];
+      "3" = [{ app_id = "(?i)obsidian"; }];
       "8" = [{ app_id = "(?i)firefox"; }];
       "9" = [{ app_id = "(?i)thunderbird"; }];
     };
@@ -80,10 +81,12 @@ in {
       { command = "firefox"; }
       { command = "thunderbird"; }
       { command = "texstudio"; }
+      { command = "obsidian"; }
       { command = "alacritty"; }
       { command = "nm-applet"; }
       { command = "${pkgs.sway-contrib.inactive-windows-transparency}/bin/inactive-windows-transparency.py --opacity .80"; }
       { command = "${pkgs.deadd-notification-center}"; }
+      { command = "swaymsg -t SUBSCRIBE -m \"['workspace']\" | jq --unbuffered -r 'select(.change == \"focus\") | .current.output' | xargs -L1 swaymsg input type:tablet_tool map_to_output"; }
     ];
     keybindings = lib.mkOptionDefault {
       "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%";
