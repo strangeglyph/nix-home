@@ -4,7 +4,7 @@
   networking.networkmanager.enable = true;
 
   hardware.sane.enable = true;
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true;
 
   services = {
     libinput.touchpad.naturalScrolling = true;
@@ -34,5 +34,6 @@
     keepassxc
     cups
     brightnessctl
+    androidenv.androidPkgs.platform-tools
   ];
 }

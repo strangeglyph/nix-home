@@ -9,6 +9,9 @@
     ./services/minecraft.nix
 #    ./utils/pgsql_update.nix
   ];
+  
+  home-manager = builtins.throw "Do home-manager migration!"
+
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";

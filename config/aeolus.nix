@@ -17,9 +17,9 @@
   networking = {
     hostName = "aeolus";
     interfaces = {
-      enp2s0f0.useDHCP = true;
-      enp5s0.useDHCP = true;
-      wlp3s0.useDHCP = true;
+      #enp2s0f0.useDHCP = true;
+      #enp5s0.useDHCP = true;
+      #wlp3s0.useDHCP = true;
     };
   };
 
@@ -54,8 +54,10 @@
 
   environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
+    jetbrains.pycharm-professional
     openscad
     prusa-slicer
+    obsidian
   ];
 
   system.stateVersion = "21.05";

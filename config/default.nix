@@ -1,12 +1,13 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
+
 let
   lix = fetchGit {
     url = "git@git.lix.systems:lix-project/lix.git";
     ref = "main";
     # Pin to keep rebuilds fast, update irregularly
-    rev = "79246a37337c5df2224dbc2461c722e1e678f6de";
+    rev = "64e33a7e09a0d1faacf2fd3f6ebd647fe4d8346a";
   };
   lix-module = fetchGit {
     url = "git@git.lix.systems:lix-project/nixos-module.git";
@@ -17,7 +18,7 @@ let
   lix-overlay = import "${lix-module}/overlay.nix" { inherit lix; };
 in
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 {
   nixpkgs.overlays = [ lix-overlay ];
 
@@ -48,8 +49,13 @@ in
     lorri.enable = true;
   };
 
+  home-manager.useGlobalPkgs = true;
+
   nix = {
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = ''
+      experimental-features = nix-command flakes repl-flake
+      #deprecated-features = url-literals
+    '';
     gc = {
       automatic = true;
       dates = "weekly";
@@ -57,6 +63,8 @@ in
     optimise = {
       automatic = true;
     };
+    registry.nixpkgs.flake = inputs.nixpkgs;
+    trusted-users = [ "root" "@wheel" ];
   };
 
   users.users = {
@@ -73,6 +81,7 @@ in
   '';
 
   programs = {
+    vim.enable = true;
     vim.defaultEditor = true;
     nano.nanorc = ''
       set tabsize 4

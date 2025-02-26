@@ -14,31 +14,35 @@
         extraPackages = [ pkgs.i3lock ];
       };
 
-      displayManager.lightdm.enable = false; # For sway, use greetd below
-
+      displayManager = {
+        lightdm.enable = false; # For sway, use greetd below
+        gdm = {
+          enable = true;
+          wayland = true;
+        };
+      };
+      desktopManager.gnome.enable = true;
     };
 
+    gnome.core-utilities.enable = false;
+
+    # Only applies if xserver.displayManager.lightdm.enable = true (above)
     displayManager = {
-      defaultSession = "none+i3";
+      # defaultSession = "none+i3";
+      # defaultSession = "gnome";
+      defaultSession = "sway";
     };
 
 
     libinput.enable = true;
 
     greetd = {
-      enable = true; # For i3, use displayManager.lightdm above
+      enable = false; # For i3, use displayManager.lightdm above
       settings = {
         default_session = {
           command = "${pkgs.greetd.greetd}/bin/agreety --cmd sway";
         };
       };
-    };
-
-    compton = {
-      enable = true;
-      shadow = true;
-      inactiveOpacity = 0.8;
-      menuOpacity = 1.0;
     };
 
     pipewire = {
@@ -50,6 +54,7 @@
     };
   };
 
+  hardware.pulseaudio.enable = false;
 
   security.rtkit.enable = true;
 
@@ -59,15 +64,17 @@
       enable = true;
       package = pkgs.wireshark-qt;
     };
-    firefox = {
-      enable = true;
+    # Replaced by flake?
+    #firefox = {
+    #  enable = true;
       # package = pkgs.latest.firefox-nightly-bin;
-    };
+    #};
+    sway.enable = true;
   };
 
   fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "Noto" "SourceCodePro" "DejaVuSansMono" ]; })
-    noto-fonts-cjk noto-fonts-color-emoji noto-fonts-extra
+    noto-fonts-cjk-sans noto-fonts-color-emoji noto-fonts-extra
     cantarell-fonts
     liberation_ttf
     lmodern
@@ -94,12 +101,13 @@
     ];
   };
 
-  nixpkgs.overlays = let
-    moz-overlays = builtins.fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz"; };
-    ff-nightly-overlay = import "${moz-overlays}/firefox-overlay.nix";
-  in [
-    ff-nightly-overlay
-  ];
+  #environment.gnome.excludePackages = (with pkgs; [
+  #  gnome-tour
+  #  gnome-connections
+  #]) ++ (with pkgs.gnome; [
+  #  geary
+  #  epiphany
+  #]);
 
   environment.systemPackages = with pkgs; let
     agda-with-stdlib = agda.withPackages (agda-packages: [ 
@@ -112,7 +120,7 @@
     libnotify
     alacritty
     thunderbird
-    zathura pdfpc
+    zathura pdfpc evince
     xournalpp
     texlive.combined.scheme-full
     texstudio
@@ -128,6 +136,8 @@
     zoom-us
     pulseaudio # for pactl (https://nixos.wiki/wiki/PipeWire#Troubleshooting)
     deadd-notification-center
+    wl-mirror
+    inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ];
 
   environment.sessionVariables = {

@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let
-  mozilla-overlays = fetchTarball { url = "https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz"; };
-in {
+{
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -122,8 +120,6 @@ in {
   };
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [ (import "${mozilla-overlays}") ];
-  xdg.configFile."nixpkgs/overlays/mozilla-overlays".source = mozilla-overlays;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
