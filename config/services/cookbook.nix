@@ -7,7 +7,7 @@ let
     owner = "strangeglyph";
     repo = "cookbook";
     rev = "master";
-    hash = "sha256-dlsq2wzf5mvZyqgbliUUpxkvu0FnjMZzpOZLGBuoTHY=";
+    hash = "sha256-lfZWPD/KUrEfjJQvAusSjj2j/kXatScThZL/liZ8qQI=";
   };
   cookbook = pkgs.python3Packages.callPackage "${ cookbook-repo }/derivation.nix" {};
   cookbook-recipes = builtins.fetchGit {
