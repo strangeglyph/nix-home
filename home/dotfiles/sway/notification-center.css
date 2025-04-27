@@ -1,0 +1,9 @@
+{ stylix }:
+
+let
+  colors = stylix.base16Scheme;
+  fonts = stylix.fonts;
+in
+''
+
+''

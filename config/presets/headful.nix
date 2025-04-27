@@ -1,6 +1,10 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
+  imports = [
+    ./theme.nix
+  ];
+
   services = {
     xserver = {
       enable = true;
@@ -52,6 +56,8 @@
       pulse.enable = true;
       jack.enable = true;
     };
+
+    #pam.services.hyprlock = {};
   };
 
   hardware.pulseaudio.enable = false;
@@ -64,12 +70,12 @@
       enable = true;
       package = pkgs.wireshark-qt;
     };
-    # Replaced by flake?
-    #firefox = {
-    #  enable = true;
-      # package = pkgs.latest.firefox-nightly-bin;
-    #};
+    # nb. main sway/hyprland config is in home-manager
     sway.enable = true;
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+    };
   };
 
   fonts.packages = with pkgs; [
@@ -81,12 +87,12 @@
   ];
   fonts.fontconfig.defaultFonts = {
     sansSerif = [
-      "Noto Sans Nerd Font"
+      "NotoSans Nerd Font"
       "Noto Color Emoji"
       "Noto Emoji"
     ];
     serif = [
-      "Noto Serif Nerd Font"
+      "NotoSerif Nerd Font"
       "Noto Color Emoji"
       "Noto Emoji"
     ];
@@ -116,6 +122,7 @@
   in [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
     xorg.xmodmap xsel xorg.xbacklight
+    wev
     arandr
     libnotify
     alacritty
@@ -126,8 +133,6 @@
     texstudio
     haskellPackages.lhs2tex
     agda-with-stdlib
-    feh
-    scrot
     imgur-screenshot
     playerctl
     networkmanagerapplet

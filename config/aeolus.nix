@@ -55,6 +55,7 @@
   environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
+    poetry
     openscad
     prusa-slicer
     obsidian

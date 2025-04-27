@@ -1,15 +1,19 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
+let
+  stylix = config.stylix;
+in
 {
+  programs.waybar = {
     enable = true;
-    style = ./waybar-style.css;
+    style = import ./waybar-style.nix { inherit stylix; };
     settings = {
         mainBar = {
             layer = "top";
             position = "bottom";
             modules-left = [ "tray" "cpu" "memory" "disk" "network" ];
             modules-center = [ "sway/workspaces" "sway/mode" ];
-            modules-right = [ "backlight" "pulseaudio" "battery" "clock" ];
+            modules-right = [ "backlight" "pulseaudio" "custom/notifications" "battery" "clock" ];
 
             tray = {
                 icon-size = 21;
@@ -23,12 +27,12 @@
 
             memory = {
                 interval = 5;
-                format = " {used:0.1f}GB ({percentage}%)"; 
+                format = " {percentage}%"; 
             };
 
             disk = {
                 interval = 5;
-                format = "󰋊 {used:03} ({percentage_used}%)";
+                format = "󰋊 {percentage_used}%";
             };
 
             network = {
@@ -70,6 +74,27 @@
                 format-icons.default = [ "" "" "" ];
             };
 
+            "custom/notifications" = {
+              tooltip = false;
+              format = "{icon}";
+              format-icons = {
+                notification = "󱥁";
+                inhibited-notification = "󱥁";
+                dnd-notification = " 󱥁";
+                dnd-inhibited-notification = " 󱥁";
+                none = "󰍥";
+                inhibited-none = "󰍥";
+                dnd-none = " 󰍥";
+                dnd-inhibited-none = " 󰍥";
+              };
+              return-type = "json";
+              exec-if = "which swaync-client";
+              exec = "swaync-client --subscribe-waybar";
+              on-click = "swaync-client --toggle-panel --skip-wait";
+              on-click-right = "swaync-client --toggle-dnd --skip-wait";
+              escape = true;
+            };
+      
             battery = {
                 interval = 5;
                 format = "{icon} {capacity}%";
@@ -81,8 +106,8 @@
             clock = {
                 interval = 5;
                 format = "{:%d.%m. %H:%M}";
-                tooltip-format = "<tt><small>{calendar}</small></tt>";
-                locale = "de_DE";
+                tooltip-format = "<tt>{calendar}</tt>";
+                locale = "de_DE.UTF-8";
                 timezone = "Europe/Berlin";
                 calendar = {
                     mode = "month";
@@ -101,4 +126,5 @@
             };
         };
     };
+  };
 }
