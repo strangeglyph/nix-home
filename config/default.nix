@@ -69,6 +69,7 @@
     '';
     mtr.enable = true;
     fish.enable = true;
+    ssh.startAgent = true;
   };
 
   nixpkgs.config.allowUnfree = true;

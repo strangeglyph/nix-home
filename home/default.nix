@@ -4,6 +4,11 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  imports = [
+    ./dotfiles/sway/sway.nix
+    ./dotfiles/hyprland/hyprland.nix
+  ];
+
   programs = {
     git = {
       enable = true;
@@ -31,7 +36,7 @@
         ungz = "tar -xvf";
         unbz = "tar -xvjf";
       };
-      functions = import ./fish_functions.nix;
+      # functions = import ./fish_functions.nix;
       plugins = [{
         name = "bang-bang";
         src = pkgs.fetchFromGitHub {
@@ -64,44 +69,17 @@
     # Shell prompt
     starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
 
-    # Status bar (check here also for color scheme)
-    waybar = import ./dotfiles/waybar.nix { inherit pkgs lib; };
-
-    # Lockscreen
-    swaylock = import ./dotfiles/swaylock.nix { inherit pkgs lib; };
-
     # Mode+D launcher for sway
     # (Switched for bemenu)
     # wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
   };
 
-  # xsession.windowManager.i3 = {
-  #  enable = true;
-  #  config = import ./dotfiles/i3.nix { inherit pkgs lib; };
-  # };
-
-  wayland.windowManager.sway = import ./dotfiles/sway.nix { inherit pkgs lib; };
-
   services = {
-    gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-      defaultCacheTtl = 1800;
-    };
     # Automount usb sticks
     udiskie = {
       enable = true;
       automount = true;
     };
-    # popup notification daemon
-    # Switched for deadd-notification-center (not styled yet)
-    # dunst = import ./dotfiles/dunst.nix { inherit pkgs; };
-
-    # Lock screen when idling
-    swayidle = import ./dotfiles/swayidle.nix { inherit pkgs; };
-
-    # Automatic monitor configuration
-    kanshi = import ./dotfiles/kanshi.nix { inherit pkgs lib; };
   };
 
 
@@ -117,6 +95,12 @@
     #".agda/defaults".text = ''
     #   standard-library
     #'';
+  };
+
+  xdg.configFile = {
+    ".environtmend.d/ssh-agent.conf".text = ''
+      SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent
+    '';
   };
 
   nixpkgs.config.allowUnfree = true;
