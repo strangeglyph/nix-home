@@ -4,32 +4,39 @@
   inputs = {
     nixpkgs = { url = "github:nixos/nixpkgs/nixos-24.11"; };
     lix = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home-manager = { 
-      url = "github:nix-community/home-manager/release-24.11"; 
+    home-manager = {
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox = {
       url = "github:nix-community/flake-firefox-nightly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    stylix = {
+      url = "github:danth/stylix/release-24.11";
+    };
   };
 
-  outputs = inputs@{ lix , home-manager, ... }:
+  outputs = inputs:
+  let default-config = inputs@{ lix, home-manager, stylix, ... }:
+    inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        lix.nixosModules.default
+        home-manager.nixosModules.home-manager
+        stylix.nixosModules.stylix
+        ./configuration.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+  in
   {
     nixosConfigurations = {
-
-      aeolus = inputs.nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          lix.nixosModules.default
-          home-manager.nixosModules.home-manager
-          ./configuration.nix
-        ];
-        specialArgs = { inherit inputs; };
-      };
+      aeolus = default-config inputs;
+      philae = default-config inputs;
     };
   };
 }

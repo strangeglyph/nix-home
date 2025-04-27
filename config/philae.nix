@@ -11,8 +11,6 @@
 #    ./utils/pgsql_update.nix
   ];
   
-  home-manager = builtins.throw "Do home-manager migration!"
-
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -69,6 +67,8 @@
       shell = pkgs.fish;
     };
   };
+  home-manager.users.root.imports = [ ../home/philae/root.nix ];
+  home-manager.users.glyph.imports = [ ./home/philae/glyph.nix ];
 
 
   system.stateVersion = "21.05";
