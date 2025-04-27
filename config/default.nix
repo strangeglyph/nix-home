@@ -19,6 +19,11 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [ 
+    "C.UTF-8/UTF-8" 
+    "en_US.UTF-8/UTF-8"
+    "de_DE.UTF-8/UTF-8" 
+  ];
   console = {
     font = "Lat2-Terminus16";
     keyMap = "de";
@@ -73,6 +78,8 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+  ];
 
   environment.systemPackages = with pkgs;
   let
