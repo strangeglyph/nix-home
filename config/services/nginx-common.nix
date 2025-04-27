@@ -10,6 +10,8 @@ in
   };
 
   config.services.nginx = {
+    package = pkgs.nginxQuic;
+
     recommendedGzipSettings = true;
     recommendedOptimisation = true;
     recommendedProxySettings = true;

@@ -5,6 +5,7 @@
     ./presets/server.nix
 #    ./services/fompf.nix
     ./services/cookbook.nix
+    ./services/cartograph.nix
     ./services/nextcloud.nix
     ./services/minecraft.nix
 #    ./utils/pgsql_update.nix
@@ -33,6 +34,11 @@
       enable = true;
       vhost = "cookbook.strangegly.ph";
       site-name = "Glyph's Cookbook";
+    };
+    cartograph = {
+      enable = true;
+      vhost = "wo-ist-ole.strangegly.ph";
+      site-name = "Wo Ist Ole?";
     };
     nextcloud = {
       enable = true;
