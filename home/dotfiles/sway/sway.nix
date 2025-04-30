@@ -15,7 +15,6 @@ in {
 
   wayland.windowManager.sway = {
     checkConfig = false; # bugfix for nix-community/home-manager #5379
-    enable = true;
     package = pkgs.swayfx;
     config = {
       modifier = "${mod}";
@@ -129,7 +128,7 @@ in {
     '';
 
     wrapperFeatures = {
-      gtk = true;
+      gtk = config.wayland.windowManager.sway.enable;
     };
   };
 }

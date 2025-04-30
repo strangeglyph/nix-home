@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 
 let
@@ -20,7 +20,7 @@ let
 in
 {
   services.kanshi = {
-    enable = true;
+    enable = config.wayland.windowManager.sway.enable;
     settings = [
       # For some reason the external monitors re-register under different 
       # names when undocking and redocking, so we have multiple entries 

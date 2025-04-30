@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
@@ -32,6 +32,7 @@
       enable = true;
       vhost = "cookbook.strangegly.ph";
       site-name = "Glyph's Cookbook";
+      recipe-folder = inputs.cookbook-recipes;
     };
     cartograph = {
       enable = true;
@@ -68,7 +69,7 @@
     };
   };
   home-manager.users.root.imports = [ ../home/philae/root.nix ];
-  home-manager.users.glyph.imports = [ ./home/philae/glyph.nix ];
+  home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
 
 
   system.stateVersion = "21.05";

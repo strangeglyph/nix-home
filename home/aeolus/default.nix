@@ -2,4 +2,6 @@
 
 {
   imports = [ ../default.nix ];
+
+  wayland.windowManager.sway.enable = true;
 }

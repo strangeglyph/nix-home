@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   lock-with-effects = "${pkgs.swaylock-effects}/bin/swaylock -f";
 in
 {
   services.swayidle = {
-    enable = true;
+    enable = config.wayland.windowManager.sway.enable;
     events = [
       { event = "before-sleep"; command = lock-with-effects; }
     ];

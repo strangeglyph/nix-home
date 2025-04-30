@@ -5,7 +5,7 @@ let
 in
 {
   programs.waybar = {
-    enable = true;
+    enable = config.wayland.windowManager.sway.enable;
     style = import ./waybar-style.nix { inherit stylix; };
     settings = {
         mainBar = {

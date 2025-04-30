@@ -3,6 +3,10 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 { config, pkgs, lib, inputs, ... }:
 {
+  imports = [
+    ./presets/theme.nix
+  ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 4;
@@ -75,6 +79,7 @@
     mtr.enable = true;
     fish.enable = true;
     ssh.startAgent = true;
+    dconf.enable = true;
   };
 
   nixpkgs.config.allowUnfree = true;

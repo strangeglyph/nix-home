@@ -1,18 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 with lib;
 let
   cfg = config.services.cookbook;
   acme = config.security.acme;
-  cookbook-repo = pkgs.fetchFromGitHub {
-    owner = "strangeglyph";
-    repo = "cookbook";
-    rev = "master";
-    hash = "sha256-lfZWPD/KUrEfjJQvAusSjj2j/kXatScThZL/liZ8qQI=";
-  };
-  cookbook = pkgs.python3Packages.callPackage "${ cookbook-repo }/derivation.nix" {};
-  cookbook-recipes = builtins.fetchGit {
-    url = "https://github.com/strangeglyph/cookbook-recipes";
-  };
   cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
     SECRET_KEY = builtins.readFile ../secrets/cookbook-session-key;
     COOKBOOK_LOCATION = cfg.recipe-folder;
@@ -29,13 +19,15 @@ in
   options.services.cookbook = {
     enable = mkEnableOption "cookbook service";
     vhost = mkOption { type = types.str; };
-    recipe-folder = mkOption { type = types.str; default = "${ cookbook-recipes }"; };
+    recipe-folder = mkOption { type = types.path; };
     default-language = mkOption { type = types.str; default = "en"; };
     site-name = mkOption { type = types.str; default = "Cookbook"; };
   };
 
   config = mkIf cfg.enable {
     security.acme.certs."${ acme.challenge-host }".extraDomainNames = [ cfg.vhost ];
+
+    nixpkgs.overlays = [ inputs.cookbook.overlay ];
 
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
 
@@ -45,7 +37,7 @@ in
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
         useACMEHost = acme.challenge-host;
-        locations."/static/".alias = "${cookbook}/static/";
+        locations."/static/".alias = "${pkgs.cookbook}/static/";
         locations."/images/" = {
           alias = "${cfg.recipe-folder}/images/";
           extraConfig = ''
@@ -76,7 +68,7 @@ in
           chmod-socket = "664";
           chown-socket = "uwsgi:www-data";
 
-          pythonPackages = self: with self; [ cookbook ];
+          pythonPackages = self: [ pkgs.cookbook ];
           socket = "${config.services.uwsgi.runDir}/cookbook.sock";
           module = "cookbook:app";
           env = ["COOKBOOK_CONFIG=${cookbook-config}"];

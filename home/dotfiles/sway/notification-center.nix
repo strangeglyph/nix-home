@@ -5,7 +5,7 @@ let
 in
 {
   services.swaync = {
-    enable = true;
+    enable = config.wayland.windowManager.sway.enable;
     settings = {
 
     };
