@@ -1,15 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 with lib;
 let
   cfg = config.services.cartograph;
   acme = config.security.acme;
-  repo = pkgs.fetchFromGitHub {
-    owner = "strangeglyph";
-    repo = "cartograph";
-    rev = "main";
-    hash = "sha256-bQPwh9AyVNGPoSHBSOQlJa3+k6g05OHOde6BWuFRLUY=";
-  };
-  cartograph = pkgs.python3Packages.callPackage "${ repo }/derivation.nix" {};
   state-dir = "/var/lib/${cfg.state-dir-name}";
   secrets = import ../secrets/cartograph.nix {};
   cartograph-config = pkgs.writeText "config.json" (builtins.toJSON {
@@ -44,13 +37,15 @@ in
 
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
 
+    nixpkgs.overlays = [ inputs.cartograph.overlay ];
+
     services.nginx = {
       enable = true;
       
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
         useACMEHost = acme.challenge-host;
-        locations."/static/".alias = "${cartograph}/static/";
+        locations."/static/".alias = "${pkgs.cartograph}/static/";
         locations."/static/photos/" = {
           alias = "${state-dir}/photos/";
           extraConfig = ''
@@ -82,7 +77,7 @@ in
           chown-socket = "uwsgi:www-data";
           enable-threads = true;
 
-          pythonPackages = self: with self; [ cartograph ];
+          pythonPackages = self: [ pkgs.cartograph ];
           socket = "${config.services.uwsgi.runDir}/cartograph.sock";
           module = "cartograph:app";
           env = ["CARTOGRAPH_CONFIG=${cartograph-config}"];
