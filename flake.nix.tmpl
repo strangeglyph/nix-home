@@ -18,6 +18,10 @@
     stylix = {
       url = "github:danth/stylix/release-24.11";
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cookbook = {
       url = "github:strangeglyph/cookbook";
     };
@@ -28,13 +32,15 @@
   };
 
   outputs = inputs:
-  let default-config = inputs@{ lix, home-manager, stylix, ... }:
-    inputs.nixpkgs.lib.nixosSystem {
+  let default-config = inputs@{ lix, home-manager, stylix, agenix, ... }:
+    inputs.nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
         lix.nixosModules.default
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
+        agenix.nixosModules.default
+        { environment.systemPackages = [ agenix.packages.${system}.default ]; }
         ./configuration.nix
       ];
       specialArgs = { inherit inputs; };
