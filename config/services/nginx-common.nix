@@ -6,7 +6,7 @@ in
 {
 
   options.security.acme = {
-    challenge-host = mkOption { type = types.str; };
+    http-challenge-host = mkOption { type = types.str; };
   };
 
   config.services.nginx = {
@@ -17,8 +17,10 @@ in
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
 
-    virtualHosts."${ cfg.challenge-host }" = {
-       enableACME = true;
+    virtualHosts = mkIf (builtins.hasAttr "http-challenge-host" cfg) {
+      "${ cfg.http-challenge-host }" = {
+        enableACME = true;
+      };
     };
   };
 }

@@ -12,7 +12,7 @@ in
 
 
   config = mkIf cfg.enable {
-    security.acme.certs."${ acme.challenge-host }".extraDomainNames = [ cfg.hostName ];
+    security.acme.certs."${ acme.http-challenge-host }".extraDomainNames = [ cfg.hostName ];
 
     services.nextcloud = {
       https = true;
@@ -51,7 +51,7 @@ in
 
       virtualHosts."${cfg.hostName}" = {
         forceSSL = true;
-        useACMEHost = acme.challenge-host;
+        useACMEHost = acme.http-challenge-host;
       };
     };
 

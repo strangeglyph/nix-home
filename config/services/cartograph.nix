@@ -33,7 +33,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    security.acme.certs."${ acme.challenge-host }".extraDomainNames = [ cfg.vhost ];
+    security.acme.certs."${ acme.http-challenge-host }".extraDomainNames = [ cfg.vhost ];
 
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
 
@@ -44,7 +44,7 @@ in
       
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
-        useACMEHost = acme.challenge-host;
+        useACMEHost = acme.http-challenge-host;
         locations."/static/".alias = "${pkgs.cartograph}/static/";
         locations."/static/photos/" = {
           alias = "${state-dir}/photos/";

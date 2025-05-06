@@ -25,14 +25,40 @@
     nrBuildUsers = 100;
   };
 
-  security.acme.challenge-host = "acme.strangegly.ph";
+  age.secrets = {
+    cloudflare_api.file = ./agenix/cloudflare_secrets.age;
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults = {
+      email = "acme@admin.apophenic.net";
+      dnsProvider = "cloudflare";
+      environmentFile = config.age.secrets.cloudflare_api.path;
+    };
+    http-challenge-host = "acme.strangegly.ph";
+    certs."apophenic.net" = {
+      domain = "*.apophenic.net";
+      group = config.services.nginx.group;
+    };
+    certs."acme.strangegly.ph" = {
+      extraDomainNames = [ "cookbook.strangegly.ph" ];
+    };
+  };
 
   services = {
     cookbook = {
       enable = true;
-      vhost = "cookbook.strangegly.ph";
+      vhost = "cookbook.apophenic.net";
       site-name = "Glyph's Cookbook";
       recipe-folder = inputs.cookbook-recipes;
+      acme-uses-dns = true;
+      acme-host = "apophenic.net";
+    };
+    nginx.virtualHosts."cookbook.strangegly.ph" = {
+      forceSSL = true;
+      useACMEHost = config.security.acme.http-challenge-host;
+      globalRedirect = "cookbook.apophenic.net";
     };
     cartograph = {
       enable = true;

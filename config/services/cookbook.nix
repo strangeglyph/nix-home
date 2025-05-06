@@ -19,13 +19,20 @@ in
   options.services.cookbook = {
     enable = mkEnableOption "cookbook service";
     vhost = mkOption { type = types.str; };
+    acme-uses-dns = mkOption { type = types.bool; default = true; };
+    acme-host = mkOption { 
+      type = types.str; 
+      description = "ACME host to use for the cert, only necessary if using DNS. Otherwise acme.http-challenge-host is used"; 
+    };
     recipe-folder = mkOption { type = types.path; };
     default-language = mkOption { type = types.str; default = "en"; };
     site-name = mkOption { type = types.str; default = "Cookbook"; };
   };
 
   config = mkIf cfg.enable {
-    security.acme.certs."${ acme.challenge-host }".extraDomainNames = [ cfg.vhost ];
+    security.acme.certs = mkIf (! cfg.acme-uses-dns) {
+      "${ acme.http-challenge-host }".extraDomainNames = [ cfg.vhost ];
+    };
 
     nixpkgs.overlays = [ inputs.cookbook.overlay ];
 
@@ -36,7 +43,11 @@ in
       
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
-        useACMEHost = acme.challenge-host;
+        useACMEHost = if cfg.acme-uses-dns then cfg.acme-host else acme.http-challenge-host;
+
+        quic = true;
+        http3 = true;
+
         locations."/static/".alias = "${pkgs.cookbook}/static/";
         locations."/images/" = {
           alias = "${cfg.recipe-folder}/images/";
