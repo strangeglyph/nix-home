@@ -8,6 +8,7 @@
     ./services/cartograph.nix
     ./services/nextcloud.nix
     ./services/minecraft.nix
+    ./services/headscale.nix
 #    ./utils/pgsql_update.nix
   ];
   
@@ -39,7 +40,7 @@
     http-challenge-host = "acme.strangegly.ph";
     certs."apophenic.net" = {
       domain = "*.apophenic.net";
-      group = config.services.nginx.group;
+      group = "acme";
     };
     certs."acme.strangegly.ph" = {
       extraDomainNames = [ "cookbook.strangegly.ph" ];
@@ -71,6 +72,12 @@
       package = pkgs.nextcloud30;
     };
     postgresql.package = pkgs.postgresql_16;
+    glyphscale = {
+      enable = true;
+      base-domain = "apophenic.net";
+      tailnet-name = "interstice";
+      headscale-name = "ouroboros";
+    };
     minecraft.enable = false;
   };
 

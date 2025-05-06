@@ -9,6 +9,8 @@ in
     http-challenge-host = mkOption { type = types.str; };
   };
 
+  config.users.groups.acme.members = [ "nginx" ];
+
   config.services.nginx = {
     package = pkgs.nginxQuic;
 
