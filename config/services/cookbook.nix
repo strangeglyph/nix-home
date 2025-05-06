@@ -47,6 +47,10 @@ in
 
         quic = true;
         http3 = true;
+        # advertise quic support
+        extraConfig = ''
+          add_header Alt-Svc 'h3=":$server_port"; ma=86400';
+        '';
 
         locations."/static/".alias = "${pkgs.cookbook}/static/";
         locations."/images/" = {
