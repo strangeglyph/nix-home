@@ -20,6 +20,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
+  networking.nameservers = [ "9.9.9.9" "1.1.1.1" "1.0.0.1" ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -37,13 +38,18 @@
   services = {
     fstrim.enable = true;
     lorri.enable = true;
+    resolved = {
+      enable = true;
+      dnssec = "true";
+      dnsovertls = "true";
+    };
   };
 
   home-manager.useGlobalPkgs = true;
 
   nix = {
     extraOptions = ''
-      experimental-features = nix-command flakes repl-flake
+      experimental-features = nix-command flakes
       #deprecated-features = url-literals
     '';
     gc = {

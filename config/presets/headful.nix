@@ -79,7 +79,9 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "Noto" "SourceCodePro" "DejaVuSansMono" ]; })
+    nerd-fonts.noto
+    nerd-fonts.sauce-code-pro
+    nerd-fonts.dejavu-sans-mono
     noto-fonts-cjk-sans noto-fonts-color-emoji noto-fonts-extra
     cantarell-fonts
     liberation_ttf

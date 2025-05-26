@@ -130,19 +130,19 @@ in
         #name = "DejaVu Sans Mono";
         #package = dejavu_fonts;
         name = "SauceCodePro Nerd Font";
-        package = nerdfonts.override { fonts = [ "SourceCodePro" ]; };
+        package = nerd-fonts.sauce-code-pro;
       };
       serif = {
         #name = "DejaVu Serif";
         #package = dejavu_fonts;
         name = "NotoSerif Nerd Font";
-        package = nerdfonts.override { fonts = [ "Noto" ]; };
+        package = nerd-fonts.noto;
       };
       sansSerif = {
         #name = "DejaVu Sans";
         #package = dejavu_fonts;
         name = "NotoSans Nerd Font";
-        package = nerdfonts.override { fonts = [ "Noto" ]; };
+        package = nerd-fonts.noto;
       };
       sizes = {
         applications = 12.0;
