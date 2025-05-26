@@ -28,7 +28,7 @@
       desktopManager.gnome.enable = true;
     };
 
-    gnome.core-utilities.enable = false;
+    gnome.core-apps.enable = false;
 
     # Only applies if xserver.displayManager.lightdm.enable = true (above)
     displayManager = {
@@ -37,6 +37,7 @@
       defaultSession = "sway";
     };
 
+    pulseaudio.enable = false;
 
     libinput.enable = true;
 
@@ -60,7 +61,6 @@
     #pam.services.hyprlock = {};
   };
 
-  hardware.pulseaudio.enable = false;
 
   security.rtkit.enable = true;
 
@@ -117,11 +117,7 @@
   #  epiphany
   #]);
 
-  environment.systemPackages = with pkgs; let
-    agda-with-stdlib = agda.withPackages (agda-packages: [ 
-      agda-packages.standard-library 
-    ]);
-  in [
+  environment.systemPackages = with pkgs; [
     xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
     xorg.xmodmap xsel xorg.xbacklight
     wev
@@ -133,8 +129,6 @@
     xournalpp
     texlive.combined.scheme-full
     texstudio
-    haskellPackages.lhs2tex
-    agda-with-stdlib
     imgur-screenshot
     playerctl
     networkmanagerapplet
@@ -142,7 +136,6 @@
     mendeley
     zoom-us
     pulseaudio # for pactl (https://nixos.wiki/wiki/PipeWire#Troubleshooting)
-    deadd-notification-center
     wl-mirror
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ];
