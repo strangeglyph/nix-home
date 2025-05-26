@@ -41,6 +41,13 @@ in
         tls_cert_path = "${config.security.acme.certs.${acme-domain}.directory}/fullchain.pem";
         tls_key_path = "${config.security.acme.certs.${acme-domain}.directory}/key.pem";
         dns.base_domain = "${tailnet-domain}";
+        log.level = "debug";
+        oidc = {
+          issuer = "${config.services.kanidm.serverSettings.origin}/oauth2/openid/${config.services.headscale.settings.oidc.client_id}";
+          client_secret_path = config.age.secrets.kanidm_oauth_interstice.path;
+          client_id = "interstice";
+          pkce.enabled = true;
+        };
       };
     };
 

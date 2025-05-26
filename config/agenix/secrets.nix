@@ -4,4 +4,5 @@ let
 in
 {
   "cloudflare_secrets.age".publicKeys = [ root-philae philae ];
+  "kanidm_oauth_interstice.age".publicKeys = [ root-philae philae ];
 }

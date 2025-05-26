@@ -8,7 +8,10 @@
     ./services/cartograph.nix
     ./services/nextcloud.nix
     ./services/minecraft.nix
+    ./services/kanidm.nix
+    ./services/philae/kanidm.nix
     ./services/headscale.nix
+    ./services/tailscale.nix
 #    ./utils/pgsql_update.nix
   ];
   
@@ -28,6 +31,12 @@
 
   age.secrets = {
     cloudflare_api.file = ./agenix/cloudflare_secrets.age;
+    kanidm_oauth_interstice = {
+      file = ./agenix/kanidm_oauth_interstice.age;
+      group = "oauth_interstice";
+      mode = "0440";
+    };
+    #tailscale_auth_key.file = ./agenix/tailscale_auth_key_philae.age;
   };
 
   security.acme = {
@@ -69,15 +78,22 @@
     nextcloud = {
       enable = true;
       hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud30;
+      package = pkgs.nextcloud31;
     };
     postgresql.package = pkgs.postgresql_16;
+    kanidm = {
+      enable = true;
+    };
     glyphscale = {
       enable = true;
       base-domain = "apophenic.net";
       tailnet-name = "interstice";
       headscale-name = "ouroboros";
     };
+    #tailscale = {
+    #  enable = true;
+    #  authKeyFile = config.age.secrets.tailscale-keys.philae.path;
+    #};
     minecraft.enable = false;
   };
 
@@ -100,6 +116,9 @@
       isNormalUser = true;
       shell = pkgs.fish;
     };
+  };
+  users.groups = {
+    oauth_interstice.members = [ "headscale" "kanidm" ];
   };
   home-manager.users.root.imports = [ ../home/philae/root.nix ];
   home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
