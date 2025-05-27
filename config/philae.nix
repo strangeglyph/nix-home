@@ -90,10 +90,9 @@
       tailnet-name = "interstice";
       headscale-name = "ouroboros";
     };
-    #tailscale = {
-    #  enable = true;
-    #  authKeyFile = config.age.secrets.tailscale-keys.philae.path;
-    #};
+    tailscale = {
+      enable = true;
+    };
     minecraft.enable = false;
   };
 
