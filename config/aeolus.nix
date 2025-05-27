@@ -4,6 +4,7 @@
   imports = [
     ./presets/headful.nix
     ./presets/workstation.nix
+    ./services/tailscale.nix
   ];
 
   # boot.extraModprobeConfig = ''
@@ -34,6 +35,8 @@
     CreateRemoteRawPrinterQueues Yes
     BrowsePoll cups.mpi-klsb.mpg.de:631
   '';
+
+  services.tailscale.enable = true;
 
   users.users.lschuetze = {
     isNormalUser = true;
