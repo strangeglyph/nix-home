@@ -137,6 +137,7 @@
     zoom-us
     pulseaudio # for pactl (https://nixos.wiki/wiki/PipeWire#Troubleshooting)
     wl-mirror
+    bitwarden-desktop
     inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
   ];
 
