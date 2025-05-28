@@ -1,5 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 
+let globals = import ./utils/globals.nix {}; in
 {
   imports = [
     ./presets/server.nix
@@ -12,6 +13,7 @@
     ./services/philae/kanidm.nix
     ./services/headscale.nix
     ./services/tailscale.nix
+    ./services/vaultwarden.nix
 #    ./utils/pgsql_update.nix
   ];
   
@@ -36,6 +38,10 @@
       group = "oauth_interstice";
       mode = "0440";
     };
+    vaultwarden_env = {
+      file = ./agenix/vaultwarden_env.age;
+      #owner = "vaultwarden";
+    };
     #tailscale_auth_key.file = ./agenix/tailscale_auth_key_philae.age;
   };
 
@@ -47,8 +53,9 @@
       environmentFile = config.age.secrets.cloudflare_api.path;
     };
     http-challenge-host = "acme.strangegly.ph";
-    certs."apophenic.net" = {
-      domain = "*.apophenic.net";
+    certs."${globals.domains.base}" = {
+      domain = "*.${globals.domains.base}";
+      extraDomainNames = [ "*.${globals.services.headscale.net.domain}" ];
       group = "acme";
     };
     certs."acme.strangegly.ph" = {
@@ -59,16 +66,16 @@
   services = {
     cookbook = {
       enable = true;
-      vhost = "cookbook.apophenic.net";
+      vhost = "cookbook.${globals.domains.base}";
       site-name = "Glyph's Cookbook";
       recipe-folder = inputs.cookbook-recipes;
       acme-uses-dns = true;
-      acme-host = "apophenic.net";
+      acme-host = "${globals.domains.base}";
     };
     nginx.virtualHosts."cookbook.strangegly.ph" = {
       forceSSL = true;
       useACMEHost = config.security.acme.http-challenge-host;
-      globalRedirect = "cookbook.apophenic.net";
+      globalRedirect = "cookbook.${globals.domains.base}";
     };
     cartograph = {
       enable = true;
@@ -81,18 +88,10 @@
       package = pkgs.nextcloud31;
     };
     postgresql.package = pkgs.postgresql_16;
-    kanidm = {
-      enable = true;
-    };
-    glyphscale = {
-      enable = true;
-      base-domain = "apophenic.net";
-      tailnet-name = "interstice";
-      headscale-name = "ouroboros";
-    };
-    tailscale = {
-      enable = true;
-    };
+    kanidm.enable = true;
+    headscale.enable = true;
+    tailscale.enable = true;
+    vaultwarden.enable = true;
     minecraft.enable = false;
   };
 

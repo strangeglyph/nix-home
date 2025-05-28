@@ -99,7 +99,7 @@
     ]);
   in [
     pciutils lshw wirelesstools
-    ethtool socat
+    ethtool socat dig
     glib gcc binutils gnumake
     parted
     wget curl ncurses which git htop lsof pv ripgrep eza file jq

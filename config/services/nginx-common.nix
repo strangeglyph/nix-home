@@ -15,6 +15,9 @@ in
     package = pkgs.nginxQuic;
 
     recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
+    recommendedZstdSettings = true;
+    recommendedUwsgiSettings = true;
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
