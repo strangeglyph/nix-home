@@ -20,7 +20,7 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.nameservers = [ "9.9.9.9" "1.1.1.1" "1.0.0.1" ];
+  networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -41,7 +41,7 @@
     resolved = {
       enable = true;
       dnssec = "true";
-      dnsovertls = "true";
+      dnsovertls = "opportunistic";
     };
   };
 
