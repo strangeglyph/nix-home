@@ -39,7 +39,7 @@
   };
 
   outputs = inputs:
-  let default-config = inputs@{ lix, home-manager, stylix, agenix, ... }:
+  let default-config = local-conf: inputs@{ lix, home-manager, stylix, agenix, ... }:
     inputs.nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
@@ -48,15 +48,21 @@
         stylix.nixosModules.stylix
         agenix.nixosModules.default
         { environment.systemPackages = [ agenix.packages.${system}.default ]; }
-        ./configuration.nix
+        #
+        ./hardware-configuration.nix
+        ./nixos.d/config/default.nix
+        local-conf
       ];
-      specialArgs = { inherit inputs system; };
+      specialArgs = { 
+        inherit inputs system;
+        globals = import ./nixos.d/config/utils/globals.nix inputs;
+      };
     };
   in
   {
     nixosConfigurations = {
-      aeolus = default-config inputs;
-      philae = default-config inputs;
+      aeolus = default-config ./nixos.d/config/aeolus.nix inputs;
+      philae = default-config ./nixos.d/config/philae.nix inputs;
     };
   };
 }
