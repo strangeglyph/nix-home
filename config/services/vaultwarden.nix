@@ -1,7 +1,7 @@
-{ config, lib, ... }:
+all@{ config, lib, ... }:
 let
   cfg = config.services.vaultwarden;
-  global_conf = import ../utils/globals.nix {};
+  global_conf = import ../utils/globals.nix all;
   globals_vw = global_conf.services.vaultwarden;
 in
 {

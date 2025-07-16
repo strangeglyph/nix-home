@@ -39,9 +39,7 @@ all@{ config, pkgs, lib, inputs, ... }:
     };
     vaultwarden_env = {
       file = ./agenix/vaultwarden_env.age;
-      #owner = "vaultwarden";
     };
-    #tailscale_auth_key.file = ./agenix/tailscale_auth_key_philae.age;
   };
 
   security.acme = {

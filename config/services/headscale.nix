@@ -1,9 +1,8 @@
-{ config, lib, ... }:
+{ config, lib, globals, ... }:
 with lib;
 let
   cfg = config.services.headscale;
-  global_conf = import ../utils/globals.nix {};
-  globals_hs = global_conf.services.headscale;
+  globals_hs = globals.services.headscale;
 in
 {
   imports = [
@@ -20,15 +19,15 @@ in
       port = globals_hs.bindport;
       settings = {
         server_url = "https://${globals_hs.domain}";
-        tls_cert_path = global_conf.mkAcmeChainPath config;
-        tls_key_path = global_conf.mkAcmeKeyPath config;
+        tls_cert_path = globals.acmeChainPath;
+        tls_key_path = globals.acmeKeyPath;
         dns = {
           base_domain = "${globals_hs.net.domain}";
         };
         oidc = {
           client_secret_path = config.age.secrets.kanidm_oauth_interstice.path;
           client_id = globals_hs.net.name;
-          issuer = global_conf.services.kanidm.makeOidc globals_hs.net.name;
+          issuer = globals.services.kanidm.makeOidc globals_hs.net.name;
           pkce.enabled = true;
         };
       };
@@ -39,7 +38,7 @@ in
       enable = true;
       virtualHosts."${globals_hs.domain}" = {
         forceSSL = true;
-        useACMEHost = global_conf.domains.base;
+        useACMEHost = globals.domains.base;
         
         quic = true;
         http3 = true;
