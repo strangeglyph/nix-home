@@ -1,5 +1,6 @@
 all@{ config, pkgs, lib, inputs, ... }:
 
+all@{ config, pkgs, lib, inputs, globals, ... }:
 {
   imports = [
     ./presets/server.nix
