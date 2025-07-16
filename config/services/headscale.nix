@@ -20,6 +20,11 @@ in
       group = "oauth_interstice";
       mode = "0440";
     };
+    
+    users.groups = {
+      oauth_interstice.members = [ "headscale" "kanidm" ];
+    };
+
     # for self-hosted DERP
     #networking.firewall.allowedUDPPorts = [ 3478 ];
 

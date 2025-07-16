@@ -110,9 +110,7 @@ in
       shell = pkgs.fish;
     };
   };
-  users.groups = {
-    oauth_interstice.members = [ "headscale" "kanidm" ];
-  };
+
   home-manager.users.root.imports = [ ../home/philae/root.nix ];
   home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
   home-manager.users.minecraft.imports = [ ../home/philae/minecraft.nix ];

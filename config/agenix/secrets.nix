@@ -11,8 +11,18 @@ let
   all = philae ++ aeolus;
 in
 {
+  # cf api key
   "cloudflare_secrets.age".publicKeys = all;
+  # headscale oauth client secret
   "kanidm_oauth_interstice.age".publicKeys = all;
+  # oauth2-proxy oauth client secret
+  "kanidm_oauth_portcullis.age".publicKeys = all;
+  
+  # other oauth2-proxy settings
+  "oauth2-proxy.age".publicKeys = all;
+  # vaultwarden settings
   "vaultwarden_env.age".publicKeys = all;
+  
+  # RPTU VPN config for aeolus
   "wg-rptu-split-aeolus.age".publicKeys = aeolus;
 }
