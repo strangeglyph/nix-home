@@ -1,4 +1,7 @@
-all@{ config, pkgs, lib, inputs, globals, ... }:
+all@{ config, pkgs, lib, inputs, ... }:
+let
+  globals = config.globals;
+in
 {
   imports = [
     ./presets/server.nix

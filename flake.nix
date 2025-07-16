@@ -49,6 +49,7 @@
         agenix.nixosModules.default
         { environment.systemPackages = [ agenix.packages.${system}.default ]; }
         #
+        ./config/utils/globals.nix
         hw-conf
         ./config/default.nix
         local-conf

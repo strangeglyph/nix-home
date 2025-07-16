@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 let
   kanidm = config.services.kanidm;
-  glyphscale = config.services.glyphscale;
+  globals_hs = config.globals.services.headscale;
 in
 {
   config.services.kanidm = {
@@ -28,8 +28,8 @@ in
       systems.oauth2 = {
         "interstice" = {
           displayName = "Interstice";
-          originUrl = "https://${glyphscale.headscale-name}.${glyphscale.base-domain}/oidc/callback";
-          originLanding = "https://${glyphscale.headscale-name}.${glyphscale.base-domain}/";
+          originUrl = "https://${globals_hs.domain}/oidc/callback";
+          originLanding = "https://${globals_hs.domain}/";
           basicSecretFile = config.age.secrets.kanidm_oauth_interstice.path;
           preferShortUsername = true;
           scopeMaps."interstice_users" = [

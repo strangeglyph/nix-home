@@ -1,7 +1,8 @@
-{ config, lib, globals, ... }:
+{ config, lib, ... }:
 with lib;
 let
   cfg = config.services.headscale;
+  globals = config.globals;
   globals_hs = globals.services.headscale;
 in
 {
@@ -28,8 +29,8 @@ in
       port = globals_hs.bindport;
       settings = {
         server_url = "https://${globals_hs.domain}";
-        tls_cert_path = globals.acmeChainPath;
-        tls_key_path = globals.acmeKeyPath;
+        tls_cert_path = globals.acme.chain;
+        tls_key_path = globals.acme.key;
         dns = {
           base_domain = "${globals_hs.net.domain}";
         };

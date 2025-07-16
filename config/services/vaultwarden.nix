@@ -1,8 +1,7 @@
 all@{ config, lib, ... }:
 let
   cfg = config.services.vaultwarden;
-  global_conf = import ../utils/globals.nix all;
-  globals_vw = global_conf.services.vaultwarden;
+  globals_vw = config.globals.services.vaultwarden;
 in
 {
   imports = [ ./nginx-common.nix ];
@@ -24,7 +23,7 @@ in
         ROCKET_ADDRESS = globals_vw.bindaddr;
         ROCKET_PORT = globals_vw.bindport;
         ROCKET_LOG = "critical";
-        SMTP_HOST = global_conf.email.smtp;
+        SMTP_HOST = config.globals.email.smtp;
         SMTP_FROM = globals_vw.email;
         SMTP_FROM_NAME = "Vault";
         SMTP_USERNAME = globals_vw.email;
@@ -38,7 +37,7 @@ in
     services.headscale.settings.dns.extra_records = [{
       name = globals_vw.domain;
       type = "A";
-      value = global_conf.services.headscale.addresses."${config.networking.hostName}";
+      value = config.globals.services.headscale.addresses."${config.networking.hostName}";
     }];
 
     services.nginx = {
@@ -46,9 +45,9 @@ in
       virtualHosts."${globals_vw.domain}" = {
         forceSSL = true;
         listenAddresses = [
-          global_conf.services.headscale.addresses."${config.networking.hostName}"
+          config.globals.services.headscale.addresses."${config.networking.hostName}"
         ];
-        useACMEHost = global_conf.domains.base;
+        useACMEHost = config.globals.domains.base;
 
         quic = true;
         http3 = true;

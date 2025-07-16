@@ -7,10 +7,6 @@ all@{ config, pkgs, lib, inputs, system, ... }:
     ./presets/theme.nix
   ];
 
-  _module.args = { 
-    globals = import ./utils/globals.nix all;
-  };
-
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 4;
