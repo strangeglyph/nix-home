@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, config, nodes, ... }:
 let 
   inherit (lib) mkIf;
 
@@ -30,6 +30,10 @@ let
   sabnzbd_domain = "${sabnzbd_host}.${tailnet_domain}";
 in
 {
+  imports = [
+    ./transpose.nix
+  ];
+
   options.globals = lib.mkOption {
     description = "Global settings";
     #type = lib.types.any;
@@ -37,7 +41,7 @@ in
     default = {
       acme.chain = "${config.security.acme.certs.${base}.directory}/fullchain.pem";
       acme.key   = "${config.security.acme.certs.${base}.directory}/key.pem";
-      
+
       domains = {
         base = base;
         mkSub = host: "${host}.${base}";

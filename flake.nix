@@ -47,38 +47,6 @@
   };
 
   outputs = inputs@{ self, nixpkgs, lix, colmena, home-manager, stylix, agenix, agenix-rekey, ... }:
-  let default-config = hostname:
-    inputs.nixpkgs.lib.nixosSystem rec {
-      system = "x86_64-linux";
-      modules = [
-        lix.nixosModules.default
-        home-manager.nixosModules.home-manager
-        stylix.nixosModules.stylix
-        agenix.nixosModules.default
-        agenix-rekey.nixosModules.default
-        #
-        {
-          age.rekey = {
-            masterIdentities = [ ./secrets/age_id.age ];
-            hostPubkey = ./secrets/${hostname}.pub;
-            storageMode = "local";
-            localStorageDir = ./. + "/secrets/rekeyed/${hostname}";
-          };
-
-          environment.systemPackages = [ 
-            agenix-rekey.packages.${system}.default
-          ]; 
-        }
-        ./config/utils/globals.nix
-        ./hw/${hostname}.nix
-        ./config/default.nix
-        ./config/${hostname}.nix
-      ];
-      specialArgs = { 
-        inherit inputs system;
-      };
-    };
-  in
   {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
     colmenaHive = colmena.lib.makeHive {
