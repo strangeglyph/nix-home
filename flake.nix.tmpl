@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs = { url = "github:nixos/nixpkgs/nixos-25.05"; };
     lix = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
@@ -32,6 +32,10 @@
     cartograph = {
       url = "github:strangeglyph/cartograph";
     };
+    starship-jj = {
+      url = "gitlab:lanastara_foss/starship-jj";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -46,7 +50,7 @@
         { environment.systemPackages = [ agenix.packages.${system}.default ]; }
         ./configuration.nix
       ];
-      specialArgs = { inherit inputs; };
+      specialArgs = { inherit inputs system; };
     };
   in
   {

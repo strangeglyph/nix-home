@@ -1,7 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, system, ... }:
 {
   imports = [
     ./presets/theme.nix
@@ -46,6 +46,7 @@
   };
 
   home-manager.useGlobalPkgs = true;
+  home-manager.extraSpecialArgs = { inherit inputs system; };
 
   nix = {
     extraOptions = ''
@@ -102,7 +103,10 @@
     ethtool socat dig
     glib gcc binutils gnumake
     parted
-    wget curl ncurses which git htop lsof pv ripgrep eza file jq
+    wget curl 
+    ncurses which 
+    git jujutsu
+    htop lsof pv ripgrep eza file jq
     zip unzip
     vim emacs
     basic-python-install

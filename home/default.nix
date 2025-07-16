@@ -1,12 +1,11 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   imports = [
     ./dotfiles/sway/sway.nix
     ./dotfiles/hyprland/hyprland.nix
+    ./dotfiles/starship.nix
   ];
 
   programs = {
@@ -66,9 +65,6 @@
     # Terminal
     alacritty = import ./dotfiles/alacritty.nix { inherit pkgs; };
 
-    # Shell prompt
-    starship = import ./dotfiles/starship.nix { inherit pkgs lib; };
-
     # Mode+D launcher for sway
     # (Switched for bemenu)
     # wofi = import ./dotfiles/wofi.nix { inherit pkgs lib; };
@@ -98,7 +94,7 @@
   };
 
   xdg.configFile = {
-    ".environtmend.d/ssh-agent.conf".text = ''
+    ".environment.d/ssh-agent.conf".text = ''
       SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent
     '';
   };
