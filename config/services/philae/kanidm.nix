@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, globals, ... }:
 let
   kanidm = config.services.kanidm;
   globals_hs = config.globals.services.headscale;
@@ -6,12 +6,11 @@ in
 {
   config.services.kanidm = {
     package = pkgs.kanidmWithSecretProvisioning;
-    host = "gate";
-    base-domain = "apophenic.net";
     provision = {
       enable = false;
       #acceptInvalidCerts = true;
       # instanceUrl = kanidm.serverSettings.origin;
+      # instanceUrl = "https://${g_kanidm.bindaddr}.${toString g_kanidm.bindport}";
 
       persons = {
         "glyph" = {

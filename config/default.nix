@@ -4,7 +4,7 @@
 all@{ config, pkgs, lib, inputs, ... }:
 {
   imports = [
-    ./presets/theme.nix
+    ./presets/theme.nix 
   ];
 
   # Use the systemd-boot EFI boot loader.

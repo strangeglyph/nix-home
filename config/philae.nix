@@ -11,7 +11,7 @@ in
     ./services/nextcloud.nix
     ./services/minecraft.nix
     ./services/kanidm.nix
-    ./services/philae/kanidm.nix
+    ./services/oauth2_proxy.nix
     ./services/headscale.nix
     ./services/tailscale.nix
     ./services/vaultwarden.nix

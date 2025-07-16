@@ -109,6 +109,7 @@ in
         kanidm = {
           host = kanidm_host;
           domain = kanidm_domain;
+          machine = "philae";
           bindaddr = "[::1]";
           bindport = 49741;
           ldapbindport = 3636;
