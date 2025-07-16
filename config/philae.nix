@@ -15,6 +15,7 @@ in
     ./services/headscale.nix
     ./services/tailscale.nix
     ./services/vaultwarden.nix
+    ./services/syncproxy.nix
 #    ./utils/pgsql_update.nix
   ];
   
