@@ -62,6 +62,8 @@
     openscad
     prusa-slicer
     obsidian
+    (agda.withPackages [ agdaPackages.standard-library ])
+    vscode-fhs
   ];
 
   system.stateVersion = "21.05";
