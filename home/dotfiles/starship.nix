@@ -1,6 +1,32 @@
 { config, pkgs, lib, inputs, system, ... }:
 let
   starship-jj = inputs.starship-jj.packages.${system}.starship-jj;
+  starship-jj-bin = lib.getExe' starship-jj "starship-jj";
+  jjMkModule = type: override: { inherit type; } // override;
+  starship-jj-settings = {
+    module = [
+      (jjMkModule "Commit" {
+        max_length = 30;
+        empty_text = "[no description]";
+        color = "Cyan";
+      })
+      (jjMkModule "Bookmarks" {
+        separator = " / ";
+        max_bookmarks = 3;
+        surround_with_quotes = false;
+      })
+      (jjMkModule "State" {})
+      (jjMkModule "Metrics" {
+        changed_files.prefix = "~";
+        changed_files.color = "Cyan";
+        added_lines.prefix = "+";
+        added_lines.color = "Green";
+        removed_lines.prefix = "-";
+        removed_lines.color = "Red";
+      })
+    ];
+  };
+  starship-jj-config = (pkgs.formats.toml {}).generate "starship-jj.toml" starship-jj-settings;
 in
 {
   programs.starship = {
@@ -59,12 +85,12 @@ in
         format = "[$user]($style)";
       };
       custom.jj = {
-        command = "prompt";
-        format = "$output";
+        command = "${starship-jj-bin} --ignore-working-copy starship prompt --starship-config ${starship-jj-config}";
+        format = "at $output";
         ignore_timeout = true;
         use_stdin = false;
-        when = true;
-        shell = [ "${lib.getExe starship-jj}" "--ignore-working-copy" "starship" ];
+        when = "jj --ignore-working-copy root >/dev/null 2>&1";
+        shell = [ "bash" "-c" ];
       };
     };
   };
