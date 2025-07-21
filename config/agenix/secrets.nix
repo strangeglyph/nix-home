@@ -11,7 +11,7 @@ let
   all = philae ++ aeolus;
 in
 {
-  "cloudflare_secrets.age".publicKeys = [ root-philae philae ];
-  "kanidm_oauth_interstice.age".publicKeys = [ root-philae philae ];
-  "vaultwarden_env.age".publicKeys = [ root-philae philae ];
+  "cloudflare_secrets.age".publicKeys = all;
+  "kanidm_oauth_interstice.age".publicKeys = all;
+  "vaultwarden_env.age".publicKeys = all;
 }
