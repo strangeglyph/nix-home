@@ -105,6 +105,7 @@ all@{ config, pkgs, lib, inputs, system, ... }:
   in [
     pciutils lshw wirelesstools
     ethtool socat dig
+    wireguard-tools
     glib gcc binutils gnumake
     parted
     wget curl 

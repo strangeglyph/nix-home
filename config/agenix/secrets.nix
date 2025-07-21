@@ -14,4 +14,5 @@ in
   "cloudflare_secrets.age".publicKeys = all;
   "kanidm_oauth_interstice.age".publicKeys = all;
   "vaultwarden_env.age".publicKeys = all;
+  "wg-rptu-split-aeolus.age".publicKeys = aeolus;
 }
