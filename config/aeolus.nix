@@ -35,6 +35,10 @@
     CreateRemoteRawPrinterQueues Yes
     BrowsePoll cups.mpi-klsb.mpg.de:631
   '';
+  services.openssh = {
+    enable = true; # just so we give agenix something to work with
+    openFirewall = false; # but we don't really want to expose it
+  };
 
   services.tailscale.enable = true;
 
