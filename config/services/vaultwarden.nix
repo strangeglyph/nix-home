@@ -8,6 +8,10 @@ in
   imports = [ ./nginx-common.nix ];
 
   config = lib.mkIf cfg.enable {
+    age.secrets.vaultwarden_env = {
+      file = ./agenix/vaultwarden_env.age;
+    };
+
     services.vaultwarden = {
       environmentFile = config.age.secrets.vaultwarden_env.path;
       config = {

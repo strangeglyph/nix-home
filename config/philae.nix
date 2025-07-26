@@ -32,14 +32,6 @@ all@{ config, pkgs, lib, inputs, ... }:
 
   age.secrets = {
     cloudflare_api.file = ./agenix/cloudflare_secrets.age;
-    kanidm_oauth_interstice = {
-      file = ./agenix/kanidm_oauth_interstice.age;
-      group = "oauth_interstice";
-      mode = "0440";
-    };
-    vaultwarden_env = {
-      file = ./agenix/vaultwarden_env.age;
-    };
   };
 
   security.acme = {

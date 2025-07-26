@@ -11,7 +11,13 @@ in
 
   config = mkIf cfg.enable {
     users.groups.acme.members = [ "headscale" ];
-    # for DERP
+    
+    age.secrets.kanidm_oauth_interstice = {
+      file = ./agenix/kanidm_oauth_interstice.age;
+      group = "oauth_interstice";
+      mode = "0440";
+    };
+    # for self-hosted DERP
     #networking.firewall.allowedUDPPorts = [ 3478 ];
 
     services.headscale = {
