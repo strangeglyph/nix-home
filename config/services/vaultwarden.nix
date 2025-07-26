@@ -9,7 +9,7 @@ in
 
   config = lib.mkIf cfg.enable {
     age.secrets.vaultwarden_env = {
-      file = ./agenix/vaultwarden_env.age;
+      file = ../agenix/vaultwarden_env.age;
     };
 
     services.vaultwarden = {
