@@ -7,12 +7,16 @@ in
 {
   imports = [ ./nginx-common.nix ];
 
-  config = lib.mkIf cfg.enable {
+  options.glyph.vaultwarden.enable = lib.mkEnableOption {};
+
+  config = lib.mkIf config.glyph.vaultwarden.enable {
     age.secrets.vaultwarden_env = {
       file = ../agenix/vaultwarden_env.age;
     };
 
     services.vaultwarden = {
+      enable = true;
+
       environmentFile = config.age.secrets.vaultwarden_env.path;
       config = {
         DOMAIN = globals_vw.url;

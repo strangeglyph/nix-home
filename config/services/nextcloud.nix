@@ -10,11 +10,13 @@ in
     ./nginx-common.nix
   ];
 
+  options.glyph.nextcloud.enable = mkEnableOption {};
 
-  config = mkIf cfg.enable {
+  config = mkIf config.glyph.nextcloud.enable {
     security.acme.certs."${ acme.http-challenge-host }".extraDomainNames = [ cfg.hostName ];
 
     services.nextcloud = {
+      enable = true;
       https = true;
       autoUpdateApps.enable = true;
       autoUpdateApps.startAt = "05:00:00";

@@ -9,7 +9,9 @@ in
     ./nginx-common.nix
   ];
 
-  config = mkIf cfg.enable {
+  options.glyph.headscale.enable = mkEnableOption {};
+
+  config = mkIf config.glyph.headscale.enable {
     users.groups.acme.members = [ "headscale" ];
     
     age.secrets.kanidm_oauth_interstice = {
@@ -21,6 +23,7 @@ in
     #networking.firewall.allowedUDPPorts = [ 3478 ];
 
     services.headscale = {
+      enable = true;
       address = globals_hs.bindaddr;
       port = globals_hs.bindport;
       settings = {

@@ -1,5 +1,3 @@
-all@{ config, pkgs, lib, inputs, ... }:
-
 all@{ config, pkgs, lib, inputs, globals, ... }:
 {
   imports = [
@@ -53,6 +51,13 @@ all@{ config, pkgs, lib, inputs, globals, ... }:
     };
   };
 
+  glyph = {
+    nextcloud.enable = true;
+    kanidm.enable = true;
+    headscale.enable = true;
+    vaultwarden.enable = true;
+  };
+
   services = {
     cookbook = {
       enable = true;
@@ -73,15 +78,11 @@ all@{ config, pkgs, lib, inputs, globals, ... }:
       site-name = "Wo Ist Ole?";
     };
     nextcloud = {
-      enable = true;
       hostName = "cloud.strangegly.ph";
       package = pkgs.nextcloud31;
     };
     postgresql.package = pkgs.postgresql_16;
-    kanidm.enable = true;
-    headscale.enable = true;
     tailscale.enable = true;
-    vaultwarden.enable = true;
     minecraft.enable = false;
   };
 

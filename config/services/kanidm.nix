@@ -7,13 +7,14 @@ in
 {
   imports = [ ./nginx-common.nix ];
 
+  options.glyph.kanidm.enable = lib.mkEnableOption {};
+
   options.services.kanidm = {
-    enable = lib.mkEnableOption { description = "glyph kanidm setup"; };
     host = lib.mkOption { type = lib.types.str; description = "kanidm host name (sans base)"; };
     base-domain = lib.mkOption { type = lib.types.str; description = "kanidm base domain"; };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf config.glyph.kanidm.enable {
     users.groups.acme.members = [ "kanidm" ];
 
     services.kanidm = {
