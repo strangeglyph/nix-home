@@ -4,19 +4,11 @@ let
   cfg = config.services.cartograph;
   acme = config.security.acme;
   state-dir = "/var/lib/${cfg.state-dir-name}";
-  secrets = import ../secrets/cartograph.nix {};
   cartograph-config = pkgs.writeText "config.json" (builtins.toJSON {
-    SECRET_KEY = secrets.session-key;
     PHOTO_LOCATION = "${state-dir}/photos/";
     SITE_NAME = cfg.site-name;
     BASE_URL = "https://${cfg.vhost}";
-    GEODATA_MAIL_HOST = secrets.mail.host;
-    GEODATA_MAIL_USER = secrets.mail.user;
-    GEODATA_MAIL_PASSWORD = secrets.mail.password;
     DB_LOCATION = "${state-dir}/cartograph.sqlite";
-    WEBDAV_URL = secrets.webdav.url;
-    WEBDAV_LOGIN = secrets.webdav.login;
-    WEBDAV_PASSWORD = secrets.webdav.password;
     WEBDAV_FILE_PATH = "Bilder PCT";
   });
 in
@@ -38,6 +30,11 @@ in
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
 
     nixpkgs.overlays = [ inputs.cartograph.overlay ];
+
+    age.secrets."cartograph.env" = {
+      rekeyFile = ../agenix/cartograph.env.age;
+      owner = "uwsgi";
+    };
 
     services.nginx = {
       enable = true;
@@ -80,7 +77,10 @@ in
           pythonPackages = self: [ pkgs.cartograph ];
           socket = "${config.services.uwsgi.runDir}/cartograph.sock";
           module = "cartograph:app";
-          env = ["CARTOGRAPH_CONFIG=${cartograph-config}"];
+          env = [
+            "CARTOGRAPH_CONFIG=${cartograph-config}"
+            "EXTRA_CARTOGRAPH_CONFIG=${config.age.secrets."cartograph.env".path}"
+          ];
         };
       };
     };

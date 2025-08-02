@@ -34,7 +34,6 @@ all@{ config, pkgs, lib, inputs, system, ... }:
     keyMap = "de";
   };
 
-
   services = {
     fstrim.enable = true;
     lorri.enable = true;
@@ -107,7 +106,7 @@ all@{ config, pkgs, lib, inputs, system, ... }:
     wget curl 
     ncurses which 
     git jujutsu
-    htop lsof pv ripgrep eza file jq
+    htop lsof pv ripgrep eza file jq bat
     zip unzip
     vim emacs
     basic-python-install
@@ -116,6 +115,7 @@ all@{ config, pkgs, lib, inputs, system, ... }:
     inotify-tools
     screen
     direnv
+    rage
   ];
 }
 

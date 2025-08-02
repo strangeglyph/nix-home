@@ -22,6 +22,10 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix-rekey = {
+      url = "github:oddlama/agenix-rekey";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cookbook = {
       url = "github:strangeglyph/cookbook";
     };
@@ -38,8 +42,8 @@
     };
   };
 
-  outputs = inputs:
-  let default-config = local-conf: hw-conf: inputs@{ lix, home-manager, stylix, agenix, ... }:
+  outputs = inputs@{ self, lix, home-manager, stylix, agenix, agenix-rekey, ... }:
+  let default-config = hostname:
     inputs.nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
@@ -47,12 +51,24 @@
         home-manager.nixosModules.home-manager
         stylix.nixosModules.stylix
         agenix.nixosModules.default
-        { environment.systemPackages = [ agenix.packages.${system}.default ]; }
+        agenix-rekey.nixosModules.default
         #
+        {
+          age.rekey = {
+            masterIdentities = [ ./secrets/age_id.age ];
+            hostPubkey = ./secrets/${hostname}.pub;
+            storageMode = "local";
+            localStorageDir = ./. + "/secrets/rekeyed/${hostname}";
+          };
+
+          environment.systemPackages = [ 
+            agenix-rekey.packages.${system}.default
+          ]; 
+        }
         ./config/utils/globals.nix
-        hw-conf
+        ./hw/${hostname}.nix
         ./config/default.nix
-        local-conf
+        ./config/${hostname}.nix
       ];
       specialArgs = { 
         inherit inputs system;
@@ -61,8 +77,12 @@
   in
   {
     nixosConfigurations = {
-      aeolus = default-config ./config/aeolus.nix ./hw/aeolus.nix inputs;
-      philae = default-config ./config/philae.nix ./hw/philae.nix inputs;
+      aeolus = default-config "aeolus";
+      philae = default-config "philae";
+    };
+    agenix-rekey = agenix-rekey.configure {
+      userFlake = self;
+      nixosConfigurations = self.nixosConfigurations;
     };
   };
 }

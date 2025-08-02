@@ -4,7 +4,6 @@ let
   cfg = config.services.cookbook;
   acme = config.security.acme;
   cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
-    SECRET_KEY = builtins.readFile ../secrets/cookbook-session-key;
     COOKBOOK_LOCATION = cfg.recipe-folder;
     DEFAULT_LANG = cfg.default-language;
     SITE_NAME = cfg.site-name;
@@ -37,6 +36,15 @@ in
     nixpkgs.overlays = [ inputs.cookbook.overlay ];
 
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
+
+    age.secrets."cookbook-secret.json" = {
+      rekeyFile = ../agenix/cookbook-secret.json.age;
+      owner = "uwsgi";
+      generator.script = { pkgs, lib, ...}: ''
+        key=$(${lib.getExe pkgs.openssl} rand -base64 32)
+        printf '{ "SECRET_KEY": "%s" }\n'
+      '';
+    };
 
     services.nginx = {
       enable = true;
@@ -86,7 +94,10 @@ in
           pythonPackages = self: [ pkgs.cookbook ];
           socket = "${config.services.uwsgi.runDir}/cookbook.sock";
           module = "cookbook:app";
-          env = ["COOKBOOK_CONFIG=${cookbook-config}"];
+          env = [
+            "COOKBOOK_CONFIG=${cookbook-config}"
+            "EXTRA_COOKBOOK_CONFIG=${config.age.secrets."cookbook-secret.json".path}"
+          ];
         };
       };
     };
