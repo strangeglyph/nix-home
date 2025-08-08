@@ -126,6 +126,8 @@ in
           bindaddr = "127.0.0.1";
           bindport = 52175;
         };
+
+        minecraft.port = 41032;
       };
     };
   };

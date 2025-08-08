@@ -59,6 +59,7 @@ in
     kanidm.enable = true;
     headscale.enable = true;
     vaultwarden.enable = true;
+    minecraft.enable = true;
   };
 
   services = {
@@ -86,7 +87,6 @@ in
     };
     postgresql.package = pkgs.postgresql_16;
     tailscale.enable = true;
-    minecraft.enable = false;
   };
 
   users.users = {
@@ -114,6 +114,7 @@ in
   };
   home-manager.users.root.imports = [ ../home/philae/root.nix ];
   home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
+  home-manager.users.minecraft.imports = [ ../home/philae/minecraft.nix ];
 
 
   system.stateVersion = "21.05";
