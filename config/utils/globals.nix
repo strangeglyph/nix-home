@@ -26,6 +26,9 @@ let
   vaultwarden_domain = "${vaultwarden_host}.${tailnet_domain}";
   vaultwarden_email = "${vaultwarden_host}@${base}";
 
+  forgejo_host = "git";
+  forgejo_domain = mkSub forgejo_host;
+
   sabnzbd_host = "nz";
   sabnzbd_domain = "${sabnzbd_host}.${tailnet_domain}";
 in
@@ -123,6 +126,13 @@ in
           # https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/security/oauth2-proxy-nginx.nix#L74
           bindaddr = "127.0.0.1";
           bindport = 39184;
+        };
+
+        forgejo = {
+          host = forgejo_host;
+          domain = forgejo_domain;
+          bindaddr = "[::1]";
+          bindport = 19224;
         };
 
         sabnzbd = {
