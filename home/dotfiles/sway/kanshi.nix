@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
-
-
 let
+  swaymsg = "${pkgs.sway}/bin/swaymsg";
+
   work-outputs = name: left_mon_id: right_mon_id: {
     name = name;
 
@@ -12,9 +12,9 @@ let
     ];
 
     exec = [
-      "swaymsg 'workspace 2, move workspace to ${left_mon_id}'"
-      "swaymsg 'workspace 3, move workspace to ${left_mon_id}'"
-      "swaymsg 'workspace 8, move workspace to ${right_mon_id}'"
+      "${swaymsg} 'workspace 2, move workspace to ${right_mon_id}'"
+      "${swaymsg} 'workspace 3, move workspace to ${right_mon_id}'"
+      "${swaymsg} 'workspace 8, move workspace to ${left_mon_id}'"
     ];
   };
 in
@@ -37,9 +37,9 @@ in
           }];
 
           exec = [
-            "swaymsg 'workspace 2, move workspace to eDP-1'"
-            "swaymsg 'workspace 3, move workspace to eDP-1'"
-            "swaymsg 'workspace 8, move workspace to eDP-1'"
+            "${swaymsg} 'workspace 2, move workspace to eDP-1'"
+            "${swaymsg} 'workspace 3, move workspace to eDP-1'"
+            "${swaymsg} 'workspace 8, move workspace to eDP-1'"
           ];
         };
       }

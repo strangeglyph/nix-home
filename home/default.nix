@@ -8,6 +8,10 @@
     ./dotfiles/starship.nix
   ];
 
+  # Put this into the machine-specific section
+  wayland.windowManager.sway.enable = lib.mkDefault false;
+  wayland.windowManager.hyprland.enable = lib.mkDefault false;
+
   programs = {
     git = {
       enable = true;
@@ -77,6 +81,7 @@
       automount = true;
     };
   };
+
 
 
   home.file = {

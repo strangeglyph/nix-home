@@ -7,7 +7,6 @@ let
 in
 {
   wayland.windowManager.hyprland = {
-    enable = true;
     systemd.enable = false; # conflicts with uswm
     settings = let
       mod = "Mod4";
