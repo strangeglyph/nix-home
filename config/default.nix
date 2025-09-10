@@ -55,6 +55,7 @@ all@{ config, pkgs, lib, inputs, system, ... }:
     gc = {
       automatic = true;
       dates = "weekly";
+      options = "--delete-older-than 90d";
     };
     optimise = {
       automatic = true;
