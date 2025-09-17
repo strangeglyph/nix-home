@@ -11,6 +11,10 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     firefox = {
       url = "github:nix-community/flake-firefox-nightly";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +46,7 @@
     };
   };
 
-  outputs = inputs@{ self, lix, home-manager, stylix, agenix, agenix-rekey, ... }:
+  outputs = inputs@{ self, lix, colmena, home-manager, stylix, agenix, agenix-rekey, ... }:
   let default-config = hostname:
     inputs.nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
@@ -79,6 +83,9 @@
     nixosConfigurations = {
       aeolus = default-config "aeolus";
       philae = default-config "philae";
+    };
+    colmenaHive = colmena.lib.mkHive {
+
     };
     agenix-rekey = agenix-rekey.configure {
       userFlake = self;

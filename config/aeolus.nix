@@ -71,6 +71,7 @@
     obsidian
     (agda.withPackages [ agdaPackages.standard-library ])
     vscode-fhs
+    inkscape-with-extensions
   ];
 
   system.stateVersion = "21.05";
