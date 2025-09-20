@@ -46,7 +46,7 @@
     };
   };
 
-  outputs = inputs@{ self, lix, colmena, home-manager, stylix, agenix, agenix-rekey, ... }:
+  outputs = inputs@{ self, nixpkgs, lix, colmena, home-manager, stylix, agenix, agenix-rekey, ... }:
   let default-config = hostname:
     inputs.nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
@@ -80,16 +80,88 @@
     };
   in
   {
-    nixosConfigurations = {
-      aeolus = default-config "aeolus";
-      philae = default-config "philae";
-    };
-    colmenaHive = colmena.lib.mkHive {
+    nixosConfigurations = self.outputs.colmenaHive.nodes;
+    colmenaHive = colmena.lib.makeHive {
+      meta = {
+        nixpkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [];
+        };
+        specialArgs = {
+          inherit inputs;
+        };
+      };
 
+      defaults = { name, nodes, pkgs, ... }: 
+      let
+        system = pkgs.system;
+      in {
+        imports = [
+          lix.nixosModules.default
+          home-manager.nixosModules.home-manager
+          stylix.nixosModules.stylix
+          agenix.nixosModules.default
+          agenix-rekey.nixosModules.default
+          ./config/utils/globals.nix
+          ./config/default.nix
+
+          {
+            age.rekey = {
+              masterIdentities = [ ./secrets/age_id.age ];
+              hostPubkey = ./secrets/${name}.pub;
+              storageMode = "local";
+              localStorageDir = ./. + "/secrets/rekeyed/${name}";
+            };
+
+            environment.systemPackages = [
+              agenix-rekey.packages.${system}.default
+              colmena.packages.${system}.colmena
+            ];
+          }
+        ];
+      };
+
+      aeolus = { name, node, pkgs, ... }: {
+        networking.hostName = name;
+
+        imports = [
+          ./hw/${name}.nix
+          ./config/${name}.nix
+        ];
+
+        deployment = {
+          allowLocalDeployment = true;
+          targetHost = null;
+          tags = [ "interstice-client" ];
+        };
+      };
+      
+      philae = { name, node, pkgs, ... }: {
+        networking.hostName = name;
+        
+        imports = [
+          ./hw/${name}.nix
+          ./config/${name}.nix
+        ];
+
+        deployment = {
+          targetHost = "philae.apophenic.net";
+          tags = [ 
+            "interstice-server"
+            "interstice-client"
+            "sso-server"
+            "sso-client"
+            "web"
+            "public"
+          ];
+        };
+      };
     };
+
+
     agenix-rekey = agenix-rekey.configure {
       userFlake = self;
-      nixosConfigurations = self.nixosConfigurations;
+      nixosConfigurations = self.outputs.colmenaHive.nodes;
     };
   };
 }
