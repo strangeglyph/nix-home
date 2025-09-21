@@ -126,6 +126,7 @@
     agenix-rekey = agenix-rekey.configure {
       userFlake = self;
       nixosConfigurations = self.outputs.colmenaHive.nodes;
+      #agePackage = pkg: pkg.age;
     };
   };
 }

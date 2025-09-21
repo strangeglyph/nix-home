@@ -72,10 +72,12 @@ in
       acme-uses-dns = true;
       acme-host = "${globals.domains.base}";
     };
-    nginx.virtualHosts."cookbook.strangegly.ph" = {
-      forceSSL = true;
-      useACMEHost = config.security.acme.http-challenge-host;
-      globalRedirect = "cookbook.${globals.domains.base}";
+    nginx.virtualHosts = {
+      "cookbook.strangegly.ph" = {
+        forceSSL = true;
+        useACMEHost = config.security.acme.http-challenge-host;
+        globalRedirect = "cookbook.${globals.domains.base}";
+      };
     };
     cartograph = {
       enable = true;

@@ -39,8 +39,12 @@ in
     #type = lib.types.any;
     readOnly = true;
     default = {
-      acme.chain = "${config.security.acme.certs.${base}.directory}/fullchain.pem";
-      acme.key   = "${config.security.acme.certs.${base}.directory}/key.pem";
+      acme = {
+        mkChain = domain: "${config.security.acme.certs.${domain}.directory}/fullchain.pem";
+        chain   = config.globals.acme.mkChain base;
+        mkKey   = domain: "${config.security.acme.certs.${domain}.directory}/key.pem";
+        key     = config.globals.acme.mkKey base;
+      }; 
 
       domains = {
         base = base;
@@ -53,7 +57,7 @@ in
         nginx = rec {
           mkDefault = { listen ? null, acme_host ? base }: {
             forceSSL = true;
-            useACMEHost = acme_host;
+            useACMEHost = mkIf (acme_host != null) acme_host;
             listenAddresses = mkIf (listen != null) listen;
 
             quic = true;
@@ -117,12 +121,9 @@ in
         };
 
         oauth2-proxy = {
-          host = oauth2-proxy_host;
-          domain = oauth2-proxy_domain;
-          # module checks explicitly for 127.0.0.1
-          # https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/security/oauth2-proxy-nginx.nix#L74
-          bindaddr = "127.0.0.1";
-          bindport = 39184;
+          uid = 694;
+          gid = 694;
+          cert-group-gid = 695;
         };
 
         sabnzbd = {

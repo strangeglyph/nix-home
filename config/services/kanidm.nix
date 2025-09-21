@@ -15,7 +15,7 @@ let
   transposed-kanidm = lib.flatten (config.glyph.transpose-here [ "kanidm" ]);
   transposed-age = lib.catAttrs "age" transposed-kanidm;
   transposed-provision = lib.catAttrs "provision" transposed-kanidm;
-  transposed-extra-provision = lib.catAttrs "provision-extra" transposed-kanidm;
+  transposed-extra-provision = json.type.merge {} (lib.map (x: { value = x; }) (lib.catAttrs "provision-extra" transposed-kanidm));
 in
 {
   imports = [ ./nginx-common.nix ];
@@ -60,7 +60,10 @@ in
       };
 
       provision = lib.mkMerge ([{
-        enable = false;
+        enable = true;
+        # see https://github.com/oddlama/kanidm-provision/issues/26#issuecomment-3232578427
+        instanceUrl = "https://${cfg.serverSettings.bindaddress}";
+        acceptInvalidCerts = true;
 
         persons = {
           "glyph" = {
@@ -84,7 +87,7 @@ in
             scopeMaps."interstice_users" = [ "openid" "email" "profile" ];
           };
         };
-        extraJsonFile = json.generate "kanidm_extra_provision.json" (lib.mkMerge transposed-extra-provision);
+        extraJsonFile = json.generate "kanidm_extra_provision.json" transposed-extra-provision;
       }] ++ transposed-provision);
     };
 

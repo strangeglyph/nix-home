@@ -8,7 +8,8 @@ in
       options.kanidm = mkOption {
         type = types.listOf (types.submodule {
           options.age = mkOption { type = types.attrsOf types.anything; description = "Age config to transpose for SSO"; default = {}; };
-          options.provision = mkOption { type = types.attrsOf types.anything; description = "kanidm service provision"; default = {}; };
+          options.provision = mkOption { type = types.attrsOf types.anything; description = "transpose kanidm provision"; default = {}; };
+          options.provision-extra = mkOption { type = types.attrsOf types.anything; description = "things to put into kanidm.provision.extraJsonFile"; default = {}; };
         });
         default = [];
       };
