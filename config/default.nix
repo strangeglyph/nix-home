@@ -39,8 +39,8 @@ all@{ config, pkgs, lib, inputs, ... }:
     lorri.enable = true;
     resolved = {
       enable = true;
-      dnssec = "true";
-      dnsovertls = "opportunistic";
+      #dnssec = "true";
+      #dnsovertls = "opportunistic";
     };
   };
 
