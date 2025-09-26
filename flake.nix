@@ -72,31 +72,28 @@
           agenix-rekey.nixosModules.default
           ./config/utils/globals.nix
           ./config/default.nix
-
-          {
-            age.rekey = {
-              masterIdentities = [ ./secrets/age_id.age ];
-              hostPubkey = ./secrets/${name}.pub;
-              storageMode = "local";
-              localStorageDir = ./. + "/secrets/rekeyed/${name}";
-            };
-
-            environment.systemPackages = [
-              agenix-rekey.packages.${system}.default
-              colmena.packages.${system}.colmena
-            ];
-          }
-        ];
-      };
-
-      aeolus = { name, node, pkgs, ... }: {
-        networking.hostName = name;
-
-        imports = [
           ./hw/${name}.nix
           ./config/${name}.nix
         ];
 
+        config = {
+          networking.hostName = name;
+
+          age.rekey = {
+            masterIdentities = [ ./secrets/age_id.age ];
+            hostPubkey = ./secrets/${name}.pub;
+            storageMode = "local";
+            localStorageDir = ./. + "/secrets/rekeyed/${name}";
+          };
+
+          environment.systemPackages = [
+            agenix-rekey.packages.${system}.default
+            colmena.packages.${system}.colmena
+          ];
+        };
+      };
+
+      aeolus = { name, node, pkgs, ... }: {
         deployment = {
           allowLocalDeployment = true;
           targetHost = null;
@@ -105,13 +102,6 @@
       };
       
       philae = { name, node, pkgs, ... }: {
-        networking.hostName = name;
-        
-        imports = [
-          ./hw/${name}.nix
-          ./config/${name}.nix
-        ];
-
         deployment = {
           targetHost = "philae.apophenic.net";
           tags = [ 
@@ -124,8 +114,14 @@
           ];
         };
       };
-    };
 
+      moonlight = { name, node, pkgs, ... }: {
+        deployment = {
+          targetHost = "192.168.0.130";
+          tags = [ "interstice-client" "web" ];
+        };
+      };
+    };
 
     agenix-rekey = agenix-rekey.configure {
       userFlake = self;
