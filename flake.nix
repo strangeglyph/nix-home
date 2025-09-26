@@ -117,8 +117,8 @@
 
       moonlight = { name, node, pkgs, ... }: {
         deployment = {
-          targetHost = "192.168.0.130";
-          tags = [ "interstice-client" "web" ];
+          targetHost = "moonlight.interstice.apophenic.net";
+          tags = [ "interstice-client" ];
         };
       };
     };

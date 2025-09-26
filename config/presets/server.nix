@@ -6,9 +6,4 @@
     443 # quic
   ];
 
-  services = {
-    openssh = {
-      enable = true;
-    };
-  };
 }
