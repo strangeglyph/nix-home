@@ -73,11 +73,15 @@ in
             mailAddresses = [ "interstice@mail.apophenic.net" ];
             groups = [ 
               "interstice_users"
+              "forgejo_users"
+              "forgejo_admins"
             ];
           };
         };
         groups = {
           "interstice_users" = {};
+          "forgejo_users" = {};
+          "forgejo_admins" = {};
         };
         systems.oauth2 = {
           "interstice" = {

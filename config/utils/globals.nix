@@ -26,6 +26,9 @@ let
   vaultwarden_domain = "${vaultwarden_host}.${tailnet_domain}";
   vaultwarden_email = "${vaultwarden_host}@${base}";
 
+  forgejo_host = "git";
+  forgejo_domain = mkSub forgejo_host;
+
   sabnzbd_host = "nz";
   sabnzbd_domain = "${sabnzbd_host}.${tailnet_domain}";
 in
@@ -125,6 +128,13 @@ in
           uid = 694;
           gid = 694;
           cert-group-gid = 695;
+        };
+
+        forgejo = {
+          host = forgejo_host;
+          domain = forgejo_domain;
+          bindaddr = "::1";
+          bindport = 19224;
         };
 
         sabnzbd = {

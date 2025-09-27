@@ -15,7 +15,8 @@ in
     ./services/headscale.nix
     ./services/tailscale.nix
     ./services/vaultwarden.nix
-    ./services/syncproxy.nix
+    ./services/forgejo.nix
+#    ./services/syncproxy.nix
 #    ./utils/pgsql_update.nix
 #    ./tests/oauth2-proxy.nix
   ];
@@ -62,6 +63,7 @@ in
     headscale.enable = true;
     vaultwarden.enable = true;
     minecraft.enable = true;
+    forgejo.enable = true;
   };
 
   services = {
