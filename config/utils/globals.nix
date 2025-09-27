@@ -58,6 +58,7 @@ in
           mkDefault = { listen ? null, acme_host ? base }: {
             forceSSL = true;
             useACMEHost = mkIf (acme_host != null) acme_host;
+            enableACME = mkIf (acme_host == null) true;
             listenAddresses = mkIf (listen != null) listen;
 
             quic = true;

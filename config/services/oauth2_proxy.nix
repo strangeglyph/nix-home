@@ -164,7 +164,6 @@ in
       port = settings.port;
       acme_host = null;
     } // {
-      enableACME = true;
       locations."/oauth2/" = {
         proxyPass = "https://[::1]:${toString settings.port}";
         extraConfig = ''
