@@ -15,6 +15,10 @@
       url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     firefox = {
       url = "github:nix-community/flake-firefox-nightly";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,7 +50,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, lix, colmena, home-manager, stylix, agenix, agenix-rekey, ... }:
+  outputs = inputs@{ self, nixpkgs, colmena, disko, home-manager, stylix, agenix, agenix-rekey, ... }:
   {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
     colmenaHive = colmena.lib.makeHive {
@@ -66,6 +70,7 @@
       in {
         imports = [
           #lix.nixosModules.default
+          disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           stylix.nixosModules.stylix
           agenix.nixosModules.default
@@ -118,6 +123,10 @@
       };
 
       moonlight = { name, node, pkgs, ... }: {
+        imports = [
+          ./hw/disko/moonlight.nix  
+        ];
+
         deployment = {
           targetHost = "moonlight.interstice.apophenic.net";
           tags = [ "interstice-client" ];
@@ -128,7 +137,6 @@
     agenix-rekey = agenix-rekey.configure {
       userFlake = self;
       nixosConfigurations = self.outputs.colmenaHive.nodes;
-      #agePackage = pkg: pkg.age;
     };
   };
 }
