@@ -38,7 +38,7 @@ in
     users.groups.www-data.members = [ "nginx" "uwsgi" ];
 
     age.secrets."cookbook-secret.json" = {
-      rekeyFile = ../agenix/cookbook-secret.json.age;
+      rekeyFile = ../../secrets/sources/cookbook-secret.json.age;
       owner = "uwsgi";
       generator.script = { pkgs, lib, ...}: ''
         key=$(${lib.getExe pkgs.openssl} rand -base64 32)

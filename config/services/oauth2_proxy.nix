@@ -48,7 +48,7 @@ in
 
   config.glyph.transpose.kanidm = lib.mapAttrsToList (vhost: settings: {
     age.secrets."kanidm_basic_secret_${mkClientId vhost}" = {
-      rekeyFile = ../agenix/kanidm/basic_secret_${mkClientId vhost}.age;
+      rekeyFile = ../../secrets/sources/kanidm/basic_secret_${mkClientId vhost}.age;
       owner = "kanidm";
       generator.script = "alnum";
     };
@@ -84,7 +84,7 @@ in
 
   config.age.secrets = mkMerge (lib.mapAttrsToList (vhost: settings: {
     "oauth2-proxy_secrets_${vhost}" = {
-      rekeyFile = ../agenix/oauth2-proxy/oauth2-proxy_secrets_${vhost}.age;
+      rekeyFile = ../../secrets/sources/oauth2-proxy/oauth2-proxy_secrets_${vhost}.age;
       owner = "oauth2-proxy";
       generator = {
         dependencies.basic_secret = mkTransposedBasicSecretRef vhost;

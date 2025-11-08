@@ -12,11 +12,11 @@ in
   options.glyph.forgejo.enable = mkEnableOption { description = "git server"; };
 
   config = mkIf glyph.forgejo.enable {
-    age.secrets.forgejo_mailer_addr.rekeyFile = ../agenix/forgejo/mailer/addr.age;
-    age.secrets.forgejo_mailer_user.rekeyFile = ../agenix/forgejo/mailer/user.age;
-    age.secrets.forgejo_mailer_pass.rekeyFile = ../agenix/forgejo/mailer/pass.age;
+    age.secrets.forgejo_mailer_addr.rekeyFile = ../../secrets/sources/forgejo/mailer/addr.age;
+    age.secrets.forgejo_mailer_user.rekeyFile = ../../secrets/sources/forgejo/mailer/user.age;
+    age.secrets.forgejo_mailer_pass.rekeyFile = ../../secrets/sources/forgejo/mailer/pass.age;
     age.secrets."kanidm_basic_secret_forgejo_side" = {
-      rekeyFile = ../agenix/kanidm/basic_secret_forgejo.age;
+      rekeyFile = ../../secrets/sources/kanidm/basic_secret_forgejo.age;
       owner = "forgejo";
       generator.script = "alnum";
     };
@@ -140,7 +140,7 @@ in
 
     glyph.transpose.kanidm = [{
       age.secrets."kanidm_basic_secret_forgejo" = {
-        rekeyFile = ../agenix/kanidm/basic_secret_forgejo.age;
+        rekeyFile = ../../secrets/sources/kanidm/basic_secret_forgejo.age;
         owner = "kanidm";
         generator.script = "alnum";
       };

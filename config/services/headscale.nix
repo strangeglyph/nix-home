@@ -16,7 +16,7 @@ in
     users.groups.acme.members = [ "headscale" ];
     
     age.secrets.kanidm_oauth_interstice = {
-      file = ../agenix/kanidm_oauth_interstice.age;
+      file = ../../secrets/sources/kanidm_oauth_interstice.age;
       group = "oauth_interstice";
       mode = "0440";
     };

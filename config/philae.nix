@@ -36,7 +36,7 @@ in
   };
 
   age.secrets = {
-    cloudflare_api.file = ./agenix/cloudflare_secrets.age;
+    cloudflare_api.file = ../secrets/sources/cloudflare_secrets.age;
   };
 
   security.acme = {

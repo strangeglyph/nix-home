@@ -32,7 +32,7 @@ in
     nixpkgs.overlays = [ inputs.cartograph.overlay ];
 
     age.secrets."cartograph.env" = {
-      rekeyFile = ../agenix/cartograph.env.age;
+      rekeyFile = ../../secrets/sources/cartograph.env.age;
       owner = "uwsgi";
     };
 
