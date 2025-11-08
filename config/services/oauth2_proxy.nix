@@ -13,12 +13,12 @@ let
 in
 {
   options.glyph.nginx.oauth2-gate = lib.mkOption {
-    description = "Create a containerized oauth2-instance that gates access to a vhost";
+    description = "Create a containerized oauth2-instance that gates access to vhost <name>";
     default = {};
     type = types.attrsOf (types.submodule {
       options = {
         port = mkOption { type = types.port; description = "port to bind this oauth2-proxy instance to"; };
-        displayName = mkOption { type = types.nullOr types.str; default = null; };
+        displayName = mkOption { type = types.str; };
         allowed_groups = lib.mkOption {
           type = lib.types.nullOr (lib.types.listOf lib.types.str);
           description = "List of groups to allow access to this vhost, or null to allow all.";

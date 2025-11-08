@@ -17,6 +17,7 @@ in
     ./services/vaultwarden.nix
     ./services/syncproxy.nix
 #    ./utils/pgsql_update.nix
+#    ./tests/oauth2-proxy.nix
   ];
   
 
