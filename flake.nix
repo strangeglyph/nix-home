@@ -7,6 +7,10 @@
     #  url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
+    flake-compat = {
+      url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -53,7 +57,8 @@
   outputs = inputs@{ self, nixpkgs, colmena, disko, home-manager, stylix, agenix, agenix-rekey, ... }:
   {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
-    colmenaHive = colmena.lib.makeHive {
+    colmenaHive = colmena.lib.makeHive self.outputs.rawHive;
+    rawHive = {
       meta = {
         nixpkgs = import nixpkgs {
           system = "x86_64-linux";
