@@ -10,7 +10,7 @@ in
 
   config = lib.mkIf config.glyph.vaultwarden.enable {
     age.secrets.vaultwarden_env = {
-      file = ../../secrets/sources/vaultwarden_env.age;
+      rekeyFile = ../../secrets/sources/vaultwarden_env.age;
     };
 
     services.vaultwarden = {

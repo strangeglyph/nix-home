@@ -16,9 +16,10 @@ in
     users.groups.acme.members = [ "headscale" ];
     
     age.secrets.kanidm_oauth_interstice = {
-      file = ../../secrets/sources/kanidm_oauth_interstice.age;
+      rekeyFile = ../../secrets/sources/kanidm/basic_secret_interstice.age;
       group = "oauth_interstice";
       mode = "0440";
+      generator.script = "alnum";
     };
     
     users.groups = {
