@@ -69,7 +69,7 @@ in
         };
 
         oauth2_client = {
-          OPENID_CONNECT_SCOPES = "profile email groups_name";
+          OPENID_CONNECT_SCOPES = "profile email groups";
           ENABLE_AUTO_REGISTRATION = true;
           USERNAME = "nickname";
         };
@@ -133,7 +133,7 @@ in
               --auto-discover-url "${makeOidc "forgejo"}/.well-known/openid-configuration" \
               --skip-local-2fa true \
               --group-claim-name "groups" \
-              --admin-group "forgejo_admins"
+              --admin-group "forgejo_admins@${globals.services.kanidm.domain}"
           '';
       };
     };
@@ -150,7 +150,7 @@ in
         originUrl = "https://${g_forgejo.domain}/user/oauth2/kanidm/callback";
         originLanding = "https://${g_forgejo.domain}";
         basicSecretFile = nodes."${kanidm_host}".config.age.secrets."kanidm_basic_secret_forgejo".path;
-        scopeMaps."forgejo_users" = [ "openid" "profile" "email" "groups_name" ];
+        scopeMaps."forgejo_users" = [ "openid" "profile" "email" "groups" ];
       };
     }];
   };
