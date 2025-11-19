@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./presets/server.nix
+    ./services/restic-server.nix
   ];
  
   networking.interfaces.enp2s0.useDHCP = true;
@@ -12,6 +13,10 @@ in
   nix = {
     settings.trusted-users = [ "root" "@wheel" ];
     nrBuildUsers = 100;
+  };
+
+  glyph = {
+    restic-server.enable = true;
   };
 
   services = {

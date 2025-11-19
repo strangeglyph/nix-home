@@ -14,6 +14,7 @@ let
   headscale_addresses = {
     philae = "100.64.0.3";
     rosetta = "100.64.0.4";
+    moonlight = "100.64.0.7";
   };
 
   kanidm_host = "gate";
@@ -31,6 +32,9 @@ let
 
   sabnzbd_host = "nz";
   sabnzbd_domain = "${sabnzbd_host}.${tailnet_domain}";
+
+  restic_server_host = "deepfreeze";
+  restic_server_domain = "${restic_server_host}.${tailnet_domain}";
 in
 {
   imports = [
@@ -105,6 +109,8 @@ in
           bindport = 8081;
           addresses = headscale_addresses;
 
+          myAddr = headscale_addresses."${config.networking.hostName}";
+
           mkDnsEntry = host: {
             name = "${host}.${tailnet_domain}";
             type = "A";
@@ -145,6 +151,12 @@ in
         };
 
         minecraft.port = 41032;
+
+        restic-server = {
+          host = restic_server_host;
+          domain = restic_server_domain;
+          bindport = 33214;
+        };
       };
     };
   };

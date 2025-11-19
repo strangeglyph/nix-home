@@ -4,6 +4,7 @@ let
   cfg = config.services.headscale;
   globals = config.globals;
   globals_hs = globals.services.headscale;
+  headscale-dns-entries = lib.flatten (config.glyph.transpose-here [ "headscale" "dns" ]);
 in
 {
   imports = [
@@ -39,6 +40,7 @@ in
         tls_key_path = globals.acme.key;
         dns = {
           base_domain = "${globals_hs.net.domain}";
+          extra_records = headscale-dns-entries;
         };
         oidc = {
           client_secret_path = config.age.secrets.kanidm_oauth_interstice.path;

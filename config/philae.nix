@@ -5,6 +5,7 @@ in
 {
   imports = [
     ./presets/server.nix
+    ./services/acme.nix
 #    ./services/fompf.nix
     ./services/cookbook.nix
     ./services/cartograph.nix
@@ -35,17 +36,7 @@ in
     nrBuildUsers = 100;
   };
 
-  age.secrets = {
-    cloudflare_api.rekeyFile = ../secrets/sources/cloudflare_api.env.age;
-  };
-
   security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = "acme@admin.apophenic.net";
-      dnsProvider = "cloudflare";
-      environmentFile = config.age.secrets.cloudflare_api.path;
-    };
     http-challenge-host = "acme.strangegly.ph";
     certs."${globals.domains.base}" = {
       domain = "*.${globals.domains.base}";
