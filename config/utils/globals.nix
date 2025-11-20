@@ -51,7 +51,7 @@ in
         chain   = config.globals.acme.mkChain base;
         mkKey   = domain: "${config.security.acme.certs.${domain}.directory}/key.pem";
         key     = config.globals.acme.mkKey base;
-      }; 
+      };
 
       domains = {
         base = base;

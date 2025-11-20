@@ -16,7 +16,7 @@ in
 
   config = mkIf config.glyph.restic-server.enable {
     age.secrets."restic-server.htpasswd" = {
-      rekeyFile = ../../secrets/sources/restic/.htpasswd.age;
+      rekeyFile = ../../secrets/sources/restic/htpasswd.age;
       owner = "restic";
       generator = {
         dependencies = restic-auth-files;
@@ -25,7 +25,7 @@ in
             set -euo pipefail
           '' +
           (flip concatMapStrings deps ({name, host, file}: ''
-            echo "Aggregating "''${lib.escapeShellArg host}:''${lib.escapeShellArg name} >&2
+            echo "Aggregating "${lib.escapeShellArg host}:${lib.escapeShellArg name} >&2
             
             auth_data=$(${decrypt} ${escapeShellArg file})
             user=$(echo "$auth_data" | grep "RESTIC_REST_USERNAME" | cut -d'=' -f2)

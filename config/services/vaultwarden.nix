@@ -4,7 +4,10 @@ let
   globals_vw = config.globals.services.vaultwarden;
 in
 {
-  imports = [ ./nginx-common.nix ];
+  imports = [ 
+    ./nginx-common.nix
+    ./restic-backup.nix
+  ];
 
   options.glyph.vaultwarden.enable = lib.mkEnableOption {};
 
@@ -17,6 +20,8 @@ in
       enable = true;
 
       environmentFile = config.age.secrets.vaultwarden_env.path;
+      backupDir = "/var/backups/vaultwarden";
+
       config = {
         DOMAIN = globals_vw.url;
         SIGNUPS_ALLOWED = false;
@@ -62,6 +67,10 @@ in
           proxyPass = "http://${globals_vw.bindaddr}:${toString globals_vw.bindport}";
         };
       };
+    };
+
+    glyph.restic.vaultwarden = {
+      paths = [ "/var/backups/vaultwarden" ];
     };
   };
 }
