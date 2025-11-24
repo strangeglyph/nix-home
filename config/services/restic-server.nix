@@ -28,13 +28,15 @@ in
             echo "Aggregating "${lib.escapeShellArg host}:${lib.escapeShellArg name} >&2
             
             auth_data=$(${decrypt} ${escapeShellArg file})
-            user=$(echo "$auth_data" | grep "RESTIC_REST_USERNAME" | cut -d'=' -f2)
-            pass=$(echo "$auth_data" | grep "RESTIC_REST_PASSWORD" | cut -d'=' -f2)
+            user=$(echo "$auth_data" | grep "RESTIC_REST_USERNAME" | cut -d'"' -f2)
+            pass=$(echo "$auth_data" | grep "RESTIC_REST_PASSWORD" | cut -d'"' -f2)
 
             echo "$pass" | ${pkgs.apacheHttpd}/bin/htpasswd -inBC 10 "$user"
           ''));
       };
     };
+
+    networking.firewall.allowedTCPPorts = [ g_restic_server.bindport ];
 
     services.restic.server = {
       enable = true;

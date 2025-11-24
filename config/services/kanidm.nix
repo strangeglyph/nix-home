@@ -18,7 +18,10 @@ let
   transposed-extra-provision = json.type.merge {} (lib.map (x: { value = x; }) (lib.catAttrs "provision-extra" transposed-kanidm));
 in
 {
-  imports = [ ./nginx-common.nix ];
+  imports = [ 
+    ./nginx-common.nix
+    ./restic-backup.nix  
+  ];
 
   options.glyph.kanidm.enable = lib.mkEnableOption {};
   options.glyph.kanidm.crossProvision = lib.mkOption {
@@ -59,6 +62,12 @@ in
         origin = "https://${domain}";
         tls_chain = globals.acme.chain;
         tls_key = globals.acme.key;
+
+        online_backup = {
+          path = "/var/backups/kanidm";
+          schedule = "13 * * * *";
+          versions = 1;
+        };
       };
 
       provision = lib.mkMerge ([{
@@ -104,5 +113,7 @@ in
         port = g_kanidm.bindport;
       };
     };
+
+    glyph.restic.kanidm.paths = [ "/var/backups/kanidm" ];
   };
 }

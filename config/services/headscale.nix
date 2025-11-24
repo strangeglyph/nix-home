@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 with lib;
 let
   cfg = config.services.headscale;
@@ -72,6 +72,43 @@ in
         };
       };
     };
+
+    ## ---- backup
+
+    systemd.tmpfiles.settings."10-headscale"."/var/backups/headscale".d = {
+      user = "headscale";
+      group = "headscale";
+      mode = "0700";
+    };
+
+    systemd.services.headscale-backup = {
+      description = "Regular on-machine backup service for headscale";
+      serviceConfig = {
+        User = "headscale";
+        Type = "oneshot";
+      };
+      script = ''
+        set -euo pipefail
+        ${pkgs.sqlite} "${cfg.settings.database.sqlite.path}" ".backup /var/backups/headscale/db.sqlite"
+        cp "${cfg.settings.noise.private_key_path}" /var/backups/headscale/noise_private.key
+      '';
+    };
+
+    systemd.timers.headscale-backup = {
+      enable = true;
+      timerConfig.OnCalendar = "hourly";
+      wantedBy = [ "headscale.service" ];
+    };
+
+    glyph.restic.headscale = {
+      paths = [ "/var/backups/headscale" ];
+      extra.backupPrepareCommand = ''
+        set -euo pipefail
+        ${pkgs.sqlite} "${cfg.settings.database.sqlite.path}" ".backup /var/backups/headscale/db.sqlite"
+        cp "${cfg.settings.noise.private_key_path}" /var/backups/headscale/noise_private.key
+      '';
+    };
+
   };
 }
 

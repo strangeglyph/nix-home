@@ -48,6 +48,12 @@ in
       ];
     };
 
+    services.postgresqlBackup = {
+      enable = true;
+      databases = [ "nextcloud" ];
+      location = "/var/backups/pgsql";
+    };
+
     services.nginx = {
       enable = true;
 
@@ -61,5 +67,10 @@ in
       requires = [ "postgresql.service" ];
       after = [ "postgresql.service" ];
     };
+
+    glyph.restic.nextcloud.paths = [
+      "/var/backups/pgsql/nextcloud.sql.qz"
+      "/var/lib/nextcloud"
+    ];
   };
 }

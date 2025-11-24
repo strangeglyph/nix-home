@@ -89,6 +89,12 @@ in
           PASSWD = config.age.secrets.forgejo_mailer_pass.path;
         };
       };
+      dump = {
+        enable = true;
+        interval = "hourly";
+        backupDir = "/var/backups/forgejo";
+        file = "forgejo_dump";
+      };
     };
 
     services.nginx.virtualHosts."${g_forgejo.domain}" = globals.services.nginx.mkReverseProxy {
@@ -153,5 +159,7 @@ in
         scopeMaps."forgejo_users" = [ "openid" "profile" "email" "groups" ];
       };
     }];
+
+    glyph.restic.forgejo.paths = [ "/var/backups/forgejo" ];
   };
 }
