@@ -24,9 +24,6 @@
     };
   };
 
-  age.secrets.wg-rptu.file = ../secrets/sources/wg-rptu-split-aeolus.age;
-  #networking.wg-quick.interfaces.wg-rptu.configFile = config.age.secrets.wg-rptu.path;
-
   console.keyMap = lib.mkForce "us";
 
   services.xserver = {
