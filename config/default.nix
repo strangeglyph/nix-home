@@ -128,6 +128,7 @@ all@{ config, pkgs, lib, inputs, ... }:
     screen
     direnv
     rage
+    npins
   ];
 }
 
