@@ -65,6 +65,7 @@
   environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
     jetbrains.pycharm-professional
+    jetbrains.rust-rover
     poetry
     openscad
     prusa-slicer
