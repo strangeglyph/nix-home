@@ -5,6 +5,7 @@
     ./presets/headful.nix
     ./presets/workstation.nix
     ./services/tailscale.nix
+    ./services/restic-backup.nix
   ];
 
   # boot.extraModprobeConfig = ''
@@ -61,6 +62,10 @@
   };
   home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
   home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
+
+  glyph.restic."aeolus".paths = [
+    "/home/lschuetze/Documents"
+  ];
 
   environment.systemPackages = with pkgs; [
     jetbrains.idea-ultimate
