@@ -12,7 +12,7 @@
     xserver.wacom.enable = true;
 
     acpid.enable = true;
-    logind.extraConfig = "HandlePowerKey=suspend";
+    logind.settings.Login.HandlePowerKey = "suspend";
     printing = {
       enable = true;
       drivers = with pkgs; [ 

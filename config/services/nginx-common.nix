@@ -12,11 +12,8 @@ in
   config.users.groups.acme.members = [ "nginx" ];
 
   config.services.nginx = {
-    package = pkgs.nginxQuic;
-
     recommendedGzipSettings = true;
     recommendedBrotliSettings = true;
-    recommendedZstdSettings = true;
     recommendedUwsgiSettings = true;
     recommendedOptimisation = true;
     recommendedProxySettings = true;

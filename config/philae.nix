@@ -75,12 +75,26 @@ in
     };
     cartograph = {
       enable = true;
-      vhost = "wo-ist-ole.strangegly.ph";
+      vhost = "wo-ist-ole.${globals.domains.base}";
       site-name = "Wo Ist Ole?";
     };
+    nginx.virtualHosts = {
+      "wo-ist-ole.strangegly.ph" = {
+        forceSSL = true;
+        useACMEHost = config.security.acme.http-challenge-host;
+        globalRedirect = "wo-ist-ole.${globals.domains.base}";
+      };
+    };
     nextcloud = {
-      hostName = "cloud.strangegly.ph";
-      package = pkgs.nextcloud31;
+      hostName = "cloud.${globals.domains.base}";
+      package = pkgs.nextcloud32;
+    };
+    nginx.virtualHosts = {
+      "cloud.strangegly.ph" = {
+        forceSSL = true;
+        useACMEHost = config.security.acme.http-challenge-host;
+        globalRedirect = "cloud.${globals.domains.base}";
+      };
     };
     postgresql.package = pkgs.postgresql_16;
     tailscale.enable = true;

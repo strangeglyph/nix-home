@@ -2,7 +2,7 @@
   description = "An example NixOS configuration";
 
   inputs = {
-    nixpkgs = { url = "github:nixos/nixpkgs/nixos-25.05"; };
+    nixpkgs = { url = "github:nixos/nixpkgs/nixos-25.11"; };
     #lix = {
     #  url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
     #  inputs.nixpkgs.follows = "nixpkgs";
@@ -12,7 +12,7 @@
       flake = false;
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     colmena = {
@@ -28,7 +28,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {
-      url = "github:danth/stylix/release-25.05";
+      url = "github:danth/stylix/release-25.11";
     };
     agenix = {
       url = "github:ryantm/agenix";
@@ -40,6 +40,7 @@
     };
     cookbook = {
       url = "github:strangeglyph/cookbook";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     cookbook-recipes = {
       url = "github:strangeglyph/cookbook-recipes";
@@ -47,6 +48,7 @@
     };
     cartograph = {
       url = "github:strangeglyph/cartograph";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     starship-jj = {
       url = "gitlab:lanastara_foss/starship-jj";

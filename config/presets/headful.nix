@@ -6,6 +6,18 @@
   ];
 
   services = {
+    displayManager = {
+      defaultSession = "sway";
+      # defaultSession = "none+i3";
+      # defaultSession = "gnome";
+      gdm = {
+        enable = true;
+        wayland = true;
+      };
+    };
+    
+    desktopManager.gnome.enable = true;
+
     xserver = {
       enable = true;
       xkb.layout = "de";
@@ -14,28 +26,13 @@
 
       windowManager.i3 = {
         enable = true;
-        package = pkgs.i3-gaps;
+        package = pkgs.i3;
         extraPackages = [ pkgs.i3lock ];
       };
-
-      displayManager = {
-        lightdm.enable = false; # For sway, use greetd below
-        gdm = {
-          enable = true;
-          wayland = true;
-        };
-      };
-      desktopManager.gnome.enable = true;
     };
 
     gnome.core-apps.enable = false;
-
-    # Only applies if xserver.displayManager.lightdm.enable = true (above)
-    displayManager = {
-      # defaultSession = "none+i3";
-      # defaultSession = "gnome";
-      defaultSession = "sway";
-    };
+    gnome.gcr-ssh-agent.enable = false;
 
     pulseaudio.enable = false;
 
@@ -82,7 +79,7 @@
     nerd-fonts.noto
     nerd-fonts.sauce-code-pro
     nerd-fonts.dejavu-sans-mono
-    noto-fonts-cjk-sans noto-fonts-color-emoji noto-fonts-extra
+    noto-fonts-cjk-sans noto-fonts-color-emoji
     cantarell-fonts
     liberation_ttf
     lmodern # tex

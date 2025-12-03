@@ -15,9 +15,9 @@
   programs = {
     git = {
       enable = true;
-      userName = "glyph";
-      userEmail = "mail@strangegly.ph";
-      extraConfig.init.defaultBranch = "main";
+      settings.user.name = "glyph";
+      settings.user.email = "mail@strangegly.ph";
+      settings.init.defaultBranch = "main";
     };
 
     vim = {

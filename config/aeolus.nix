@@ -41,7 +41,7 @@
     openFirewall = false; # but we don't really want to expose it
   };
 
-  systemd.extraConfig = "DefaultTimeoutStopSec=15s";
+  systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
   systemd.user.extraConfig = "DefaultTimeoutStopSec=15s";
 
   services.tailscale.enable = true;
