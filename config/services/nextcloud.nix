@@ -13,8 +13,6 @@ in
   options.glyph.nextcloud.enable = mkEnableOption {};
 
   config = mkIf config.glyph.nextcloud.enable {
-    security.acme.certs."${ acme.http-challenge-host }".extraDomainNames = [ cfg.hostName ];
-
     services.nextcloud = {
       enable = true;
       https = true;
@@ -59,7 +57,7 @@ in
 
       virtualHosts."${cfg.hostName}" = {
         forceSSL = true;
-        useACMEHost = acme.http-challenge-host;
+        enableACME = true;
       };
     };
 
