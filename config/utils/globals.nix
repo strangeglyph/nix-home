@@ -35,6 +35,9 @@ let
 
   restic_server_host = "deepfreeze";
   restic_server_domain = "${restic_server_host}.${tailnet_domain}";
+
+  paperless_host = "paper";
+  paperless_domain = "${paperless_host}.${base}";
 in
 {
   imports = [
@@ -156,6 +159,13 @@ in
           host = restic_server_host;
           domain = restic_server_domain;
           bindport = 33214;
+        };
+
+        paperless = {
+          host = paperless_host;
+          domain = paperless_domain;
+          bindaddr = "127.0.0.1";
+          bindport = 44985;
         };
       };
     };

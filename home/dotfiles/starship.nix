@@ -1,6 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 let
-  starship-jj = inputs.starship-jj.packages.${pkgs.system}.starship-jj;
+  starship-jj = inputs.starship-jj.packages.${pkgs.stdenv.hostPlatform.system}.starship-jj;
   starship-jj-bin = lib.getExe' starship-jj "starship-jj";
   jjMkModule = type: override: { inherit type; } // override;
   starship-jj-settings = {

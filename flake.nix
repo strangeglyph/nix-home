@@ -73,7 +73,7 @@
 
       defaults = { name, nodes, pkgs, ... }: 
       let
-        system = pkgs.system;
+        system = pkgs.stdenv.hostPlatform.system;
       in {
         imports = [
           #lix.nixosModules.default

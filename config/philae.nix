@@ -17,6 +17,7 @@ in
     ./services/tailscale.nix
     ./services/vaultwarden.nix
     ./services/forgejo.nix
+    ./services/paperless.nix
 #    ./services/syncproxy.nix
 #    ./utils/pgsql_update.nix
 #    ./tests/oauth2-proxy.nix
@@ -55,6 +56,7 @@ in
     vaultwarden.enable = true;
     minecraft.enable = true;
     forgejo.enable = true;
+    paperless.enable = true;
   };
 
   services = {
