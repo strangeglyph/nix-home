@@ -41,7 +41,13 @@ in
         dns = {
           base_domain = "${globals_hs.net.domain}";
           extra_records = headscale-dns-entries;
-          override_local_dns = false;
+          override_local_dns = true;
+          nameservers.global = [
+            "9.9.9.9" # quad9
+            "2620:fe::fe" # quad9 v6
+            "1.1.1.1" # cloudflare
+            "2606:4700:4700::1111" # cloudflare v6
+          ];
         };
         oidc = {
           client_secret_path = config.age.secrets.kanidm_oauth_interstice.path;
