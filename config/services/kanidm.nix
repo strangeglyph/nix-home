@@ -44,9 +44,7 @@ in
     age = lib.mkMerge transposed-age;
 
     services.kanidm = {
-      # 03.11.25 - default kanidmWithSecretProvisioning is 1.6.4, marked as insecure
-      #            revert to kanidmWithSecretProvisioning once default version is bumped
-      package = pkgs.kanidmWithSecretProvisioning_1_7;
+      package = pkgs.kanidmWithSecretProvisioning_1_8;
 
       enableClient = true;
       clientSettings = {
