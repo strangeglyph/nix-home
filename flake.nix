@@ -3,10 +3,6 @@
 
   inputs = {
     nixpkgs = { url = "github:nixos/nixpkgs/nixos-25.11"; };
-    #lix = {
-    #  url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
     flake-compat = {
       url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
       flake = false;
@@ -38,6 +34,10 @@
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cookbook = {
       url = "github:strangeglyph/cookbook";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,8 +56,18 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, colmena, disko, home-manager, stylix, agenix, agenix-rekey, ... }:
-  {
+  outputs = inputs@{ 
+    self,
+    nixpkgs,
+    colmena,
+    disko,
+    home-manager,
+    stylix,
+    agenix,
+    agenix-rekey,
+    sops-nix,
+    ... 
+  }: {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
     colmenaHive = colmena.lib.makeHive self.outputs.rawHive;
     rawHive = {
@@ -82,6 +92,7 @@
           stylix.nixosModules.stylix
           agenix.nixosModules.default
           agenix-rekey.nixosModules.default
+          sops-nix.nixosModules.sops
           ./config/utils/globals.nix
           ./config/default.nix
           ./hw/${name}.nix

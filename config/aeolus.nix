@@ -68,8 +68,8 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    jetbrains.idea-ultimate
-    jetbrains.pycharm-professional
+    jetbrains.idea
+    jetbrains.pycharm
     jetbrains.rust-rover
     poetry
     openscad

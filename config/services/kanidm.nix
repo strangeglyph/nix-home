@@ -14,6 +14,7 @@ let
 
   transposed-kanidm = lib.flatten (config.glyph.transpose-here [ "kanidm" ]);
   transposed-age = lib.catAttrs "age" transposed-kanidm;
+  transposed-sops = lib.catAttrs "sops" transposed-kanidm;
   transposed-provision = lib.catAttrs "provision" transposed-kanidm;
   transposed-extra-provision = json.type.merge {} (lib.map (x: { value = x; }) (lib.catAttrs "provision-extra" transposed-kanidm));
 in
@@ -42,6 +43,7 @@ in
     users.groups.acme.members = [ "kanidm" ];
 
     age = lib.mkMerge transposed-age;
+    sops = lib.mkMerge transposed-sops;
 
     services.kanidm = {
       package = pkgs.kanidmWithSecretProvisioning_1_8;
