@@ -102,6 +102,7 @@ in
             basicSecretFile = config.age.secrets.kanidm_oauth_interstice.path;
             preferShortUsername = true;
             scopeMaps."interstice_users" = [ "openid" "email" "profile" ];
+            imageFile = ../../assets/headscale3-dots.svg;
           };
         };
         extraJsonFile = json.generate "kanidm_extra_provision.json" transposed-extra-provision;

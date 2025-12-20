@@ -157,6 +157,7 @@ in
         originLanding = "https://${g_forgejo.domain}";
         basicSecretFile = nodes."${kanidm_host}".config.age.secrets."kanidm_basic_secret_forgejo".path;
         scopeMaps."forgejo_users" = [ "openid" "profile" "email" "groups" ];
+        imageFile = ../../assets/forgejo-logo.svg;
       };
     }];
 

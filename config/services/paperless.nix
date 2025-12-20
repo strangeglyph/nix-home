@@ -64,6 +64,7 @@ in
         originLanding = "https://${gservices.paperless.domain}";
         basicSecretFile = nodes."${gservices.kanidm.machine}".config.age.secrets."kanidm_basic_secret_paperless".path;
         scopeMaps."paperless_users" = [ "openid" "profile" "email" "groups" ];
+        imageFile = ../../assets/paperless-logo.svg;
       };
     }];
 
