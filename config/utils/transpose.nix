@@ -24,6 +24,11 @@ in
           description = "additional headscale dns entries to configure; use with `globals.services.headscale.mkDnsEntry`";
           default = [];
         };
+        nginx.virtualHosts = mkOption {
+          type = types.attrsOf types.anything;
+          description = "additional vhosts to configure on the front-facing nginx";
+          default = {};
+        };
       };
     });
     description = "config options that should be transposed to a different machine";

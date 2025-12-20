@@ -127,7 +127,7 @@ all@{ config, pkgs, lib, inputs, ... }:
     inotify-tools
     screen
     direnv
-    rage
+    rage sops
     npins
   ];
 }

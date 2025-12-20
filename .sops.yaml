@@ -1,0 +1,12 @@
+keys:
+  - &glyph age1hehqevtqgxmtdn8kaafa5hz4jdshmd2q979qgektwaqrjvthp4wqndj8t9
+  - &aeolus age13l5gnds8a0qjwxekfpak45ne74dce73lrs5yh782jwvuqrs2me6ssgwqwx
+  - &philae age1858rnuxtr8qhqglq2hv2rxw77tfu6vjyurfxuzu95cfhy2svzqtqktvjdu
+  - &moonlight age1v9hg890jxd68try43a74rvqsqg5wfyx8gxn4uc5g9442xawwwpsqkmrjej
+creation_rules:
+  - path_regex: ^secrets/sops/.*
+    age:
+      - *glyph
+      - *aeolus
+      - *philae
+      - *moonlight

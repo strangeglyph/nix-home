@@ -38,6 +38,10 @@
       url = "github:oddlama/agenix-rekey";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     cookbook = {
       url = "github:strangeglyph/cookbook";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,10 +58,30 @@
       url = "gitlab:lanastara_foss/starship-jj";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixarr = {
+      url = "github:rasmus-kirk/nixarr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    jellarr = {
+      url = "github:venkyr77/jellarr/v0.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, colmena, disko, home-manager, stylix, agenix, agenix-rekey, ... }:
-  {
+  outputs = inputs@{ 
+    self,
+    nixpkgs,
+    colmena,
+    disko,
+    home-manager,
+    stylix,
+    agenix,
+    agenix-rekey,
+    sops-nix,
+    nixarr,
+    jellarr,
+    ... 
+  }: {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
     colmenaHive = colmena.lib.makeHive self.outputs.rawHive;
     rawHive = {
@@ -82,6 +106,9 @@
           stylix.nixosModules.stylix
           agenix.nixosModules.default
           agenix-rekey.nixosModules.default
+          sops-nix.nixosModules.sops
+          nixarr.nixosModules.default
+          jellarr.nixosModules.default
           ./config/utils/globals.nix
           ./config/default.nix
           ./hw/${name}.nix

@@ -38,6 +38,10 @@ let
 
   paperless_host = "paper";
   paperless_domain = "${paperless_host}.${base}";
+
+  jellyfin_host = "video";
+  jellyfin_internal_domain = "${jellyfin_host}.${tailnet_domain}";
+  jellyfin_domain = "${jellyfin_host}.${base}";
 in
 {
   imports = [
@@ -71,6 +75,7 @@ in
             enableACME = mkIf (acme_host == null) true;
             listenAddresses = mkIf (listen != null) listen;
 
+            kTLS = true;
             quic = true;
             http3 = true;
             # advertise quic support
@@ -79,12 +84,22 @@ in
             '';
           };
 
-          mkReverseProxy = { proto ? "https", domain ? "[::1]", port, acme_host ? base, listen ? null }: (
+          mkReverseProxy = { 
+            proto ? "https",  # protocol to use
+            domain ? "[::1]", # target (upstream) host
+            port,             # target port
+            acme_host ? null, # use this certificate (request a new one via http-01 otherwise)
+            listen ? null,    # bind to this address (default is 0.0.0.0)
+            locationExtraConfig ? "", # extra config for location.'/'
+            useProxySettings ? true, # use recommendedProxySettings (disable if e.g. need to rewrite host header) 
+            ...
+          }: (
             mkDefault { inherit acme_host listen; } // {
               locations."/" = {
-                recommendedProxySettings = true;
+                recommendedProxySettings = useProxySettings;
                 proxyWebsockets = true;
                 proxyPass = "${proto}://${domain}:${toString port}";
+                extraConfig = locationExtraConfig;
               };
             }
           );
@@ -166,6 +181,14 @@ in
           domain = paperless_domain;
           bindaddr = "127.0.0.1";
           bindport = 44985;
+        };
+
+        jellyfin = {
+          host = jellyfin_host;
+          internal_domain = jellyfin_internal_domain;
+          public_domain = jellyfin_domain;
+          bindaddr = "127.0.0.1"; # hardcoded
+          bindport = 8096; # hardcoded http port
         };
       };
     };

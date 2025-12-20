@@ -7,6 +7,7 @@ in
     ./presets/server.nix
     ./services/restic-server.nix
     ./services/xmr.nix
+    ./services/media/default.nix
   ];
  
   networking.interfaces.enp2s0.useDHCP = true;
@@ -19,6 +20,7 @@ in
   glyph = {
     restic-server.enable = true;
     xmr.enable = true;
+    media.enable = true;
   };
 
   services = {
