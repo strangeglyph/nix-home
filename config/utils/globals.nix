@@ -71,6 +71,7 @@ in
             enableACME = mkIf (acme_host == null) true;
             listenAddresses = mkIf (listen != null) listen;
 
+            kTLS = true;
             quic = true;
             http3 = true;
             # advertise quic support
@@ -79,12 +80,22 @@ in
             '';
           };
 
-          mkReverseProxy = { proto ? "https", domain ? "[::1]", port, acme_host ? base, listen ? null }: (
+          mkReverseProxy = { 
+            proto ? "https",  # protocol to use
+            domain ? "[::1]", # target (upstream) host
+            port,             # target port
+            acme_host ? null, # use this certificate (request a new one via http-01 otherwise)
+            listen ? null,    # bind to this address (default is 0.0.0.0)
+            locationExtraConfig ? "", # extra config for location.'/'
+            useProxySettings ? true, # use recommendedProxySettings (disable if e.g. need to rewrite host header) 
+            ...
+          }: (
             mkDefault { inherit acme_host listen; } // {
               locations."/" = {
-                recommendedProxySettings = true;
+                recommendedProxySettings = useProxySettings;
                 proxyWebsockets = true;
                 proxyPass = "${proto}://${domain}:${toString port}";
+                extraConfig = locationExtraConfig;
               };
             }
           );
