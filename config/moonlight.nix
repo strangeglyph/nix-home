@@ -6,6 +6,7 @@ in
   imports = [
     ./presets/server.nix
     ./services/restic-server.nix
+    ./services/xmr.nix
   ];
  
   networking.interfaces.enp2s0.useDHCP = true;
@@ -17,6 +18,7 @@ in
 
   glyph = {
     restic-server.enable = true;
+    xmr.enable = true;
   };
 
   services = {
