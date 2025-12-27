@@ -23,6 +23,10 @@ let
   };
 in
 {
+  imports = [
+    ../restic-backup.nix
+  ];
+
   options.glyph.media.jellyfin.enable = mkOption { 
     description = "jellyfin media server"; 
     default = cfg.enable;  
@@ -42,6 +46,8 @@ in
     };
 
     nixarr.mediaUsers = [ "jellyfin" ];
+
+    glyph.restic.jellyfin.paths = [ "/var/lib/jellyfin" ];
 
     # secrets
     sops.secrets.jellyfin_api_key = {
@@ -202,18 +208,18 @@ in
             }
           '';
         };
-        library.virtualFolders = [
-          {
-            name = "Movies • Filme";
-            collectionType = "movies";
-            libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/movies";} ];
-          }
-          {
-            name = "Shows • Serien";
-            collectionType = "tvshows";
-            libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/shows";} ];
-          }
-        ];
+        #library.virtualFolders = [
+        #  {
+        #    name = "Movies • Filme";
+        #    collectionType = "movies";
+        #    libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/movies";} ];
+        #  }
+        #  {
+        #    name = "Shows • Serien";
+        #    collectionType = "tvshows";
+        #    libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/shows";} ];
+        #  }
+        #];
         plugins = [
           {
             name = "SSO Authentication";

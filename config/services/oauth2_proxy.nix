@@ -9,6 +9,7 @@ let
   kanidm_host = globals.services.kanidm.machine;
 
   mkClientId = vhost: "oauth2-proxy_${vhost}";
+  authHost = vhost: "auth.${vhost}";
   mkTransposedBasicSecretRef = vhost: nodes."${kanidm_host}".config.age.secrets."kanidm_basic_secret_${mkClientId vhost}";
 in
 {
@@ -18,6 +19,11 @@ in
     type = types.attrsOf (types.submodule {
       options = {
         port = mkOption { type = types.port; description = "port to bind this oauth2-proxy instance to"; };
+        nginxListen = mkOption {
+          description = "Override listen addresses for auth vhost";
+          type = types.listOf types.str; 
+          default = []; 
+        };
         displayName = mkOption { type = types.str; };
         allowed_groups = lib.mkOption {
           type = lib.types.nullOr (lib.types.listOf lib.types.str);
@@ -32,6 +38,11 @@ in
         allowed_email_domains = lib.mkOption {
           type = lib.types.nullOr (lib.types.listOf lib.types.str);
           description = "List of email domains to allow access to this vhost, or null to allow all.";
+          default = null;
+        };
+        logo = lib.mkOption {
+          type = lib.types.nullOr (lib.types.path);
+          description = "Logo for kanidm";
           default = null;
         };
       };
@@ -54,9 +65,10 @@ in
     };
     provision.systems.oauth2."${mkClientId vhost}" = {
       displayName = "${settings.displayName}";
-      originUrl = "https://auth.${vhost}/oauth2/callback";
+      originUrl = "https://${authHost vhost}/oauth2/callback";
       originLanding = "https://${vhost}";
       basicSecretFile = (mkTransposedBasicSecretRef vhost).path;
+      imageFile = settings.logo;
     };
     provision-extra = {
       # needed for idm_all_persons
@@ -100,8 +112,8 @@ in
     "oauth2-proxy---${lib.replaceStrings ["." "_"] ["--" "-"] vhost}" = {
       
       bindMounts."${config.age.secrets."oauth2-proxy_secrets_${vhost}".path}".isReadOnly = true;
-      bindMounts."${config.globals.acme.mkChain "auth.${vhost}"}".isReadOnly = true;
-      bindMounts."${config.globals.acme.mkKey "auth.${vhost}"}".isReadOnly = true;
+      bindMounts."${config.globals.acme.mkChain (authHost vhost)}".isReadOnly = true;
+      bindMounts."${config.globals.acme.mkKey (authHost vhost)}".isReadOnly = true;
       autoStart = true;
 
       config = { container-config, pkgs, ... }: {
@@ -118,8 +130,8 @@ in
 
           tls = {
             enable = true;
-            key = config.globals.acme.mkKey "auth.${vhost}";
-            certificate = config.globals.acme.mkChain "auth.${vhost}";
+            key = config.globals.acme.mkKey (authHost vhost);
+            certificate = config.globals.acme.mkChain (authHost vhost);
             httpsAddress = "https://[::1]:${toString settings.port}";
           };
 
@@ -129,10 +141,12 @@ in
           clientID = mkClientId vhost;
           keyFile = config.age.secrets."oauth2-proxy_secrets_${vhost}".path;
           # httpAddress = "http://[::1]:${toString settings.port}";
-          redirectURL = "https://auth.${vhost}/oauth2/callback";
+          redirectURL = "https://${authHost vhost}/oauth2/callback";
           oidcIssuerUrl = globals.services.kanidm.makeOidc (mkClientId vhost);
-          scope = "openid email";
+          scope = "openid email groups";
           email.domains = [ "*" ];
+          setXauthrequest = true;
+          reverseProxy = true;
 
           extraConfig = {
             provider-display-name = "[-門-]";
@@ -147,29 +161,35 @@ in
   }) cfg);
 
   config.security.acme.certs = mkMerge (lib.mapAttrsToList (vhost: _: {
-    "auth.${vhost}".group = "oauth2-proxy-cert-access";
+    "${authHost vhost}".group = "oauth2-proxy-cert-access";
   }) cfg);
 
   # cf. https://github.com/NixOS/nixpkgs/blob/nixos-25.05/nixos/modules/services/security/oauth2-proxy-nginx.nix
-  # overview:https://typst.app/
+  # overview:
   # for every protected vhost `vhost`:
-  # - auth.${vhost} is the reverse proxy endpoint for oauth2-proxy
-  # - ${vhost} sets auth_request to ${vhost}/oauth2/auth and redirects 401 to auth.${vhost}/oauth/start
+  # - ${authHost vhost} is the reverse proxy endpoint for oauth2-proxy
+  # - ${vhost} sets auth_request to ${vhost}/oauth2/auth and redirects 401 to ${authHost vhost}/oauth/start
   # - ${vhost}/oauth2/auth is a reverse proxy endpoint for oauth2-proxy/oauth2/auth
   config.services.nginx = mkMerge (lib.mapAttrsToList (vhost: settings: {
     recommendedProxySettings = true;
 
-    virtualHosts."auth.${vhost}" = config.globals.services.nginx.mkReverseProxy { 
+    virtualHosts."${authHost vhost}" = config.globals.services.nginx.mkReverseProxy { 
       proto = "https";
       port = settings.port;
-      acme_host = null;
+      acme_host = "${authHost vhost}";
+      listen = settings.nginxListen;
+      serverExtraConfig = ''
+        proxy_buffer_size         128k;
+        proxy_buffers             4 256k;
+        proxy_busy_buffers_size   256k;
+      '';
     } // {
       locations."/oauth2/" = {
         proxyPass = "https://[::1]:${toString settings.port}";
         extraConfig = ''
           auth_request off;
-          proxy_set_header X-Scheme                $scheme;
-          proxy_set_header X-Auth-Request-Redirect $scheme://$host$request_uri;
+          proxy_set_header X-Scheme                https;
+          proxy_set_header X-Auth-Request-Redirect https://$host$request_uri;
         '';
       };
     };
@@ -204,7 +224,7 @@ in
           extraConfig = ''
             internal;
             auth_request off;
-            proxy_set_header X-Scheme         $scheme;
+            proxy_set_header X-Scheme         https;
             # nginx auth_request includes headers but not body
             proxy_set_header Content-Length   "";
             proxy_set_header X-Original-URI   $request_uri;
@@ -213,7 +233,7 @@ in
         };
 
         "@redirectToAuth2ProxyLogin" = {
-          return = "307 https://auth.${vhost}/oauth2/start?rd=$scheme://$host$request_uri";
+          return = "307 https://${authHost vhost}/oauth2/start?rd=https://$host$request_uri";
           extraConfig = ''
             auth_request off;
           '';

@@ -86,6 +86,7 @@ in
               "paperless_admins"
               "jellyfin_users"
               "jellyfin_admins"
+              "flood_users"
             ];
           };
         };
@@ -97,6 +98,7 @@ in
           "paperless_admins" = {};
           "jellyfin_users" = {};
           "jellyfin_admins" = {};
+          "flood_users" = {};
         };
         systems.oauth2 = {
           "interstice" = {

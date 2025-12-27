@@ -9,6 +9,7 @@ in
     ../acme.nix
     ../nginx-common.nix
     ./jellyfin.nix
+    ./transmission.nix
   ];
 
   options.glyph = {
@@ -18,14 +19,8 @@ in
   config = mkIf cfg.enable {
     nixarr = {
       enable = true;
-      mediaDir = "/data/media/media";
+      mediaDir = "/data/media/";
       stateDir = "/var/lib/nixarr";
     };
-
-    #age.secrets = {
-    #  "mullvad.wg.conf" = {
-    #    rekeyFile = ../../secrets/sources/vpn/mullvadd.wg.conf.age;
-    #  };
-    #};
   };
 }
