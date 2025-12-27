@@ -65,7 +65,7 @@ in
 
       services = {
         nginx = rec {
-          mkDefault = { listen ? null, acme_host ? base }: {
+          mkDefault = { listen ? null, acme_host ? base, extraConfig ? "" }: {
             forceSSL = true;
             useACMEHost = mkIf (acme_host != null) acme_host;
             enableACME = mkIf (acme_host == null) true;
@@ -77,7 +77,8 @@ in
             # advertise quic support
             extraConfig = ''
               add_header Alt-Svc 'h3=":$server_port"; ma=86400';
-            '';
+
+            '' + extraConfig;
           };
 
           mkReverseProxy = { 
@@ -87,10 +88,10 @@ in
             acme_host ? null, # use this certificate (request a new one via http-01 otherwise)
             listen ? null,    # bind to this address (default is 0.0.0.0)
             locationExtraConfig ? "", # extra config for location.'/'
+            serverExtraConfig ? "", # extra config for server
             useProxySettings ? true, # use recommendedProxySettings (disable if e.g. need to rewrite host header) 
-            ...
           }: (
-            mkDefault { inherit acme_host listen; } // {
+            mkDefault { inherit acme_host listen; extraConfig = serverExtraConfig; } // {
               locations."/" = {
                 recommendedProxySettings = useProxySettings;
                 proxyWebsockets = true;
