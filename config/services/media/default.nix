@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     nixarr = {
       enable = true;
-      mediaDir = "/data/media/";
+      mediaDir = "/data/media";
       stateDir = "/var/lib/nixarr";
     };
   };

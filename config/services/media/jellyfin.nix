@@ -186,6 +186,12 @@ in
             @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/glassy.css');
             @import url('https://cdn.jsdelivr.net/gh/CTalvio/Ultrachromic/effects/pan-animation.css');
 
+            .backdropImage {filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);}
+            #loginPage::before { 
+              background: url(https://i.imgur.com/zOmQOpw.jpeg) !important;
+              filter: blur(18px) saturate(120%) contrast(120%) brightness(40%);
+            }
+
             :root {--accent: 180, 73, 0;}
             :root {--rounding: 12px;}
 
@@ -208,18 +214,18 @@ in
             }
           '';
         };
-        #library.virtualFolders = [
-        #  {
-        #    name = "Movies • Filme";
-        #    collectionType = "movies";
-        #    libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/movies";} ];
-        #  }
-        #  {
-        #    name = "Shows • Serien";
-        #    collectionType = "tvshows";
-        #    libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/shows";} ];
-        #  }
-        #];
+        library.virtualFolders = [
+          {
+            name = "Movies • Filme";
+            collectionType = "movies";
+            libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/movies";} ];
+          }
+          {
+            name = "Shows • Serien";
+            collectionType = "tvshows";
+            libraryOptions.pathInfos = [ {path = "${config.nixarr.mediaDir}/library/shows";} ];
+          }
+        ];
         plugins = [
           {
             name = "SSO Authentication";
