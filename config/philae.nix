@@ -54,7 +54,7 @@ in
     kanidm.enable = true;
     headscale.enable = true;
     vaultwarden.enable = true;
-    minecraft.enable = true;
+    minecraft.enable = false;
     forgejo.enable = true;
     paperless.enable = true;
   };
