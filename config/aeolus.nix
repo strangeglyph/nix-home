@@ -63,6 +63,8 @@
   home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
   home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
 
+  nix.settings.trusted-users = [ "root" "@wheel" ];
+
   glyph.restic."aeolus".paths = [
     "/home/lschuetze/Documents"
   ];
