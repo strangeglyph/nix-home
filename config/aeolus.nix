@@ -78,6 +78,7 @@
     (agda.withPackages [ agdaPackages.standard-library ])
     vscode-fhs
     inkscape-with-extensions
+    devenv
   ];
 
   system.stateVersion = "21.05";
