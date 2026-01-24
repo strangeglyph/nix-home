@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>Interstice</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+            }
+
+            #container {
+                display: flex;
+                flex-direction: column;
+                width: 750px;
+            }
+
+            code {
+                font-size: 16px;
+                color: orangered;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <h1>Hello there</h1>
+            <p>
+                You have tried to access the VPN at interstice.apophenic.net, but are currently not connected.
+            </p>
+            <p>
+                If you have already installed the VPN client, please ensure you are connected before repeating this
+                request. Otherwise, follow the installation instructions below:
+            </p>
+
+            <h2>Windows</h2>
+            <p>
+                <il>
+                    <li>Install the Tailscale client from <a href="https://tailscale.com/kb/1022/install-windows">here</a>.</li>
+                    <li>Press Windows+R and enter <code>cmd</code>.</li>
+                    <li>Run <code>tailscale login --login-server https://ouroboros.apophenic.net</code> and follow the instructions displayed.</li>
+                </il>
+            </p>
+            <h2>Android</h2>
+            <p>
+                <il>
+                    <li>Install the Tailscale app from <a href="https://play.google.com/store/apps/details?id=com.tailscale.ipn">here</a>.</li>
+                    <li>Open the app and select the settings menu in the upper-right corner.</li>
+                    <li>Tap on <code>Accounts</code>.</li>
+                    <li>In the kebab menu icon (three dots) in the upper-right corner select <code>Use an alternate server</code>.</li>
+                    <li>Enter the server url <code>https://ouroboros.apophenic.net</code> and follow the instructions displayed.</li>
+                </il>
+            </p>
+        </div>
+    </body>
+</html>
