@@ -38,6 +38,9 @@ let
 
   paperless_host = "paper";
   paperless_domain = "${paperless_host}.${base}";
+
+  actualbudget_host = "budget";
+  actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
 {
   imports = [
@@ -143,6 +146,7 @@ in
           bindport = 49741;
           ldapbindport = 3636;
           makeOidc = client-id: "https://${kanidm_domain}/oauth2/openid/${client-id}";
+          mkDiscoveryUrl = client-id: "https://${kanidm_domain}/oauth2/openid/${client-id}";
         };
 
         oauth2-proxy = {
@@ -178,6 +182,13 @@ in
           domain = paperless_domain;
           bindaddr = "127.0.0.1";
           bindport = 44985;
+        };
+
+        actualbudget = {
+          host = actualbudget_host;
+          domain = actualbudget_domain;
+          bindaddr = "::1";
+          bindport = 29822;
         };
       };
     };

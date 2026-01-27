@@ -86,6 +86,7 @@ in
               "forgejo_admins"
               "paperless_users"
               "paperless_admins"
+              "actualbudget_users"
             ];
           };
         };
@@ -95,6 +96,7 @@ in
           "forgejo_admins" = {};
           "paperless_users" = {};
           "paperless_admins" = {};
+          "actualbudget_users" = {};
         };
         systems.oauth2 = {
           "interstice" = {

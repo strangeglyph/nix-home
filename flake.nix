@@ -109,6 +109,8 @@
             localStorageDir = ./. + "/secrets/rekeyed/${name}";
           };
 
+          sops.defaultSopsFile = secrets/sops/secrets.yaml;
+
           environment.systemPackages = [
             agenix-rekey.packages.${system}.default
             colmena.packages.${system}.colmena

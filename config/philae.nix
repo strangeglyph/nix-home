@@ -18,6 +18,7 @@ in
     ./services/vaultwarden.nix
     ./services/forgejo.nix
     ./services/paperless.nix
+    ./services/actualbudget.nix
 #    ./services/syncproxy.nix
 #    ./utils/pgsql_update.nix
 #    ./tests/oauth2-proxy.nix
@@ -57,6 +58,7 @@ in
     minecraft.enable = false;
     forgejo.enable = true;
     paperless.enable = true;
+    actualbudget.enable = true;
   };
 
   services = {
