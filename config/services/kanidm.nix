@@ -89,6 +89,34 @@ in
               "actualbudget_users"
             ];
           };
+          "o" = {
+            displayName = "O.";
+            mailAddresses = [];
+            groups = [
+              "interstice_users"
+            ];
+          };
+          "h" = {
+            displayName = "H.";
+            mailAddresses = [];
+            groups = [
+              "interstice_users"
+            ];
+          };
+          "m" = {
+            displayName = "M.";
+            mailAddresses = [];
+            groups = [
+              "interstice_users"
+            ];
+          };
+          "g" = {
+            displayName = "G.";
+            mailAddresses = [];
+            groups = [
+              "interstice_users"
+            ];
+          };
         };
         groups = {
           "interstice_users" = {};
