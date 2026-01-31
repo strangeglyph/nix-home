@@ -79,7 +79,7 @@ in
         persons = {
           "glyph" = {
             displayName = "glyph";
-            mailAddresses = [ "interstice@mail.apophenic.net" ];
+            mailAddresses = [ ];
             groups = [ 
               "interstice_users"
               "forgejo_users"
@@ -140,6 +140,27 @@ in
         extraJsonFile = json.generate "kanidm_extra_provision.json" transposed-extra-provision;
       }] ++ transposed-provision);
     };
+
+    glyph.transpose.kanidm = [{
+      provision-extra = {
+        persons.glyph.groups = [
+          "idm_admins"
+          "idm_people_self_mail_write"
+        ];
+        persons.o.groups = [
+          "idm_people_self_mail_write"
+        ];
+        persons.h.groups = [
+          "idm_people_self_mail_write"
+        ];
+        persons.m.groups = [
+          "idm_people_self_mail_write"
+        ];
+        persons.g.groups = [
+          "idm_people_self_mail_write"
+        ];
+      };
+    }];
 
     services.nginx = {
       enable = true;
