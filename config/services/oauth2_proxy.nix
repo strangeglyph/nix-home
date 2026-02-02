@@ -26,9 +26,8 @@ in
         };
         displayName = mkOption { type = types.str; };
         allowed_groups = lib.mkOption {
-          type = lib.types.nullOr (lib.types.listOf lib.types.str);
-          description = "List of groups to allow access to this vhost, or null to allow all.";
-          default = null;
+          type = lib.types.listOf lib.types.str;
+          description = "List of groups to allow access to this vhost (idm_all_persons to allow all)";
         };
         allowed_emails = lib.mkOption {
           type = lib.types.nullOr (lib.types.listOf lib.types.str);
@@ -55,9 +54,17 @@ in
       You are trying to gate one or more vhosts behind oauth, but kanidm isn't marked as enabled
       on machine ${kanidm_host}.
     '';
-  };
+  } ++ (lib.mapAttrsToList (vhost: config: {
+    assertion = config.allowed_groups != [];
+    message = ''
+      oauth2-proxy: vhost ${vhost}: allowed_groups is mandatory (use idm_all_persons to permit all)
+    '';
+  }) cfg);
 
-  config.glyph.transpose.kanidm = lib.mapAttrsToList (vhost: settings: {
+  config.glyph.transpose.kanidm = lib.mapAttrsToList (vhost: settings: let
+    accessible-for-all = builtins.elem "idm_all_persons" settings.allowed_groups;
+  in  
+  {
     age.secrets."kanidm_basic_secret_${mkClientId vhost}" = {
       rekeyFile = ../../secrets/sources/kanidm/basic_secret_${mkClientId vhost}.age;
       owner = "kanidm";
@@ -69,12 +76,12 @@ in
       originLanding = "https://${vhost}";
       basicSecretFile = (mkTransposedBasicSecretRef vhost).path;
       imageFile = settings.logo;
+      scopeMaps = lib.optionalAttrs (! accessible-for-all) (
+        lib.genAttrs settings.allowed_groups (_: [ "openid" "email" "groups" ])
+      );
     };
-    provision-extra = {
-      # needed for idm_all_persons
-      systems.oauth2."${mkClientId vhost}" = {
-        scopeMaps."idm_all_persons" = [ "openid" "email" "groups" ];
-      };
+    provision-extra = lib.optionalAttrs accessible-for-all {
+      systems.oauth2."${mkClientId vhost}".scopeMaps.idm_all_persons = [ "openid" "email" "groups" ];
     };
   }) cfg;
 
