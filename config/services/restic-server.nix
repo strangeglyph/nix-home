@@ -36,6 +36,11 @@ in
       };
     };
 
+    age.secrets.restic_auth_rosetta = {
+      rekeyFile = ../../secrets/sources/restic/repo_auth_rosetta.age;
+      owner = "restic";
+    };
+
     networking.firewall.allowedTCPPorts = [ g_restic_server.bindport ];
 
     services.restic.server = {
@@ -57,6 +62,10 @@ in
 
     glyph.transpose.headscale.dns = [
       (g_headscale.mkDnsEntry g_restic_server.host)
+    ];
+
+    glyph.transpose.restic.auth-files = [
+      config.age.secrets.restic_auth_rosetta  # for windows desktop
     ];
 
     security.acme.certs.${g_restic_server.domain} = {
