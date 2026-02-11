@@ -50,6 +50,10 @@
       url = "github:strangeglyph/cartograph";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spacebar = {
+      url = "github:spacebarchat/server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     starship-jj = {
       url = "gitlab:lanastara_foss/starship-jj";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,6 +70,7 @@
     agenix,
     agenix-rekey,
     sops-nix,
+    spacebar,
     ... 
   }: {
     nixosConfigurations = self.outputs.colmenaHive.nodes;
@@ -93,6 +98,7 @@
           agenix.nixosModules.default
           agenix-rekey.nixosModules.default
           sops-nix.nixosModules.sops
+          spacebar.nixosModules.default
           ./config/utils/globals.nix
           ./config/default.nix
           ./hw/${name}.nix

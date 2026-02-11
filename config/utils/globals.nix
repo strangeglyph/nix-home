@@ -39,6 +39,9 @@ let
   paperless_host = "paper";
   paperless_domain = "${paperless_host}.${base}";
 
+  spacebar_host = "satellite";
+  spacebar_domain = "${spacebar_host}.${base}";
+
   actualbudget_host = "budget";
   actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
@@ -182,6 +185,28 @@ in
           domain = paperless_domain;
           bindaddr = "127.0.0.1";
           bindport = 44985;
+        };
+
+        spacebar = {
+          host = spacebar_host;
+          domain = spacebar_domain;
+          bindaddr = "127.0.0.1";
+          admin-api = {
+            domain = "admin-api.${spacebar_domain}";
+            port = 34411;
+          };
+          api = {
+            domain = "api.${spacebar_domain}";
+            port = 34412;
+          };
+          gateway = {
+            domain = "gateway.${spacebar_domain}";
+            port = 34413;
+          };
+          cdn = {
+            domain = "cdn.${spacebar_domain}";
+            port = 34414;
+          };
         };
 
         actualbudget = {
