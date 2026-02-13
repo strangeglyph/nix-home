@@ -66,7 +66,7 @@ in
           endpointPublic = "https://${gservices.spacebar.cdn.domain}";
         };
         gateway = {
-          endpointPrivate = "http://${gservices.spacebar.bindaddr}:${toString gservices.spacebar.gateway.port}";
+          endpointPrivate = "ws://${gservices.spacebar.bindaddr}:${toString gservices.spacebar.gateway.port}";
           endpointPublic = "wss://${gservices.spacebar.gateway.domain}";
         };
         general = {
@@ -90,7 +90,6 @@ in
           disabled = true;
           requireInvite = true;
         };
-        rabbitmq.host = "amqp://guest:guest@${config.services.rabbitmq.listenAddress}:${toString config.services.rabbitmq.port}";
         guild = {
           autoJoin = {
             bots = false;
@@ -132,10 +131,6 @@ in
       ];
     };
 
-    services.rabbitmq = {
-      enable = true;
-    };
-
     services.nginx.virtualHosts."${gservices.spacebar.domain}" = gservices.nginx.mkReverseProxy {
       proto = "http";
       domain = gservices.spacebar.bindaddr;
@@ -150,10 +145,11 @@ in
     } // {
       locations."/.well-known/spacebar" = {
         return = ''
-          200 '{"api": "https://api.${gservices.spacebar.domain}/api/v9"}'
+          200 '{"api": "https://api.${gservices.spacebar.domain}/api/v9/"}'
         '';
         extraConfig = ''
           add_header Access-Control-Allow-Origin *;
+          add_header Content-Type application/json;
         '';
       };
     };
