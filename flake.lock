@@ -166,11 +166,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764856070,
-        "narHash": "sha256-655BdKO37b+m9CnrqurVtExerh2s4qHPxMRaZ7MUaAk=",
+        "lastModified": 1772739795,
+        "narHash": "sha256-ejGHFJC8+ilgfrawX/1v7ZjUIN1R9LLYfZxt1csHQuQ=",
         "owner": "strangeglyph",
         "repo": "cookbook",
-        "rev": "48cc4ddd36ad41446b46248782f0bc9c4ae4df2a",
+        "rev": "0c9240ea90d08332db18d89f39dcef2d79b78a72",
         "type": "github"
       },
       "original": {
@@ -182,11 +182,11 @@
     "cookbook-recipes": {
       "flake": false,
       "locked": {
-        "lastModified": 1762172581,
-        "narHash": "sha256-plJBQAD2iEb9GSxr2XPyWYVjHFlDWjn9CbA+yqPVQEA=",
+        "lastModified": 1772739768,
+        "narHash": "sha256-7vora6UfpLqeHAoOAlGhwkBWCBS8re8RtacEfiFkNIc=",
         "owner": "strangeglyph",
         "repo": "cookbook-recipes",
-        "rev": "dca1af5dde0ed753823cb44963d57cc8b3ddb58c",
+        "rev": "422446ccb96fbefa1f815a3303ae6642b06e3fc7",
         "type": "github"
       },
       "original": {
