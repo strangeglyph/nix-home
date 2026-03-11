@@ -61,6 +61,8 @@ all@{ config, pkgs, lib, inputs, ... }:
       automatic = true;
     };
     registry.nixpkgs.flake = inputs.nixpkgs;
+    settings.nix-path = [ "nixpkgs=flake:nixpkgs" ];
+    channel.enable = false;
   };
 
   services = {
