@@ -46,7 +46,7 @@ in
     sops = lib.mkMerge transposed-sops;
 
     services.kanidm = {
-      package = pkgs.kanidmWithSecretProvisioning_1_8;
+      package = pkgs.kanidmWithSecretProvisioning_1_9;
 
       enableClient = true;
       clientSettings = {
