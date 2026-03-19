@@ -79,7 +79,7 @@ in
         persons = {
           "glyph" = {
             displayName = "glyph";
-            mailAddresses = [ ];
+            mailAddresses = [ "glyph@dummy.apophenic.net" ];
             groups = [ 
               "interstice_users"
               "forgejo_users"
@@ -91,28 +91,28 @@ in
           };
           "o" = {
             displayName = "O.";
-            mailAddresses = [];
+            mailAddresses = [ "o@dummy.apophenic.net" ];
             groups = [
               "interstice_users"
             ];
           };
           "h" = {
             displayName = "H.";
-            mailAddresses = [];
+            mailAddresses = [ "h@dummy.apophenic.net" ];
             groups = [
               "interstice_users"
             ];
           };
           "m" = {
             displayName = "M.";
-            mailAddresses = [];
+            mailAddresses = [ "m@dummy.apophenic.net" ];
             groups = [
               "interstice_users"
             ];
           };
           "g" = {
             displayName = "G.";
-            mailAddresses = [];
+            mailAddresses = [ "g@dummy.apophenic.net" ];
             groups = [
               "interstice_users"
             ];
