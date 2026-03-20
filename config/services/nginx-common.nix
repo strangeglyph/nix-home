@@ -27,14 +27,19 @@ in
       access_log /var/log/nginx/other_vhosts_access.log vhost_combined;
     '';
 
-    virtualHosts = mkIf (cfg.http-challenge-host != null) {
-      "${ cfg.http-challenge-host }" = {
-        enableACME = true;
+    virtualHosts = lib.mkMerge [
+      (lib.optionalAttrs (cfg.http-challenge-host != null) {
+        "${ cfg.http-challenge-host }" = {
+          enableACME = true;
 
-        locations."~* \.(php)$" = {
-          return = "301 https://ash-speed.hetzner.com/10GB.bin";
+          locations."~* \.(php)$" = {
+            return = "301 https://ash-speed.hetzner.com/10GB.bin";
+          };
         };
-      };
-    };
+      })
+      ({
+        "aaaa.honeytrap.apophenic.net".globalRedirect = "https://ash-speed.hetzner.com/10GB.bin";
+      })
+    ];
   };
 }
