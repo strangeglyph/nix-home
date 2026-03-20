@@ -115,6 +115,12 @@ in
     };
   }) cfg);
 
+  config.systemd.services = mkMerge (lib.mapAttrsToList (vhost: settings: {
+    "container@oauth2-proxy---${lib.replaceStrings ["." "_"] ["--" "-"] vhost}" = {
+      after = [ "kanidm.service" ];
+    };
+  }) cfg);
+
   config.containers = mkMerge (lib.mapAttrsToList (vhost: settings: { 
     "oauth2-proxy---${lib.replaceStrings ["." "_"] ["--" "-"] vhost}" = {
       
