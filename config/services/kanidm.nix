@@ -53,6 +53,11 @@ in
     age = lib.mkMerge transposed-age;
     sops = lib.mkMerge transposed-sops;
 
+    networking.firewall.interfaces."${config.services.tailscale.interfaceName}" = {
+      allowedTCPPorts = [ g_kanidm.ldapbindport ];
+      allowedUDPPorts = [ g_kanidm.ldapbindport ];
+    };
+
     services.kanidm = {
       package = pkgs.kanidmWithSecretProvisioning_1_9;
 
@@ -64,7 +69,7 @@ in
       enableServer = true;
       serverSettings = {
         bindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.bindport}";
-        ldapbindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.ldapbindport}";
+        ldapbindaddress = "${globals.services.headscale.myAddr}:${toString g_kanidm.ldapbindport}";
         trust_x_forward_for = true;
         domain = domain;
         origin = "https://${domain}";
