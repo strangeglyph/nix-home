@@ -50,6 +50,14 @@
   systemd.user.extraConfig = "DefaultTimeoutStopSec=15s";
 
   services.tailscale.enable = true;
+  glyph.tailscale = {
+    operator = "lschuetze";
+    taildrop = {
+      enable = true;
+      directory = "/home/lschuetze/Downloads/taildrop";
+      conflict = "rename";
+    };
+  };
 
   users.users.lschuetze = {
     isNormalUser = true;

@@ -31,6 +31,14 @@ all@{
     "1.1.1.1"
   ];
 
+  networking.nftables.enable = true;
+  networking.firewall = {
+    enable = true;
+  };
+
+  systemd.network.wait-online.enable = false;
+  boot.initrd.systemd.network.wait-online.enable = false;
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.supportedLocales = [
