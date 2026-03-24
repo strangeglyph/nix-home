@@ -1,30 +1,43 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.services.headscale;
   globals = config.globals;
   globals_hs = globals.services.headscale;
-  headscale-dns-entries = lib.flatten (config.glyph.transpose-here [ "headscale" "dns" ]);
+  headscale-dns-entries = lib.flatten (
+    config.glyph.transpose-here [
+      "headscale"
+      "dns"
+    ]
+  );
 in
 {
   imports = [
     ./nginx-common.nix
   ];
 
-  options.glyph.headscale.enable = mkEnableOption {};
+  options.glyph.headscale.enable = mkEnableOption { };
 
   config = mkIf config.glyph.headscale.enable {
     users.groups.acme.members = [ "headscale" ];
-    
+
     age.secrets.kanidm_oauth_interstice = {
       rekeyFile = ../../secrets/sources/kanidm/basic_secret_interstice.age;
       group = "oauth_interstice";
       mode = "0440";
       generator.script = "alnum";
     };
-    
+
     users.groups = {
-      oauth_interstice.members = [ "headscale" "kanidm" ];
+      oauth_interstice.members = [
+        "headscale"
+        "kanidm"
+      ];
     };
 
     # for self-hosted DERP
@@ -58,20 +71,18 @@ in
       };
     };
 
-
     services.nginx = {
       enable = true;
       virtualHosts."${globals_hs.domain}" = {
         forceSSL = true;
         useACMEHost = globals.domains.base;
-        
+
         quic = true;
         http3 = true;
         # advertise quic support
         extraConfig = ''
           add_header Alt-Svc 'h3=":$server_port"; ma=86400';
         '';
-
 
         locations."/" = {
           proxyPass = "https://${globals_hs.bindaddr}:${toString globals_hs.bindport}";
@@ -99,4 +110,3 @@ in
 
   };
 }
-

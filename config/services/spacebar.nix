@@ -1,11 +1,18 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (lib) mkIf;
   gservices = config.globals.services;
   cfg = config.glyph.spacebar;
 in
 {
-  options.glyph.spacebar.enable = lib.mkEnableOption { description = "Spacebar (née Fosscord) server"; };
+  options.glyph.spacebar.enable = lib.mkEnableOption {
+    description = "Spacebar (née Fosscord) server";
+  };
 
   config = mkIf cfg.enable {
     security.acme.certs."${gservices.spacebar.domain}" = {
@@ -19,9 +26,9 @@ in
       group = "nginx";
     };
 
-    sops.secrets."spacebar/cdnSignature" = {};
-    sops.secrets."spacebar/requestSignature" = {};
-    
+    sops.secrets."spacebar/cdnSignature" = { };
+    sops.secrets."spacebar/requestSignature" = { };
+
     services.spacebarchat-server = {
       enable = true;
       # not currently supported
@@ -31,7 +38,7 @@ in
 
       cdnSignaturePath = config.sops.secrets."spacebar/cdnSignature".path;
       requestSignaturePath = config.sops.secrets."spacebar/requestSignature".path;
-    
+
       adminApiEndpoint = {
         useSsl = true;
         host = gservices.spacebar.admin-api.domain;
@@ -118,41 +125,45 @@ in
       };
     };
 
-    services.postgresql = let
-      serviceUser = config.systemd.services.spacebar-api.serviceConfig.User;
-    in {
-      enable = true;
-      ensureDatabases = [ serviceUser ];
-      ensureUsers = [
-        {
-          name = serviceUser;
-          ensureDBOwnership = true;
-        }
-      ];
-    };
-
-    services.nginx.virtualHosts."${gservices.spacebar.domain}" = gservices.nginx.mkReverseProxy {
-      proto = "http";
-      domain = gservices.spacebar.bindaddr;
-      port = gservices.spacebar.api.port;
-      acme_host = gservices.spacebar.domain;
-      locationExtraConfig = ''
-        add_header Last-Modified $date_gmt;
-        add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
-        proxy_no_chache 1;
-        proxy_cache_bypass 1;
-      '';
-    } // {
-      locations."/.well-known/spacebar" = {
-        return = ''
-          200 '{"api": "https://api.${gservices.spacebar.domain}/api/v9/"}'
-        '';
-        extraConfig = ''
-          add_header Access-Control-Allow-Origin *;
-          add_header Content-Type application/json;
-        '';
+    services.postgresql =
+      let
+        serviceUser = config.systemd.services.spacebar-api.serviceConfig.User;
+      in
+      {
+        enable = true;
+        ensureDatabases = [ serviceUser ];
+        ensureUsers = [
+          {
+            name = serviceUser;
+            ensureDBOwnership = true;
+          }
+        ];
       };
-    };
+
+    services.nginx.virtualHosts."${gservices.spacebar.domain}" =
+      gservices.nginx.mkReverseProxy {
+        proto = "http";
+        domain = gservices.spacebar.bindaddr;
+        port = gservices.spacebar.api.port;
+        acme_host = gservices.spacebar.domain;
+        locationExtraConfig = ''
+          add_header Last-Modified $date_gmt;
+          add_header Cache-Control 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+          proxy_no_chache 1;
+          proxy_cache_bypass 1;
+        '';
+      }
+      // {
+        locations."/.well-known/spacebar" = {
+          return = ''
+            200 '{"api": "https://api.${gservices.spacebar.domain}/api/v9/"}'
+          '';
+          extraConfig = ''
+            add_header Access-Control-Allow-Origin *;
+            add_header Content-Type application/json;
+          '';
+        };
+      };
 
     #services.nginx.virtualHosts.${gservices.spacebar.admin-api.domain} = gservices.nginx.mkReverseProxy {
     #  proto = "http";

@@ -1,14 +1,22 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 with lib;
 let
   cfg = config.services.cookbook;
   acme = config.security.acme;
-  cookbook-config = pkgs.writeText "config.json" (builtins.toJSON {
-    COOKBOOK_LOCATION = cfg.recipe-folder;
-    DEFAULT_LANG = cfg.default-language;
-    SITE_NAME = cfg.site-name;
-    BASE_URL = "https://${cfg.vhost}";
-  });
+  cookbook-config = pkgs.writeText "config.json" (
+    builtins.toJSON {
+      COOKBOOK_LOCATION = cfg.recipe-folder;
+      DEFAULT_LANG = cfg.default-language;
+      SITE_NAME = cfg.site-name;
+      BASE_URL = "https://${cfg.vhost}";
+    }
+  );
 in
 {
   imports = [
@@ -18,37 +26,51 @@ in
   options.services.cookbook = {
     enable = mkEnableOption "cookbook service";
     vhost = mkOption { type = types.str; };
-    acme-uses-dns = mkOption { type = types.bool; default = true; };
-    acme-host = mkOption { 
-      type = types.str; 
-      description = "ACME host to use for the cert, only necessary if using DNS. Otherwise acme.http-challenge-host is used"; 
+    acme-uses-dns = mkOption {
+      type = types.bool;
+      default = true;
+    };
+    acme-host = mkOption {
+      type = types.str;
+      description = "ACME host to use for the cert, only necessary if using DNS. Otherwise acme.http-challenge-host is used";
     };
     recipe-folder = mkOption { type = types.path; };
-    default-language = mkOption { type = types.str; default = "en"; };
-    site-name = mkOption { type = types.str; default = "Cookbook"; };
+    default-language = mkOption {
+      type = types.str;
+      default = "en";
+    };
+    site-name = mkOption {
+      type = types.str;
+      default = "Cookbook";
+    };
   };
 
   config = mkIf cfg.enable {
-    security.acme.certs = mkIf (! cfg.acme-uses-dns) {
-      "${ acme.http-challenge-host }".extraDomainNames = [ cfg.vhost ];
+    security.acme.certs = mkIf (!cfg.acme-uses-dns) {
+      "${acme.http-challenge-host}".extraDomainNames = [ cfg.vhost ];
     };
 
     nixpkgs.overlays = [ inputs.cookbook.overlay ];
 
-    users.groups.www-data.members = [ "nginx" "uwsgi" ];
+    users.groups.www-data.members = [
+      "nginx"
+      "uwsgi"
+    ];
 
     age.secrets."cookbook-secret.json" = {
       rekeyFile = ../../secrets/sources/cookbook-secret.json.age;
       owner = "uwsgi";
-      generator.script = { pkgs, lib, ...}: ''
-        key=$(${lib.getExe pkgs.openssl} rand -base64 32)
-        printf '{ "SECRET_KEY": "%s" }\n'
-      '';
+      generator.script =
+        { pkgs, lib, ... }:
+        ''
+          key=$(${lib.getExe pkgs.openssl} rand -base64 32)
+          printf '{ "SECRET_KEY": "%s" }\n'
+        '';
     };
 
     services.nginx = {
       enable = true;
-      
+
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
         useACMEHost = if cfg.acme-uses-dns then cfg.acme-host else acme.http-challenge-host;
@@ -82,7 +104,7 @@ in
 
       instance = {
         type = "emperor";
-  
+
         vassals.cookbook = {
           type = "normal";
           master = true;

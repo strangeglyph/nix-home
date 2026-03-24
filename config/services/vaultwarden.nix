@@ -4,12 +4,12 @@ let
   globals_vw = config.globals.services.vaultwarden;
 in
 {
-  imports = [ 
+  imports = [
     ./nginx-common.nix
     ./restic-backup.nix
   ];
 
-  options.glyph.vaultwarden.enable = lib.mkEnableOption {};
+  options.glyph.vaultwarden.enable = lib.mkEnableOption { };
 
   config = lib.mkIf config.glyph.vaultwarden.enable {
     age.secrets.vaultwarden_env = {
@@ -39,11 +39,13 @@ in
       };
     };
 
-    services.headscale.settings.dns.extra_records = [{
-      name = globals_vw.domain;
-      type = "A";
-      value = config.globals.services.headscale.addresses."${config.networking.hostName}";
-    }];
+    services.headscale.settings.dns.extra_records = [
+      {
+        name = globals_vw.domain;
+        type = "A";
+        value = config.globals.services.headscale.addresses."${config.networking.hostName}";
+      }
+    ];
 
     services.nginx = {
       enable = true;

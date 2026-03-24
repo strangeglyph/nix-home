@@ -13,4 +13,4 @@ let
     }
   );
 in
-  flake.outputs.rawHive
+flake.outputs.rawHive

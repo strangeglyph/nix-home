@@ -1,4 +1,10 @@
-{ config, pkgs, lib, nodes, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nodes,
+  ...
+}:
 let
   inherit (lib) mkIf mkEnableOption;
   glyph = config.glyph;
@@ -116,10 +122,11 @@ in
       serviceConfig = {
         Type = "oneshot";
         User = "forgejo";
-        ExecStart = let 
-          forgejoCmd = "${lib.getExe cfg.package} --config ${cfg.customDir}/conf/app.ini";
-          awk = lib.getExe pkgs.gawk;
-        in 
+        ExecStart =
+          let
+            forgejoCmd = "${lib.getExe cfg.package} --config ${cfg.customDir}/conf/app.ini";
+            awk = lib.getExe pkgs.gawk;
+          in
           pkgs.writeShellScript "forgejo-oidc-provision" ''
             set -euo pipefail
             BASIC_SECRET=$(cat ${config.age.secrets."kanidm_basic_secret_forgejo_side".path})
@@ -144,22 +151,29 @@ in
       };
     };
 
-    glyph.transpose.kanidm = [{
-      age.secrets."kanidm_basic_secret_forgejo" = {
-        rekeyFile = ../../secrets/sources/kanidm/basic_secret_forgejo.age;
-        owner = "kanidm";
-        generator.script = "alnum";
-      };
-      provision.systems.oauth2."forgejo" = {
-        displayName = "${cfg.settings.DEFAULT.APP_NAME}";
-        preferShortUsername = true;
-        originUrl = "https://${g_forgejo.domain}/user/oauth2/kanidm/callback";
-        originLanding = "https://${g_forgejo.domain}";
-        basicSecretFile = nodes."${kanidm_host}".config.age.secrets."kanidm_basic_secret_forgejo".path;
-        scopeMaps."forgejo_users" = [ "openid" "profile" "email" "groups" ];
-        imageFile = ../../assets/forgejo-logo.svg;
-      };
-    }];
+    glyph.transpose.kanidm = [
+      {
+        age.secrets."kanidm_basic_secret_forgejo" = {
+          rekeyFile = ../../secrets/sources/kanidm/basic_secret_forgejo.age;
+          owner = "kanidm";
+          generator.script = "alnum";
+        };
+        provision.systems.oauth2."forgejo" = {
+          displayName = "${cfg.settings.DEFAULT.APP_NAME}";
+          preferShortUsername = true;
+          originUrl = "https://${g_forgejo.domain}/user/oauth2/kanidm/callback";
+          originLanding = "https://${g_forgejo.domain}";
+          basicSecretFile = nodes."${kanidm_host}".config.age.secrets."kanidm_basic_secret_forgejo".path;
+          scopeMaps."forgejo_users" = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          imageFile = ../../assets/forgejo-logo.svg;
+        };
+      }
+    ];
 
     glyph.restic.forgejo.paths = [ "/var/backups/forgejo" ];
   };

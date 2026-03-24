@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -15,7 +21,7 @@
         wayland = true;
       };
     };
-    
+
     desktopManager.gnome.enable = true;
 
     xserver = {
@@ -58,7 +64,6 @@
     #pam.services.hyprlock = {};
   };
 
-
   security.rtkit.enable = true;
 
   programs = {
@@ -79,7 +84,8 @@
     nerd-fonts.noto
     nerd-fonts.sauce-code-pro
     nerd-fonts.dejavu-sans-mono
-    noto-fonts-cjk-sans noto-fonts-color-emoji
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
     cantarell-fonts
     liberation_ttf
     lmodern # tex
@@ -116,14 +122,23 @@
   #]);
 
   environment.systemPackages = with pkgs; [
-    xorg.xinit xorg.libX11 xorg.libXext xorg.libXrender xorg.libICE xorg.libSM
-    xorg.xmodmap xsel xorg.xbacklight
+    xorg.xinit
+    xorg.libX11
+    xorg.libXext
+    xorg.libXrender
+    xorg.libICE
+    xorg.libSM
+    xorg.xmodmap
+    xsel
+    xorg.xbacklight
     wev
     arandr
     libnotify
     alacritty
     thunderbird
-    zathura pdfpc evince
+    zathura
+    pdfpc
+    evince
     xournalpp
     texlive.combined.scheme-full
     texstudio

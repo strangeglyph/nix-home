@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   swaymsg = "${pkgs.sway}/bin/swaymsg";
 
@@ -6,9 +11,21 @@ let
     name = name;
 
     outputs = [
-      { criteria = left_mon_id;  position = "0,0";    status = "enable"; }
-      { criteria = right_mon_id; position = "1920,0"; status = "enable"; }
-      { criteria = "eDP-1"; position = "960,1080"; status = "enable"; }
+      {
+        criteria = left_mon_id;
+        position = "0,0";
+        status = "enable";
+      }
+      {
+        criteria = right_mon_id;
+        position = "1920,0";
+        status = "enable";
+      }
+      {
+        criteria = "eDP-1";
+        position = "960,1080";
+        status = "enable";
+      }
     ];
 
     exec = [
@@ -22,19 +39,21 @@ in
   services.kanshi = {
     enable = config.wayland.windowManager.sway.enable;
     settings = [
-      # For some reason the external monitors re-register under different 
-      # names when undocking and redocking, so we have multiple entries 
+      # For some reason the external monitors re-register under different
+      # names when undocking and redocking, so we have multiple entries
       # for the work setup
       { profile = work-outputs "work1" "DP-4" "DP-5"; }
       { profile = work-outputs "work2" "DP-6" "DP-7"; }
-      { 
+      {
         profile = {
           name = "mobile";
-          outputs = [{
-            criteria = "eDP-1";
-            position = "0,0";
-            status = "enable";
-          }];
+          outputs = [
+            {
+              criteria = "eDP-1";
+              position = "0,0";
+              status = "enable";
+            }
+          ];
 
           exec = [
             "${swaymsg} 'workspace 2, move workspace to eDP-1'"

@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
 
 {
-    imports = [ ./default.nix ];
+  imports = [ ./default.nix ];
 
-    home.username = "glyph";
-    home.homeDirectory = "/home/glyph";
+  home.username = "glyph";
+  home.homeDirectory = "/home/glyph";
 
-    home.stateVersion = "21.05";
+  home.stateVersion = "21.05";
 }

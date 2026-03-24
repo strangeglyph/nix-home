@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
 
 {
-    imports = [ ./default.nix ];
+  imports = [ ./default.nix ];
 
-    home.username = "root";
-    home.homeDirectory = "/root";
+  home.username = "root";
+  home.homeDirectory = "/root";
 
-    home.stateVersion = "25.05";
+  home.stateVersion = "25.05";
 }

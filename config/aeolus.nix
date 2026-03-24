@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -48,7 +53,7 @@
 
   users.users.lschuetze = {
     isNormalUser = true;
-    extraGroups = [ 
+    extraGroups = [
       "wheel"
       "networkmanager"
       "scanner"
@@ -63,7 +68,10 @@
   home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
   home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
 
-  nix.settings.trusted-users = [ "root" "@wheel" ];
+  nix.settings.trusted-users = [
+    "root"
+    "@wheel"
+  ];
 
   glyph.restic."aeolus".paths = [
     "/home/lschuetze/Documents"

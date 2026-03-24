@@ -1,9 +1,15 @@
-{ pkgs, config, lib, nodes, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  nodes,
+  ...
+}:
 let
   cfg = config.services.kanidm;
   acme = config.security.acme;
 
-  json = pkgs.formats.json {};
+  json = pkgs.formats.json { };
 
   globals = config.globals;
 
@@ -16,23 +22,25 @@ let
   transposed-age = lib.catAttrs "age" transposed-kanidm;
   transposed-sops = lib.catAttrs "sops" transposed-kanidm;
   transposed-provision = lib.catAttrs "provision" transposed-kanidm;
-  transposed-extra-provision = json.type.merge {} (lib.map (x: { value = x; }) (lib.catAttrs "provision-extra" transposed-kanidm));
+  transposed-extra-provision = json.type.merge { } (
+    lib.map (x: { value = x; }) (lib.catAttrs "provision-extra" transposed-kanidm)
+  );
 in
 {
-  imports = [ 
+  imports = [
     ./nginx-common.nix
-    ./restic-backup.nix  
+    ./restic-backup.nix
   ];
 
-  options.glyph.kanidm.enable = lib.mkEnableOption {};
+  options.glyph.kanidm.enable = lib.mkEnableOption { };
   options.glyph.kanidm.crossProvision = lib.mkOption {
     type = lib.types.attrOf lib.types.anything;
   };
 
   config = lib.mkIf config.glyph.kanidm.enable {
     assertions = [
-      { 
-        assertion = (config.networking.hostName == g_kanidm.machine); 
+      {
+        assertion = (config.networking.hostName == g_kanidm.machine);
         message = ''
           You are trying to provision the unique service `kanidm` on machine ${config.networking.hostName},
           but it is registered as being hosted on machine ${g_kanidm.machine}.
@@ -53,7 +61,7 @@ in
         uri = cfg.serverSettings.origin;
       };
 
-      enableServer = true; 
+      enableServer = true;
       serverSettings = {
         bindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.bindport}";
         ldapbindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.ldapbindport}";
@@ -70,97 +78,108 @@ in
         };
       };
 
-      provision = lib.mkMerge ([{
-        enable = true;
-        # see https://github.com/oddlama/kanidm-provision/issues/26#issuecomment-3232578427
-        instanceUrl = "https://${cfg.serverSettings.bindaddress}";
-        acceptInvalidCerts = true;
+      provision = lib.mkMerge (
+        [
+          {
+            enable = true;
+            # see https://github.com/oddlama/kanidm-provision/issues/26#issuecomment-3232578427
+            instanceUrl = "https://${cfg.serverSettings.bindaddress}";
+            acceptInvalidCerts = true;
 
-        persons = {
-          "glyph" = {
-            displayName = "glyph";
-            mailAddresses = [ "glyph@dummy.apophenic.net" ];
-            groups = [ 
-              "interstice_users"
-              "forgejo_users"
-              "forgejo_admins"
-              "paperless_users"
-              "paperless_admins"
-              "actualbudget_users"
-            ];
-          };
-          "o" = {
-            displayName = "O.";
-            mailAddresses = [ "o@dummy.apophenic.net" ];
-            groups = [
-              "interstice_users"
-            ];
-          };
-          "h" = {
-            displayName = "H.";
-            mailAddresses = [ "h@dummy.apophenic.net" ];
-            groups = [
-              "interstice_users"
-            ];
-          };
-          "m" = {
-            displayName = "M.";
-            mailAddresses = [ "m@dummy.apophenic.net" ];
-            groups = [
-              "interstice_users"
-            ];
-          };
-          "g" = {
-            displayName = "G.";
-            mailAddresses = [ "g@dummy.apophenic.net" ];
-            groups = [
-              "interstice_users"
-            ];
-          };
-        };
-        groups = {
-          "interstice_users" = {};
-          "forgejo_users" = {};
-          "forgejo_admins" = {};
-          "paperless_users" = {};
-          "paperless_admins" = {};
-          "actualbudget_users" = {};
-        };
-        systems.oauth2 = {
-          "interstice" = {
-            displayName = "Interstice";
-            originUrl = "https://${globals_hs.domain}/oidc/callback";
-            originLanding = "https://${globals_hs.domain}/";
-            basicSecretFile = config.age.secrets.kanidm_oauth_interstice.path;
-            preferShortUsername = true;
-            scopeMaps."interstice_users" = [ "openid" "email" "profile" ];
-            imageFile = ../../assets/headscale3-dots.svg;
-          };
-        };
-        extraJsonFile = json.generate "kanidm_extra_provision.json" transposed-extra-provision;
-      }] ++ transposed-provision);
+            persons = {
+              "glyph" = {
+                displayName = "glyph";
+                mailAddresses = [ "glyph@dummy.apophenic.net" ];
+                groups = [
+                  "interstice_users"
+                  "forgejo_users"
+                  "forgejo_admins"
+                  "paperless_users"
+                  "paperless_admins"
+                  "actualbudget_users"
+                ];
+              };
+              "o" = {
+                displayName = "O.";
+                mailAddresses = [ "o@dummy.apophenic.net" ];
+                groups = [
+                  "interstice_users"
+                ];
+              };
+              "h" = {
+                displayName = "H.";
+                mailAddresses = [ "h@dummy.apophenic.net" ];
+                groups = [
+                  "interstice_users"
+                ];
+              };
+              "m" = {
+                displayName = "M.";
+                mailAddresses = [ "m@dummy.apophenic.net" ];
+                groups = [
+                  "interstice_users"
+                ];
+              };
+              "g" = {
+                displayName = "G.";
+                mailAddresses = [ "g@dummy.apophenic.net" ];
+                groups = [
+                  "interstice_users"
+                ];
+              };
+            };
+            groups = {
+              "interstice_users" = { };
+              "forgejo_users" = { };
+              "forgejo_admins" = { };
+              "paperless_users" = { };
+              "paperless_admins" = { };
+              "actualbudget_users" = { };
+            };
+            systems.oauth2 = {
+              "interstice" = {
+                displayName = "Interstice";
+                originUrl = "https://${globals_hs.domain}/oidc/callback";
+                originLanding = "https://${globals_hs.domain}/";
+                basicSecretFile = config.age.secrets.kanidm_oauth_interstice.path;
+                preferShortUsername = true;
+                scopeMaps."interstice_users" = [
+                  "openid"
+                  "email"
+                  "profile"
+                ];
+                imageFile = ../../assets/headscale3-dots.svg;
+              };
+            };
+            extraJsonFile = json.generate "kanidm_extra_provision.json" transposed-extra-provision;
+          }
+        ]
+        ++ transposed-provision
+      );
     };
 
-    glyph.transpose.kanidm = [{
-      provision-extra = {
-        persons.glyph.groups = [
-          "idm_admins"
-          "idm_people_self_mail_write"
-        ];
-        persons.o.groups = [
-          "idm_people_self_mail_write"
-        ];
-        persons.h.groups = [
-          "idm_people_self_mail_write"
-        ];
-        persons.m.groups = [
-          "idm_people_self_mail_write"
-        ];
-        persons.g.groups = [
-          "idm_people_self_mail_write"
-        ];
-      };
-    }];
+    glyph.transpose.kanidm = [
+      {
+        provision-extra = {
+          persons.glyph.groups = [
+            "idm_admins"
+            "idm_people_self_mail_write"
+          ];
+          persons.o.groups = [
+            "idm_people_self_mail_write"
+          ];
+          persons.h.groups = [
+            "idm_people_self_mail_write"
+          ];
+          persons.m.groups = [
+            "idm_people_self_mail_write"
+          ];
+          persons.g.groups = [
+            "idm_people_self_mail_write"
+          ];
+        };
+      }
+    ];
 
     services.nginx = {
       enable = true;

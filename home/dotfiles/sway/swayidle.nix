@@ -6,10 +6,16 @@ in
   services.swayidle = {
     enable = config.wayland.windowManager.sway.enable;
     events = [
-      { event = "before-sleep"; command = lock-with-effects; }
+      {
+        event = "before-sleep";
+        command = lock-with-effects;
+      }
     ];
     timeouts = [
-      { timeout = 300; command = lock-with-effects; }
+      {
+        timeout = 300;
+        command = lock-with-effects;
+      }
     ];
   };
 }

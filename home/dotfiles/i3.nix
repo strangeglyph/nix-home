@@ -2,7 +2,8 @@
 
 let
   mod = "Mod4";
-in {
+in
+{
   modifier = "${mod}";
   defaultWorkspace = "workspace number 1";
   fonts = {
@@ -17,12 +18,18 @@ in {
     inner = 10;
   };
   assigns = {
-    "8" = [{ class = "(?i)firefox"; }];
-    "9" = [{ class = "(?i)thunderbird"; }];
+    "8" = [ { class = "(?i)firefox"; } ];
+    "9" = [ { class = "(?i)thunderbird"; } ];
   };
   workspaceOutputAssign = [
-    { workspace = "8"; output = "DisplayPort-2"; }
-    { workspace = "9"; output = "DisplayPort-2"; }
+    {
+      workspace = "8";
+      output = "DisplayPort-2";
+    }
+    {
+      workspace = "9";
+      output = "DisplayPort-2";
+    }
   ];
   # Fitting for gruvbox-dark
   # currently disabled as colors cannot be set individually
@@ -49,7 +56,7 @@ in {
     "XF86AudioMute" = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle";
     "XF86MonBrightnessUp" = "exec xbacklight -inc 20";
     "XF86MonBrightnessDown" = "exec xbacklight -dec 20";
-    "XF86AudioPlay"  = "exec playerctl play";
+    "XF86AudioPlay" = "exec playerctl play";
     "XF86AudioPause" = "exec playerctl pause";
     "XF86AudioNext" = "exec playerctl next";
     "XF86AudioPrev" = "exec playerctl previous";

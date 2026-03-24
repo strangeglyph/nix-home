@@ -2,8 +2,12 @@
   description = "An example NixOS configuration";
 
   inputs = {
-    nixpkgs = { url = "github:nixos/nixpkgs/nixos-25.11"; };
-    nixpkgs-unstable = { url = "github:nixos/nixpkgs/nixos-unstable"; };
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-25.11";
+    };
+    nixpkgs-unstable = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
     flake-compat = {
       url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
       flake = false;
@@ -61,110 +65,140 @@
     };
   };
 
-  outputs = inputs@{ 
-    self,
-    nixpkgs,
-    nixpkgs-unstable,
-    colmena,
-    disko,
-    home-manager,
-    stylix,
-    agenix,
-    agenix-rekey,
-    sops-nix,
-    spacebar,
-    ... 
-  }: {
-    nixosConfigurations = self.outputs.colmenaHive.nodes;
-    colmenaHive = colmena.lib.makeHive self.outputs.rawHive;
-    rawHive = {
-      meta = {
-        nixpkgs = import nixpkgs {
-          system = "x86_64-linux";
-          overlays = [];
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      colmena,
+      disko,
+      home-manager,
+      stylix,
+      agenix,
+      agenix-rekey,
+      sops-nix,
+      spacebar,
+      ...
+    }:
+    {
+      nixosConfigurations = self.outputs.colmenaHive.nodes;
+      colmenaHive = colmena.lib.makeHive self.outputs.rawHive;
+      rawHive = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = [ ];
+          };
+          specialArgs = {
+            inherit inputs;
+          };
         };
-        specialArgs = {
-          inherit inputs;
-        };
-      };
 
-      defaults = { name, nodes, pkgs, ... }: 
-      let
-        system = pkgs.stdenv.hostPlatform.system;
-      in {
-        imports = [
-          #lix.nixosModules.default
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager
-          stylix.nixosModules.stylix
-          agenix.nixosModules.default
-          agenix-rekey.nixosModules.default
-          sops-nix.nixosModules.sops
-          spacebar.nixosModules.default
-          ./config/utils/globals.nix
-          ./config/default.nix
-          ./hw/${name}.nix
-          ./config/${name}.nix
-        ];
+        defaults =
+          {
+            name,
+            nodes,
+            pkgs,
+            ...
+          }:
+          let
+            system = pkgs.stdenv.hostPlatform.system;
+          in
+          {
+            imports = [
+              #lix.nixosModules.default
+              disko.nixosModules.disko
+              home-manager.nixosModules.home-manager
+              stylix.nixosModules.stylix
+              agenix.nixosModules.default
+              agenix-rekey.nixosModules.default
+              sops-nix.nixosModules.sops
+              spacebar.nixosModules.default
+              ./config/utils/globals.nix
+              ./config/default.nix
+              ./hw/${name}.nix
+              ./config/${name}.nix
+            ];
 
-        config = {
-          networking.hostName = name;
+            config = {
+              networking.hostName = name;
 
-          age.rekey = {
-            masterIdentities = [ ./secrets/age_id.age ];
-            hostPubkey = ./secrets/${name}.pub;
-            storageMode = "local";
-            localStorageDir = ./. + "/secrets/rekeyed/${name}";
+              age.rekey = {
+                masterIdentities = [ ./secrets/age_id.age ];
+                hostPubkey = ./secrets/${name}.pub;
+                storageMode = "local";
+                localStorageDir = ./. + "/secrets/rekeyed/${name}";
+              };
+
+              sops.defaultSopsFile = secrets/sops/secrets.yaml;
+
+              environment.systemPackages = [
+                agenix-rekey.packages.${system}.default
+                colmena.packages.${system}.colmena
+              ];
+
+              nix.package = pkgs.lixPackageSets.latest.lix;
+            };
           };
 
-          sops.defaultSopsFile = secrets/sops/secrets.yaml;
+        aeolus =
+          {
+            name,
+            node,
+            pkgs,
+            ...
+          }:
+          {
+            deployment = {
+              allowLocalDeployment = true;
+              targetHost = null;
+              tags = [ "interstice-client" ];
+            };
+          };
 
-          environment.systemPackages = [
-            agenix-rekey.packages.${system}.default
-            colmena.packages.${system}.colmena
-          ];
+        philae =
+          {
+            name,
+            node,
+            pkgs,
+            ...
+          }:
+          {
+            deployment = {
+              targetHost = "philae.apophenic.net";
+              tags = [
+                "interstice-server"
+                "interstice-client"
+                "sso-server"
+                "sso-client"
+                "web"
+                "public"
+              ];
+            };
+          };
 
-          nix.package = pkgs.lixPackageSets.latest.lix;
-        };
+        moonlight =
+          {
+            name,
+            node,
+            pkgs,
+            ...
+          }:
+          {
+            imports = [
+              ./hw/disko/moonlight.nix
+            ];
+
+            deployment = {
+              targetHost = "moonlight.interstice.apophenic.net";
+              tags = [ "interstice-client" ];
+            };
+          };
       };
 
-      aeolus = { name, node, pkgs, ... }: {
-        deployment = {
-          allowLocalDeployment = true;
-          targetHost = null;
-          tags = [ "interstice-client" ];
-        };
-      };
-      
-      philae = { name, node, pkgs, ... }: {
-        deployment = {
-          targetHost = "philae.apophenic.net";
-          tags = [ 
-            "interstice-server"
-            "interstice-client"
-            "sso-server"
-            "sso-client"
-            "web"
-            "public"
-          ];
-        };
-      };
-
-      moonlight = { name, node, pkgs, ... }: {
-        imports = [
-          ./hw/disko/moonlight.nix  
-        ];
-
-        deployment = {
-          targetHost = "moonlight.interstice.apophenic.net";
-          tags = [ "interstice-client" ];
-        };
+      agenix-rekey = agenix-rekey.configure {
+        userFlake = self;
+        nixosConfigurations = self.outputs.colmenaHive.nodes;
       };
     };
-
-    agenix-rekey = agenix-rekey.configure {
-      userFlake = self;
-      nixosConfigurations = self.outputs.colmenaHive.nodes;
-    };
-  };
 }

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.services.nextcloud;
@@ -10,19 +15,23 @@ in
     ./nginx-common.nix
   ];
 
-  options.glyph.nextcloud.enable = mkEnableOption {};
+  options.glyph.nextcloud.enable = mkEnableOption { };
 
   config = mkIf config.glyph.nextcloud.enable {
 
-    sops.secrets."nextcloud/mail/mailbox" = {};
-    sops.secrets."nextcloud/mail/domain" = {};
-    sops.secrets."nextcloud/mail/pass" = {};
-    sops.templates."nextcloud/mail/login".content = "${config.sops.placeholder."nextcloud/mail/mailbox"}@${config.sops.placeholder."nextcloud/mail/domain"}";
+    sops.secrets."nextcloud/mail/mailbox" = { };
+    sops.secrets."nextcloud/mail/domain" = { };
+    sops.secrets."nextcloud/mail/pass" = { };
+    sops.templates."nextcloud/mail/login".content = "${
+      config.sops.placeholder."nextcloud/mail/mailbox"
+    }@${config.sops.placeholder."nextcloud/mail/domain"}";
     # https://github.com/NixOS/nixpkgs/issues/487286
     sops.templates."nextcloud/secrets".content = builtins.toJSON {
       mail_from_address = config.sops.placeholder."nextcloud/mail/mailbox";
       mail_domain = config.sops.placeholder."nextcloud/mail/domain";
-      mail_smtpname = "${config.sops.placeholder."nextcloud/mail/mailbox"}@${config.sops.placeholder."nextcloud/mail/domain"}";
+      mail_smtpname = "${config.sops.placeholder."nextcloud/mail/mailbox"}@${
+        config.sops.placeholder."nextcloud/mail/domain"
+      }";
       mail_smtppassword = config.sops.placeholder."nextcloud/mail/pass";
     };
 

@@ -1,10 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-all@{ config, pkgs, lib, inputs, ... }:
+all@{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 {
   imports = [
-    ./presets/theme.nix 
+    ./presets/theme.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -20,14 +26,17 @@ all@{ config, pkgs, lib, inputs, ... }:
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
+  networking.nameservers = [
+    "9.9.9.9"
+    "1.1.1.1"
+  ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ 
-    "C.UTF-8/UTF-8" 
+  i18n.supportedLocales = [
+    "C.UTF-8/UTF-8"
     "en_US.UTF-8/UTF-8"
-    "de_DE.UTF-8/UTF-8" 
+    "de_DE.UTF-8/UTF-8"
   ];
   console = {
     font = "Lat2-Terminus16";
@@ -82,7 +91,6 @@ all@{ config, pkgs, lib, inputs, ... }:
     };
   };
 
-
   security.sudo.extraConfig = "Defaults timestamp_timeout=30";
   security.polkit.enable = true;
   security.pam.services.swaylock.text = ''
@@ -106,31 +114,56 @@ all@{ config, pkgs, lib, inputs, ... }:
   nixpkgs.overlays = [
   ];
 
-  environment.systemPackages = with pkgs;
-  let
-    basic-python-install = python3.withPackages (python-packages: with python-packages; [
-      pip wheel virtualenv
-    ]);
-  in [
-    pciutils lshw wirelesstools
-    ethtool socat dig
-    wireguard-tools
-    glib gcc binutils gnumake
-    parted
-    wget curl 
-    ncurses which 
-    git jujutsu
-    htop lsof pv ripgrep eza file jq bat
-    zip unzip
-    vim emacs
-    basic-python-install
-    pipenv
-    ghc
-    inotify-tools
-    screen
-    direnv
-    rage sops
-    npins
-  ];
+  environment.systemPackages =
+    with pkgs;
+    let
+      basic-python-install = python3.withPackages (
+        python-packages: with python-packages; [
+          pip
+          wheel
+          virtualenv
+        ]
+      );
+    in
+    [
+      pciutils
+      lshw
+      wirelesstools
+      ethtool
+      socat
+      dig
+      wireguard-tools
+      glib
+      gcc
+      binutils
+      gnumake
+      parted
+      wget
+      curl
+      ncurses
+      which
+      git
+      jujutsu
+      htop
+      lsof
+      pv
+      ripgrep
+      eza
+      file
+      jq
+      bat
+      zip
+      unzip
+      vim
+      emacs
+      basic-python-install
+      pipenv
+      ghc
+      inotify-tools
+      screen
+      direnv
+      rage
+      sops
+      npins
+    ];
 }
-

@@ -2,7 +2,7 @@
 let
   # XXX specify the postgresql package you'd like to upgrade to.
   # Do not forget to list the extensions you need.
-  psql = pkgs.postgresql_16.withPackages (pp: []);
+  psql = pkgs.postgresql_16.withPackages (pp: [ ]);
 in
 {
   environment.systemPackages = [
@@ -11,7 +11,7 @@ in
       # XXX it's perhaps advisable to stop all services that depend on postgresql
       nextcloud-occ maintenance:mode --on
       systemctl stop postgresql
-      
+
 
       export NEWDATA="/var/lib/postgresql/${psql.psqlSchema}"
 

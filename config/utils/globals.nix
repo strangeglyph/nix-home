@@ -1,12 +1,17 @@
-{ lib, config, nodes, ... }:
-let 
+{
+  lib,
+  config,
+  nodes,
+  ...
+}:
+let
   inherit (lib) mkIf;
 
   base = "apophenic.net";
   mkSub = domain: "${domain}.${base}";
 
   smtp_server = "smtp.migadu.com";
-   
+
   headscale_host = "ouroboros";
   headscale_domain = "${headscale_host}.${base}";
   tailnet = "interstice";
@@ -57,9 +62,9 @@ in
     default = {
       acme = {
         mkChain = domain: "${config.security.acme.certs.${domain}.directory}/fullchain.pem";
-        chain   = config.globals.acme.mkChain base;
-        mkKey   = domain: "${config.security.acme.certs.${domain}.directory}/key.pem";
-        key     = config.globals.acme.mkKey base;
+        chain = config.globals.acme.mkChain base;
+        mkKey = domain: "${config.security.acme.certs.${domain}.directory}/key.pem";
+        key = config.globals.acme.mkKey base;
       };
 
       domains = {
@@ -71,41 +76,54 @@ in
 
       services = {
         nginx = rec {
-          mkDefault = { listen ? null, acme_host ? base, extraConfig ? "" }: {
-            forceSSL = true;
-            useACMEHost = mkIf (acme_host != null) acme_host;
-            enableACME = mkIf (acme_host == null) true;
-            listenAddresses = mkIf (listen != null) listen;
+          mkDefault =
+            {
+              listen ? null,
+              acme_host ? base,
+              extraConfig ? "",
+            }:
+            {
+              forceSSL = true;
+              useACMEHost = mkIf (acme_host != null) acme_host;
+              enableACME = mkIf (acme_host == null) true;
+              listenAddresses = mkIf (listen != null) listen;
 
-            kTLS = true;
-            quic = true;
-            http3 = true;
-            # advertise quic support
-            extraConfig = ''
-              add_header Alt-Svc 'h3=":$server_port"; ma=86400';
+              kTLS = true;
+              quic = true;
+              http3 = true;
+              # advertise quic support
+              extraConfig = ''
+                add_header Alt-Svc 'h3=":$server_port"; ma=86400';
 
-            '' + extraConfig;
-          };
+              ''
+              + extraConfig;
+            };
 
-          mkReverseProxy = { 
-            proto ? "https",  # protocol to use
-            domain ? "[::1]", # target (upstream) host
-            port,             # target port
-            acme_host ? null, # use this certificate (request a new one via http-01 otherwise)
-            listen ? null,    # bind to this address (default is 0.0.0.0)
-            locationExtraConfig ? "", # extra config for location.'/'
-            serverExtraConfig ? "", # extra config for server
-            useProxySettings ? true, # use recommendedProxySettings (disable if e.g. need to rewrite host header) 
-          }: (
-            mkDefault { inherit acme_host listen; extraConfig = serverExtraConfig; } // {
-              locations."/" = {
-                recommendedProxySettings = useProxySettings;
-                proxyWebsockets = true;
-                proxyPass = "${proto}://${domain}:${toString port}";
-                extraConfig = locationExtraConfig;
-              };
-            }
-          );
+          mkReverseProxy =
+            {
+              proto ? "https", # protocol to use
+              domain ? "[::1]", # target (upstream) host
+              port, # target port
+              acme_host ? null, # use this certificate (request a new one via http-01 otherwise)
+              listen ? null, # bind to this address (default is 0.0.0.0)
+              locationExtraConfig ? "", # extra config for location.'/'
+              serverExtraConfig ? "", # extra config for server
+              useProxySettings ? true, # use recommendedProxySettings (disable if e.g. need to rewrite host header)
+            }:
+            (
+              mkDefault {
+                inherit acme_host listen;
+                extraConfig = serverExtraConfig;
+              }
+              // {
+                locations."/" = {
+                  recommendedProxySettings = useProxySettings;
+                  proxyWebsockets = true;
+                  proxyPass = "${proto}://${domain}:${toString port}";
+                  extraConfig = locationExtraConfig;
+                };
+              }
+            );
         };
 
         vaultwarden = {

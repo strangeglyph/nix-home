@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
 
@@ -40,15 +45,17 @@
         unbz = "tar -xvjf";
       };
       # functions = import ./fish_functions.nix;
-      plugins = [{
-        name = "bang-bang";
-        src = pkgs.fetchFromGitHub {
-          owner = "oh-my-fish";
-          repo = "plugin-bang-bang";
-          rev = "f969c618301163273d0a03d002614d9a81952c1e";
-          sha256 = "1r3d4wgdylnc857j08lbdscqbm9lxbm1wqzbkqz1jf8bgq2rvk03";
-        };
-      }];
+      plugins = [
+        {
+          name = "bang-bang";
+          src = pkgs.fetchFromGitHub {
+            owner = "oh-my-fish";
+            repo = "plugin-bang-bang";
+            rev = "f969c618301163273d0a03d002614d9a81952c1e";
+            sha256 = "1r3d4wgdylnc857j08lbdscqbm9lxbm1wqzbkqz1jf8bgq2rvk03";
+          };
+        }
+      ];
       interactiveShellInit = ''
         direnv hook fish | source
       '';
@@ -81,8 +88,6 @@
       automount = true;
     };
   };
-
-
 
   home.file = {
     #".emacs.d" = {

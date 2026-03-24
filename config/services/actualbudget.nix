@@ -1,5 +1,11 @@
-{ config, pkgs, lib, nodes, ... }:
-let 
+{
+  config,
+  pkgs,
+  lib,
+  nodes,
+  ...
+}:
+let
   inherit (lib) mkEnableOption mkIf;
   gservices = config.globals.services;
 in
@@ -13,7 +19,7 @@ in
       group = "nginx";
     };
 
-    sops.secrets."actualbudget/oidc/secret" = {};
+    sops.secrets."actualbudget/oidc/secret" = { };
     sops.templates."actualbudget.env".content = ''
       ACTUAL_OPENID_CLIENT_SECRET=${config.sops.placeholder."actualbudget/oidc/secret"}
     '';
@@ -60,20 +66,28 @@ in
       (gservices.headscale.mkDnsEntry gservices.actualbudget.host)
     ];
 
-    glyph.transpose.kanidm = [{
-      sops.secrets.kanidm_basic_secret_actualbudget = {
-        key = "actualbudget/oidc/secret";
-        owner = "kanidm";
-      };
-      provision.systems.oauth2.actualbudget = {
-        displayName = "ActualBudget";
-        preferShortUsername = true;
-        originUrl = "https://${gservices.actualbudget.domain}/openid/callback";
-        originLanding = "https://${gservices.actualbudget.domain}";
-        basicSecretFile = nodes."${gservices.kanidm.machine}".config.sops.secrets.kanidm_basic_secret_actualbudget.path;
-        scopeMaps."actualbudget_users" = [ "openid" "profile" "email" "groups" ];
-        imageFile = ../../assets/actualbudget-logo.svg;
-      };
-    }];
+    glyph.transpose.kanidm = [
+      {
+        sops.secrets.kanidm_basic_secret_actualbudget = {
+          key = "actualbudget/oidc/secret";
+          owner = "kanidm";
+        };
+        provision.systems.oauth2.actualbudget = {
+          displayName = "ActualBudget";
+          preferShortUsername = true;
+          originUrl = "https://${gservices.actualbudget.domain}/openid/callback";
+          originLanding = "https://${gservices.actualbudget.domain}";
+          basicSecretFile =
+            nodes."${gservices.kanidm.machine}".config.sops.secrets.kanidm_basic_secret_actualbudget.path;
+          scopeMaps."actualbudget_users" = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          imageFile = ../../assets/actualbudget-logo.svg;
+        };
+      }
+    ];
   };
 }

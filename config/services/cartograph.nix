@@ -1,16 +1,24 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 with lib;
 let
   cfg = config.services.cartograph;
   acme = config.security.acme;
   state-dir = "/var/lib/${cfg.state-dir-name}";
-  cartograph-config = pkgs.writeText "config.json" (builtins.toJSON {
-    PHOTO_LOCATION = "${state-dir}/photos/";
-    SITE_NAME = cfg.site-name;
-    BASE_URL = "https://${cfg.vhost}";
-    DB_LOCATION = "${state-dir}/cartograph.sqlite";
-    WEBDAV_FILE_PATH = "Bilder PCT";
-  });
+  cartograph-config = pkgs.writeText "config.json" (
+    builtins.toJSON {
+      PHOTO_LOCATION = "${state-dir}/photos/";
+      SITE_NAME = cfg.site-name;
+      BASE_URL = "https://${cfg.vhost}";
+      DB_LOCATION = "${state-dir}/cartograph.sqlite";
+      WEBDAV_FILE_PATH = "Bilder PCT";
+    }
+  );
 in
 {
   imports = [
@@ -20,14 +28,23 @@ in
   options.services.cartograph = {
     enable = mkEnableOption "cartograph service";
     vhost = mkOption { type = types.str; };
-    site-name = mkOption { type = types.str; default = "Cartograph"; };
-    state-dir-name = mkOption { type = types.str; default = "cartograph"; };
+    site-name = mkOption {
+      type = types.str;
+      default = "Cartograph";
+    };
+    state-dir-name = mkOption {
+      type = types.str;
+      default = "cartograph";
+    };
   };
 
   config = mkIf cfg.enable {
-    security.acme.certs."${ acme.http-challenge-host }".extraDomainNames = [ cfg.vhost ];
+    security.acme.certs."${acme.http-challenge-host}".extraDomainNames = [ cfg.vhost ];
 
-    users.groups.www-data.members = [ "nginx" "uwsgi" ];
+    users.groups.www-data.members = [
+      "nginx"
+      "uwsgi"
+    ];
 
     nixpkgs.overlays = [ inputs.cartograph.overlay ];
 
@@ -38,7 +55,7 @@ in
 
     services.nginx = {
       enable = true;
-      
+
       virtualHosts."${cfg.vhost}" = {
         forceSSL = true;
         useACMEHost = acme.http-challenge-host;
@@ -64,7 +81,7 @@ in
 
       instance = {
         type = "emperor";
-  
+
         vassals.cartograph = {
           type = "normal";
           master = true;
@@ -84,7 +101,7 @@ in
         };
       };
     };
-    
-    systemd.services.uwsgi.serviceConfig.StateDirectory = [cfg.state-dir-name];
+
+    systemd.services.uwsgi.serviceConfig.StateDirectory = [ cfg.state-dir-name ];
   };
 }

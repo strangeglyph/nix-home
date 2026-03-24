@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
 
 {
-    imports = [ ./default.nix ];
+  imports = [ ./default.nix ];
 
-    home.username = "minecraft";
-    home.homeDirectory = "/home/minecraft";
+  home.username = "minecraft";
+  home.homeDirectory = "/home/minecraft";
 
-    home.stateVersion = "21.05";
+  home.stateVersion = "21.05";
 }

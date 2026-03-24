@@ -1,4 +1,10 @@
-all@{ config, pkgs, lib, inputs, ... }:
+all@{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   globals = config.globals;
 in
@@ -6,7 +12,7 @@ in
   imports = [
     ./presets/server.nix
     ./services/acme.nix
-#    ./services/fompf.nix
+    #    ./services/fompf.nix
     ./services/cookbook.nix
     ./services/cartograph.nix
     ./services/nextcloud.nix
@@ -20,11 +26,10 @@ in
     ./services/paperless.nix
     ./services/spacebar.nix
     ./services/actualbudget.nix
-#    ./services/syncproxy.nix
-#    ./utils/pgsql_update.nix
-#    ./tests/oauth2-proxy.nix
+    #    ./services/syncproxy.nix
+    #    ./utils/pgsql_update.nix
+    #    ./tests/oauth2-proxy.nix
   ];
-  
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
@@ -33,9 +38,12 @@ in
 
   networking.hostName = "philae";
   networking.interfaces.ens3.useDHCP = true;
-  
+
   nix = {
-    settings.trusted-users = [ "root" "@wheel" ];
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
     nrBuildUsers = 100;
   };
 
@@ -91,9 +99,15 @@ in
       "~^(.*\.)?${config.globals.services.headscale.net.domain}$" = {
         forceSSL = true;
         useACMEHost = config.globals.domains.base;
-        locations."/(.*)".return = "200 '${builtins.readFile ../assets/interstice-landing.html}'"; 
+        locations."/(.*)".return = "200 '${builtins.readFile ../assets/interstice-landing.html}'";
       };
-    } // lib.mkMerge (config.glyph.transpose-here [ "nginx" "virtualHosts" ]);
+    }
+    // lib.mkMerge (
+      config.glyph.transpose-here [
+        "nginx"
+        "virtualHosts"
+      ]
+    );
     cartograph = {
       enable = true;
       vhost = "wo-ist-ole.${globals.domains.base}";
@@ -131,7 +145,6 @@ in
   home-manager.users.root.imports = [ ../home/philae/root.nix ];
   home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
   home-manager.users.minecraft.imports = [ ../home/philae/minecraft.nix ];
-
 
   system.stateVersion = "21.05";
 }

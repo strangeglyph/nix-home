@@ -1,120 +1,121 @@
 { pkgs, config, ... }:
 
-let pastel-dark-theme = rec {
-  scheme = "pastel-dark";
-  author = "glyph";
-  description = "dark background, bright colors. green accents";
+let
+  pastel-dark-theme = rec {
+    scheme = "pastel-dark";
+    author = "glyph";
+    description = "dark background, bright colors. green accents";
 
-  main-base = "161320";
-  alt-base = "383956";
-  accent = pastel-green;
-  alt-accent = "e8a1ae";
-  main-text = pastel-blue;
-  error = dark-red;
-  urgent = error;
-  warning = dark-orange;
-  highlight = warning;
-  
-  pastel-yellow = "fae380";
-  pastel-yellow-green = "d8eca7";
-  pastel-green = "baebad";
-  pastel-green-blue = "b2ebc2";
-  pastel-blue = "b8eadf";
-  pastel-blue-purple = "bdddea";
-  pastel-purple-blue = "c2cbea";
-  pastel-purple = "d1c7ea";
-  pastel-purple-pink = "e4cceb";
-  pastel-pink = "ebd1e4";
-  pastel-red = "f2c0ca";
+    main-base = "161320";
+    alt-base = "383956";
+    accent = pastel-green;
+    alt-accent = "e8a1ae";
+    main-text = pastel-blue;
+    error = dark-red;
+    urgent = error;
+    warning = dark-orange;
+    highlight = warning;
 
-  sat-red = "f693a7";
-  sat-orange = "fc915f";
-  sat-yellow = "ffdf52";
-  sat-green = "94f07f";
-  sat-cyan = "8decd8";
-  sat-blue = "99abeb";
-  sat-magenta = "d9a4ea";
+    pastel-yellow = "fae380";
+    pastel-yellow-green = "d8eca7";
+    pastel-green = "baebad";
+    pastel-green-blue = "b2ebc2";
+    pastel-blue = "b8eadf";
+    pastel-blue-purple = "bdddea";
+    pastel-purple-blue = "c2cbea";
+    pastel-purple = "d1c7ea";
+    pastel-purple-pink = "e4cceb";
+    pastel-pink = "ebd1e4";
+    pastel-red = "f2c0ca";
 
-  dark-red = "eb4f4c";
-  dark-orange = "eb692d";
-  dark-yellow = "efc91f";
-  dark-green = "6bdb51";
-  dark-cyan = "60d7bd";
-  dark-blue = "6e84d4";
-  dark-magenta = "db7bd1";
+    sat-red = "f693a7";
+    sat-orange = "fc915f";
+    sat-yellow = "ffdf52";
+    sat-green = "94f07f";
+    sat-cyan = "8decd8";
+    sat-blue = "99abeb";
+    sat-magenta = "d9a4ea";
 
-  pastel-saturated-green = "94fa9c";
-  pastel-saturated-cyan = "95f9dd";
-  pastel-saturated-blue = "98cef8";
+    dark-red = "eb4f4c";
+    dark-orange = "eb692d";
+    dark-yellow = "efc91f";
+    dark-green = "6bdb51";
+    dark-cyan = "60d7bd";
+    dark-blue = "6e84d4";
+    dark-magenta = "db7bd1";
 
-  # std: dark
-  # stylix: default bg, dark text
-  base00 = main-base; 
-  # stylix: alt (overlay) bg, incomplete progress bar, alt dark text
-  base01 = alt-base; 
-  # stylix: selection, complete progress bar, dark text widget alt off bg
-  base02 = accent;
-  # stylix: unfocused window border, list selection
-  # need to see in action, set it to glare mode for now
-  base03 = "ff0000"; 
-  # stylix: alt text, logo "alt color"
-  base04 = alt-accent;
-  # stylix: default text, window title, logo "main color"
-  base05 = main-text;
-  # stylix: notification low urgency bg
-  base06 = main-base; 
-  # std: light
-  base07 = main-text; 
-  # std: red
-  # stylix: error, urgent window border, notification high urgency text
-  base08 = error; 
-  # std: orange
-  # stylix: urgent, dark text widget alt on bg
-  base09 = warning; 
-  # std: yellow
-  # stylix: warning, notification low urgency text
-  # we: which one is it? notification or warning
-  base0A = sat-yellow; 
-  # std: green
-  # we: pastel-theme saturated variant a, just to fill something in
-  base0B = sat-green; 
-  # std: cyan
-  # we: pastel-theme saturated variant b, just to fill something in
-  base0C = sat-cyan; 
-  # std: blue
-  # stylix: focused window border, notification window border, dark text widget off bg
-  #         list unselected
-  base0D = sat-blue; 
-  # std: magenta
-  # stylix: dark text widget on bg
-  base0E = sat-magenta; 
-  # std: brown
-  # stylix: notification high urgency bg
-  base0F = main-base;
-  # std: extra dark
-  base10 = pastel-green-blue; 
-  # std: extra extra dark
-  base11 = pastel-blue;
-  # std: bright red
-  # we: hover text, desaturated very-light off-red
-  base12 = pastel-red; 
-  # std: bright orange
-  base13 = pastel-yellow;
-  # std: bright green
-  base14 = pastel-green;
-  # std: bright cyan
-  base15 = pastel-green-blue;
-  # std: bright blue
-  base16 = pastel-blue; 
-  # std: bright magenta
-  base17 = pastel-purple;
-};
+    pastel-saturated-green = "94fa9c";
+    pastel-saturated-cyan = "95f9dd";
+    pastel-saturated-blue = "98cef8";
+
+    # std: dark
+    # stylix: default bg, dark text
+    base00 = main-base;
+    # stylix: alt (overlay) bg, incomplete progress bar, alt dark text
+    base01 = alt-base;
+    # stylix: selection, complete progress bar, dark text widget alt off bg
+    base02 = accent;
+    # stylix: unfocused window border, list selection
+    # need to see in action, set it to glare mode for now
+    base03 = "ff0000";
+    # stylix: alt text, logo "alt color"
+    base04 = alt-accent;
+    # stylix: default text, window title, logo "main color"
+    base05 = main-text;
+    # stylix: notification low urgency bg
+    base06 = main-base;
+    # std: light
+    base07 = main-text;
+    # std: red
+    # stylix: error, urgent window border, notification high urgency text
+    base08 = error;
+    # std: orange
+    # stylix: urgent, dark text widget alt on bg
+    base09 = warning;
+    # std: yellow
+    # stylix: warning, notification low urgency text
+    # we: which one is it? notification or warning
+    base0A = sat-yellow;
+    # std: green
+    # we: pastel-theme saturated variant a, just to fill something in
+    base0B = sat-green;
+    # std: cyan
+    # we: pastel-theme saturated variant b, just to fill something in
+    base0C = sat-cyan;
+    # std: blue
+    # stylix: focused window border, notification window border, dark text widget off bg
+    #         list unselected
+    base0D = sat-blue;
+    # std: magenta
+    # stylix: dark text widget on bg
+    base0E = sat-magenta;
+    # std: brown
+    # stylix: notification high urgency bg
+    base0F = main-base;
+    # std: extra dark
+    base10 = pastel-green-blue;
+    # std: extra extra dark
+    base11 = pastel-blue;
+    # std: bright red
+    # we: hover text, desaturated very-light off-red
+    base12 = pastel-red;
+    # std: bright orange
+    base13 = pastel-yellow;
+    # std: bright green
+    base14 = pastel-green;
+    # std: bright cyan
+    base15 = pastel-green-blue;
+    # std: bright blue
+    base16 = pastel-blue;
+    # std: bright magenta
+    base17 = pastel-purple;
+  };
 in
 {
   stylix = {
     enable = true;
     autoEnable = false;
-  
+
     base16Scheme = pastel-dark-theme;
     polarity = "dark";
 
@@ -122,8 +123,8 @@ in
     imageScalingMode = "fill";
 
     fonts = with pkgs; {
-      emoji = { 
-        name = "Noto Color Emoji"; 
+      emoji = {
+        name = "Noto Color Emoji";
         package = noto-fonts;
       };
       monospace = {
@@ -188,14 +189,16 @@ in
     accent
   ];
 
-  home-manager.sharedModules = [{
-    stylix.autoEnable = false;
-    stylix.targets = {
-      waybar.enable = false; # managed manually
-      sway.enable = false; # managed manually
-      swaylock.enable = false; # managed manually
-      alacritty.enable = false; # managed manually
-      gnome.enable = true;
-    };
-  }];
+  home-manager.sharedModules = [
+    {
+      stylix.autoEnable = false;
+      stylix.targets = {
+        waybar.enable = false; # managed manually
+        sway.enable = false; # managed manually
+        swaylock.enable = false; # managed manually
+        alacritty.enable = false; # managed manually
+        gnome.enable = true;
+      };
+    }
+  ];
 }

@@ -4,8 +4,8 @@
   imports = [
     ./presets/headful.nix
   ];
-  
-  home-manager = builtins.throw "Do home-manager migration!"
+
+  home-manager = builtins.throw "Do home-manager migration!";
 
   networking = {
     hostName = "euclid";

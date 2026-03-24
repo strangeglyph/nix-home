@@ -1,17 +1,33 @@
-{ config, pkgs, lib, ... }:
-let 
-  inherit (lib) mkEnableOption mkIf flip concatMapStrings escapeShellArg;
-  restic-auth-files = lib.flatten (config.glyph.transpose-here [ "restic" "auth-files" ]);
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    flip
+    concatMapStrings
+    escapeShellArg
+    ;
+  restic-auth-files = lib.flatten (
+    config.glyph.transpose-here [
+      "restic"
+      "auth-files"
+    ]
+  );
   g_restic_server = config.globals.services.restic-server;
   g_headscale = config.globals.services.headscale;
-in 
+in
 {
   imports = [
     ./acme.nix
   ];
 
   options.glyph.restic-server = {
-    enable = mkEnableOption {};
+    enable = mkEnableOption { };
   };
 
   config = mkIf config.glyph.restic-server.enable {
@@ -20,19 +36,33 @@ in
       owner = "restic";
       generator = {
         dependencies = restic-auth-files;
-        script = { lib, pkgs, decrypt, deps, ... }: 
+        script =
+          {
+            lib,
+            pkgs,
+            decrypt,
+            deps,
+            ...
+          }:
           ''
             set -euo pipefail
-          '' +
-          (flip concatMapStrings deps ({name, host, file}: ''
-            echo "Aggregating "${lib.escapeShellArg host}:${lib.escapeShellArg name} >&2
-            
-            auth_data=$(${decrypt} ${escapeShellArg file})
-            user=$(echo "$auth_data" | grep "RESTIC_REST_USERNAME" | cut -d'"' -f2)
-            pass=$(echo "$auth_data" | grep "RESTIC_REST_PASSWORD" | cut -d'"' -f2)
+          ''
+          + (flip concatMapStrings deps (
+            {
+              name,
+              host,
+              file,
+            }:
+            ''
+              echo "Aggregating "${lib.escapeShellArg host}:${lib.escapeShellArg name} >&2
 
-            echo "$pass" | ${pkgs.apacheHttpd}/bin/htpasswd -inBC 10 "$user"
-          ''));
+              auth_data=$(${decrypt} ${escapeShellArg file})
+              user=$(echo "$auth_data" | grep "RESTIC_REST_USERNAME" | cut -d'"' -f2)
+              pass=$(echo "$auth_data" | grep "RESTIC_REST_PASSWORD" | cut -d'"' -f2)
+
+              echo "$pass" | ${pkgs.apacheHttpd}/bin/htpasswd -inBC 10 "$user"
+            ''
+          ));
       };
     };
 
@@ -55,8 +85,10 @@ in
         # not supported in version currently in 25.05
         # TODO wait for update and reenable
         # "--tls-min-ver" "1.3"
-        "--tls-cert" "${config.globals.acme.mkChain g_restic_server.domain}"
-        "--tls-key" "${config.globals.acme.mkKey g_restic_server.domain}"
+        "--tls-cert"
+        "${config.globals.acme.mkChain g_restic_server.domain}"
+        "--tls-key"
+        "${config.globals.acme.mkKey g_restic_server.domain}"
       ];
     };
 
@@ -65,7 +97,7 @@ in
     ];
 
     glyph.transpose.restic.auth-files = [
-      config.age.secrets.restic_auth_rosetta  # for windows desktop
+      config.age.secrets.restic_auth_rosetta # for windows desktop
     ];
 
     security.acme.certs.${g_restic_server.domain} = {

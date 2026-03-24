@@ -1,4 +1,9 @@
-{ pkgs, lib, config,  ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.security.acme;
@@ -6,7 +11,10 @@ in
 {
 
   options.security.acme = {
-    http-challenge-host = mkOption { type = types.nullOr types.str; default = null; };
+    http-challenge-host = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+    };
   };
 
   config.users.groups.acme.members = [ "nginx" ];
@@ -23,13 +31,13 @@ in
       log_format vhost_combined '[$time_local] $server_name ($host) from $remote_addr - '
                                 '"$request" $status $body_bytes_sent '
                                 '"$http_referer" "$http_user_agent"';
-      
+
       access_log /var/log/nginx/other_vhosts_access.log vhost_combined;
     '';
 
     virtualHosts = lib.mkMerge [
       (lib.optionalAttrs (cfg.http-challenge-host != null) {
-        "${ cfg.http-challenge-host }" = {
+        "${cfg.http-challenge-host}" = {
           enableACME = true;
 
           locations."~* \.(php)$" = {

@@ -1,11 +1,16 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   systemd.services.fompf = {
     enable = true;
     description = "Discord Forwarder";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    
+
     unitConfig = {
       Type = "simple";
     };

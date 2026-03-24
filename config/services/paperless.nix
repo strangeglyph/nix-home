@@ -1,20 +1,27 @@
-{ config, lib, nodes, ... }:
+{
+  config,
+  lib,
+  nodes,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkIf;
   gservices = config.globals.services;
-  sso_config = { 
+  sso_config = {
     PAPERLESS_SOCIALACCOUNT_PROVIDERS = builtins.toJSON {
       openid_connect = {
         OAUTH_PKCE_ENABLED = true;
-        APPS = [{
-          provider_id = "kanidm";
-          name = "門";
-          client_id = "paperless";
-          settings = {
-            fetch_userinfo = true;
-            server_url = "https://${gservices.kanidm.domain}/oauth2/openid/paperless";
-          };
-        }];
+        APPS = [
+          {
+            provider_id = "kanidm";
+            name = "門";
+            client_id = "paperless";
+            settings = {
+              fetch_userinfo = true;
+              server_url = "https://${gservices.kanidm.domain}/oauth2/openid/paperless";
+            };
+          }
+        ];
       };
     };
   };
@@ -33,16 +40,24 @@ in
       paperless-env = {
         rekeyFile = ../../secrets/sources/paperless/env.age;
         generator = {
-          dependencies.basic_secret = nodes."${gservices.kanidm.machine}".config.age.secrets.kanidm_basic_secret_paperless;
-          script = { pkgs, deps, decrypt, ... }: ''
-            set -euo pipefail
-            ${lib.toShellVars sso_config}
-            basic_secret="$(${decrypt} ${lib.escapeShellArg deps.basic_secret.file})"
-            
-            echo -n PAPERLESS_SOCIALACCOUNT_PROVIDERS=
-            read -r replaced <<< $(echo $PAPERLESS_SOCIALACCOUNT_PROVIDERS | jq -c ".openid_connect.APPS.[0].secret = \"$basic_secret\"")
-            printf %q $replaced
-          '';
+          dependencies.basic_secret =
+            nodes."${gservices.kanidm.machine}".config.age.secrets.kanidm_basic_secret_paperless;
+          script =
+            {
+              pkgs,
+              deps,
+              decrypt,
+              ...
+            }:
+            ''
+              set -euo pipefail
+              ${lib.toShellVars sso_config}
+              basic_secret="$(${decrypt} ${lib.escapeShellArg deps.basic_secret.file})"
+
+              echo -n PAPERLESS_SOCIALACCOUNT_PROVIDERS=
+              read -r replaced <<< $(echo $PAPERLESS_SOCIALACCOUNT_PROVIDERS | jq -c ".openid_connect.APPS.[0].secret = \"$basic_secret\"")
+              printf %q $replaced
+            '';
         };
       };
       paperless-admin-pass = {
@@ -51,22 +66,30 @@ in
       };
     };
 
-    glyph.transpose.kanidm = [{
-      age.secrets."kanidm_basic_secret_paperless" = {
-        rekeyFile = ../../secrets/sources/kanidm/basic_secret_paperless.age;
-        owner = "kanidm";
-        generator.script = "alnum";
-      };
-      provision.systems.oauth2."paperless" = {
-        displayName = "Paper/Less";
-        preferShortUsername = true;
-        originUrl = "https://${gservices.paperless.domain}/accounts/oidc/kanidm/login/callback/";
-        originLanding = "https://${gservices.paperless.domain}";
-        basicSecretFile = nodes."${gservices.kanidm.machine}".config.age.secrets."kanidm_basic_secret_paperless".path;
-        scopeMaps."paperless_users" = [ "openid" "profile" "email" "groups" ];
-        imageFile = ../../assets/paperless-logo.svg;
-      };
-    }];
+    glyph.transpose.kanidm = [
+      {
+        age.secrets."kanidm_basic_secret_paperless" = {
+          rekeyFile = ../../secrets/sources/kanidm/basic_secret_paperless.age;
+          owner = "kanidm";
+          generator.script = "alnum";
+        };
+        provision.systems.oauth2."paperless" = {
+          displayName = "Paper/Less";
+          preferShortUsername = true;
+          originUrl = "https://${gservices.paperless.domain}/accounts/oidc/kanidm/login/callback/";
+          originLanding = "https://${gservices.paperless.domain}";
+          basicSecretFile =
+            nodes."${gservices.kanidm.machine}".config.age.secrets."kanidm_basic_secret_paperless".path;
+          scopeMaps."paperless_users" = [
+            "openid"
+            "profile"
+            "email"
+            "groups"
+          ];
+          imageFile = ../../assets/paperless-logo.svg;
+        };
+      }
+    ];
 
     services.paperless = {
       enable = true;

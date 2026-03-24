@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   networking.networkmanager.enable = true;
@@ -15,7 +20,7 @@
     logind.settings.Login.HandlePowerKey = "suspend";
     printing = {
       enable = true;
-      drivers = with pkgs; [ 
+      drivers = with pkgs; [
         gutenprint
         gutenprintBin
         epson-escpr

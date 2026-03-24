@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   starship-jj = inputs.starship-jj.packages.${pkgs.stdenv.hostPlatform.system}.starship-jj;
   starship-jj-bin = lib.getExe' starship-jj "starship-jj";
@@ -15,7 +21,7 @@ let
         max_bookmarks = 3;
         surround_with_quotes = false;
       })
-      (jjMkModule "State" {})
+      (jjMkModule "State" { })
       (jjMkModule "Metrics" {
         changed_files.prefix = "~";
         changed_files.color = "Cyan";
@@ -26,7 +32,7 @@ let
       })
     ];
   };
-  starship-jj-config = (pkgs.formats.toml {}).generate "starship-jj.toml" starship-jj-settings;
+  starship-jj-config = (pkgs.formats.toml { }).generate "starship-jj.toml" starship-jj-settings;
 in
 {
   programs.starship = {
@@ -36,8 +42,10 @@ in
       format = lib.concatStrings [
         "[\\[$username@$hostname\\]](green)\n"
         "$nix_shell"
-        "$directory" 
-        "$git_branch" "$git_commit" "$git_status" 
+        "$directory"
+        "$git_branch"
+        "$git_commit"
+        "$git_status"
         "\${custom.jj}"
         "\n"
         "$character"
@@ -90,7 +98,10 @@ in
         ignore_timeout = true;
         use_stdin = false;
         when = "jj --ignore-working-copy root >/dev/null 2>&1";
-        shell = [ "bash" "-c" ];
+        shell = [
+          "bash"
+          "-c"
+        ];
       };
     };
   };

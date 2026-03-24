@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.services.minecraft;
@@ -38,7 +43,7 @@ in
     systemd.sockets.minecraft = {
       enable = true;
       bindsTo = [ "minecraft.service" ];
-      
+
       socketConfig = {
         Service = "minecraft.service";
         ListenFIFO = "/home/minecraft/minecraft/minecraft.sock";

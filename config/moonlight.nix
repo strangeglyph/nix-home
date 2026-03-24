@@ -1,4 +1,10 @@
-all@{ config, pkgs, lib, inputs, ... }:
+all@{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 let
   globals = config.globals;
 in
@@ -7,11 +13,14 @@ in
     ./presets/server.nix
     ./services/restic-server.nix
   ];
- 
+
   networking.interfaces.enp2s0.useDHCP = true;
-  
+
   nix = {
-    settings.trusted-users = [ "root" "@wheel" ];
+    settings.trusted-users = [
+      "root"
+      "@wheel"
+    ];
     nrBuildUsers = 100;
   };
 
@@ -38,7 +47,6 @@ in
 
   home-manager.users.root.imports = [ ../home/moonlight/root.nix ];
   home-manager.users.glyph.imports = [ ../home/moonlight/glyph.nix ];
-  
 
   system.stateVersion = "25.05";
 }
