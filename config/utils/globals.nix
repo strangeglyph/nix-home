@@ -162,6 +162,8 @@ in
         kanidm = {
           host = kanidm_host;
           domain = kanidm_domain;
+          vpn_domain = "${kanidm_host}.${tailnet_domain}";
+          
           machine = "philae";
           bindaddr = "[::1]";
           bindport = 49741;

@@ -48,7 +48,13 @@ in
       }
     ];
 
-    users.groups.acme.members = [ "kanidm" ];
+    users.groups.kanidm-certs.members = [ "kanidm" "acme" "nginx" ];
+    security.acme.certs.${g_kanidm.domain} = {
+      reloadServices = [ "kanidm.service" ];
+      group = "kanidm-certs";
+      extraDomainNames = [ g_kanidm.vpn_domain ];
+    };
+
 
     age = lib.mkMerge transposed-age;
     sops = lib.mkMerge transposed-sops;
@@ -57,6 +63,10 @@ in
       allowedTCPPorts = [ g_kanidm.ldapbindport ];
       allowedUDPPorts = [ g_kanidm.ldapbindport ];
     };
+
+    glyph.transpose.headscale.dns = [
+      (config.globals.services.headscale.mkDnsEntry g_kanidm.host)
+    ];
 
     services.kanidm = {
       package = pkgs.kanidmWithSecretProvisioning_1_9;
@@ -73,8 +83,8 @@ in
         trust_x_forward_for = true;
         domain = domain;
         origin = "https://${domain}";
-        tls_chain = globals.acme.chain;
-        tls_key = globals.acme.key;
+        tls_chain = globals.acme.mkChain g_kanidm.domain;
+        tls_key = globals.acme.mkKey g_kanidm.domain;
 
         online_backup = {
           path = "/var/backups/kanidm";
@@ -191,6 +201,7 @@ in
       virtualHosts."${domain}" = globals.services.nginx.mkReverseProxy {
         domain = g_kanidm.bindaddr;
         port = g_kanidm.bindport;
+        acme_host = g_kanidm.domain;
       };
     };
 
