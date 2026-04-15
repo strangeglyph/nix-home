@@ -1,104 +1,48 @@
 {
-  config,
-  pkgs,
   lib,
   ...
 }:
 
 {
   imports = [
-    ./presets/headful.nix
-    ./presets/workstation.nix
-    ./services/tailscale.nix
     ./services/restic-backup.nix
+    ./fragments
   ];
 
-  # boot.extraModprobeConfig = ''
-  #  options iwlwifi 11n_disable=8
-  #  options iwlwifi power_save=0
-  #   options iwlmvm  power_scheme=1
-  #'';
+  networking.hostName = "aeolus";
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+  glyph = {
+    users.lschuetze.privileged = true;
+    tailscale.operator = "lschuetze";
 
-  networking = {
-    hostName = "aeolus";
-    interfaces = {
-      #enp2s0f0.useDHCP = true;
-      #enp5s0.useDHCP = true;
-      #wlp3s0.useDHCP = true;
-    };
-  };
+    keyboard = "qwerty";
 
-  console.keyMap = lib.mkForce "us";
-
-  services.xserver = {
-    xkb.layout = lib.mkForce "us";
-    xkb.variant = lib.mkForce "altgr-intl";
-    xkb.options = lib.mkForce "eurosign:e,compose:caps";
-  };
-  services.printing.browsedConf = ''
-    CreateRemoteRawPrinterQueues Yes
-    BrowsePoll cups.mpi-klsb.mpg.de:631
-  '';
-  services.openssh = {
-    enable = true; # just so we give agenix something to work with
-    openFirewall = false; # but we don't really want to expose it
-  };
-
-  systemd.settings.Manager.DefaultTimeoutStopSec = "15s";
-  systemd.user.extraConfig = "DefaultTimeoutStopSec=15s";
-
-  services.tailscale.enable = true;
-  glyph.tailscale = {
-    operator = "lschuetze";
-    taildrop = {
-      enable = true;
-      directory = "/home/lschuetze/Downloads/taildrop";
-      conflict = "rename";
-    };
-  };
-
-  users.users.lschuetze = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "scanner"
-      "lp"
-      "wireshark"
-      "audio"
-      "video"
-      "input"
+    printer.remotes = [
+      "cups.mpi-klsb.mpg.de:631"
     ];
-    shell = pkgs.fish;
+
+    restic."aeolus".paths = [
+      "/home/lschuetze/Documents"
+      "/home/lschuetze/Projects"
+    ];
+
+    security.dnssec.enable = false; # Causes issues on mpi net
+
+    dm.enable = true;
+
+    dev = {
+      rust = true;
+      python = true;
+    };
+
+    tools = {
+      editors = true;
+      graphics = true;
+      "3d-printing" = true;
+      science = true;
+    };
   };
-  home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
-  home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
 
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-  ];
-
-  glyph.restic."aeolus".paths = [
-    "/home/lschuetze/Documents"
-    "/home/lschuetze/Projects"
-  ];
-
-  environment.systemPackages = with pkgs; [
-    jetbrains.idea
-    jetbrains.pycharm
-    jetbrains.rust-rover
-    poetry
-    openscad
-    prusa-slicer
-    obsidian
-    (agda.withPackages [ agdaPackages.standard-library ])
-    vscode-fhs
-    inkscape-with-extensions
-    devenv
-  ];
-
-  system.stateVersion = "21.05";
+  #home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
+  #home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
 }

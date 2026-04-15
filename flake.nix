@@ -114,7 +114,7 @@
               agenix-rekey.nixosModules.default
               sops-nix.nixosModules.sops
               spacebar.nixosModules.default
-              ./config/utils/globals.nix
+              ./config/utils
               ./config/default.nix
               ./hw/${name}.nix
               ./config/${name}.nix

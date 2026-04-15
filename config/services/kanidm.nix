@@ -48,13 +48,16 @@ in
       }
     ];
 
-    users.groups.kanidm-certs.members = [ "kanidm" "acme" "nginx" ];
+    users.groups.kanidm-certs.members = [
+      "kanidm"
+      "acme"
+      "nginx"
+    ];
     security.acme.certs.${g_kanidm.domain} = {
       reloadServices = [ "kanidm.service" ];
       group = "kanidm-certs";
       extraDomainNames = [ g_kanidm.vpn_domain ];
     };
-
 
     age = lib.mkMerge transposed-age;
     sops = lib.mkMerge transposed-sops;
