@@ -83,6 +83,7 @@
 
   glyph.restic."aeolus".paths = [
     "/home/lschuetze/Documents"
+    "/home/lschuetze/Projects"
   ];
 
   environment.systemPackages = with pkgs; [
