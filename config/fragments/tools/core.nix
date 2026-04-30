@@ -63,13 +63,13 @@ in
 
         curl
         jq
-      
+
         git
         jujutsu
 
         ripgrep # modern grep
-        eza     # modern ls
-        bat     # modern cat 
+        eza # modern ls
+        bat # modern cat
       ];
     })
     (mkIf cfg.diagnostics.enable {
@@ -80,7 +80,7 @@ in
 
       environment.systemPackages = with pkgs; [
         # hardware reports
-        pciutils 
+        pciutils
         lshw
 
         # networking tools

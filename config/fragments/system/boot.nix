@@ -14,7 +14,7 @@ in
     boot.loader.systemd-boot.configurationLimit = 4;
     boot.loader.efi.canTouchEfiVariables = true;
     boot.tmp.useTmpfs = true;
-    
+
     boot.initrd.systemd.network.wait-online.enable = false;
 
     systemd.network.wait-online.enable = false;

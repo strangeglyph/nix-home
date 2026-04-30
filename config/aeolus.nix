@@ -42,7 +42,4 @@
       science = true;
     };
   };
-
-  #home-manager.users.root.imports = [ ../home/aeolus/root.nix ];
-  #home-manager.users.lschuetze.imports = [ ../home/aeolus/lschuetze.nix ];
 }

@@ -51,8 +51,8 @@ in
       useRoutingFeatures = "both";
       openFirewall = true;
       extraUpFlags = [
-        "--login-server=https://${config.globals.headscale.domain}"
-        "--operator=${cfg.operator.operator}"
+        "--login-server=https://${config.globals.services.headscale.domain}"
+        "--operator=${cfg.operator}"
       ];
     };
 
@@ -75,6 +75,9 @@ in
         {
           DynamicUser = false;
           ProtectHome = false;
+          BindPaths = [
+            "${cfg.taildrop.directory}"
+          ];
         }
         {
           enable = true;

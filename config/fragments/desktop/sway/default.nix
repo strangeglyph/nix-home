@@ -49,11 +49,6 @@ in
   config = mkIf cfg.enable {
     programs.sway.enable = true;
 
-    services.displayManager.autoLogin = {
-      enable = true;
-      user = "lschuetze";
-    };
-
     home-manager.users = glib.eachHumanUser' (name: {
       wayland.windowManager.sway = {
         enable = true;

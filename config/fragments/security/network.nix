@@ -3,9 +3,9 @@
   config,
   ...
 }:
-let 
+let
   inherit (lib) mkOption mkIf types;
-in 
+in
 {
   options.glyph = {
     security.dnssec.enable = mkOption {

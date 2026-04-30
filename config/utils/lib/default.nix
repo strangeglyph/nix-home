@@ -9,8 +9,8 @@ let
   # generate { [name :: f name (glyph.users.name)] }
   eachHumanUser = lib.flip lib.mapAttrs config.glyph.users;
   eachHumanUser' = lib.genAttrs humanUsers;
-  eachHumanUserAndRoot = lib.flip lib.mapAttrs ({root = {};} // config.glyph.users);
-  eachHumanUserAndRoot' = lib.genAttrs (lib.uniqueStrings (humanUsers ++ ["root"]));
+  eachHumanUserAndRoot = lib.flip lib.mapAttrs ({ root = { }; } // config.glyph.users);
+  eachHumanUserAndRoot' = lib.genAttrs (lib.uniqueStrings (humanUsers ++ [ "root" ]));
 
   is-sluglike =
     c:

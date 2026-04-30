@@ -5,7 +5,7 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.glyph.dev.rust;
+  cfg = config.glyph.dev.python;
 in
 {
   options.glyph.dev.python = mkEnableOption "Python IDEs and tooling";

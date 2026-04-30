@@ -31,7 +31,7 @@ in
   };
 
   config = {
-    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
     boot.kernelModules = [ "jitterentropy_rng" ];
 
     boot.blacklistedKernelModules = [

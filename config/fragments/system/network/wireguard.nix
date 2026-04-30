@@ -13,9 +13,9 @@ in
     enable = mkOption {
       description = "Wireguard tools";
       type = types.bool;
-      default = lib.attrsToList (config.glyph.wireguard.profiles) != [];
+      default = lib.attrsToList (config.glyph.wireguard.profiles) != [ ];
     };
-    profiles = {
+    profiles = mkOption {
       description = "Configure wireguard profiles";
       type = types.attrsOf (
         types.submodule {

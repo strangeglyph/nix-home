@@ -19,7 +19,7 @@ in
   config = mkIf cfg.enable {
     # Real-time scheduling for pipewire
     security.rtkit.enable = true;
-    
+
     services = {
       pipewire = {
         enable = true;
@@ -29,7 +29,7 @@ in
         pulse.enable = true;
         jack.enable = true;
         # Session manager
-        wireplumber.enable =  true;
+        wireplumber.enable = true;
       };
     };
   };

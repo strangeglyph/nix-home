@@ -11,7 +11,7 @@ let
     name = "color";
     description = "HTML color code";
     descriptionClass = "noun";
-    check = x: types.str.check x && builtins.match "#[[:xdigit:]]{6}" != null;
+    check = x: types.str.check x && builtins.match "#[[:xdigit:]]{6}" x != null;
     inherit (types.str) merge;
   };
   mkColorOpt =
@@ -108,51 +108,59 @@ in
                 base17 = mkColorOpt "(typically bright magenta)";
               };
               mnemonics = {
-                background = with config.palette; builtins.mapAttrs (_: mkColorRef) {
-                  main = base00;
-                  status = base01;
-                  selection = base02;
-                  secondary = base10;
-                  tertiary = base11;
-                };
-                foreground = with config.palette; builtins.mapAttrs (_: mkColorRef) {
-                  main = base05;
-                  status = base04;
-                  secondary = base06;
-                  tertiary = base07;
-                };
-                category = with config.palette; builtins.mapAttrs (_: mkColorRef) {
-                  inactive = base06;
-                  critical = base0F;
-                  error = base08;
-                  warn = base09;
-                  alert = base0A;
-                  okay = base0B;
-                  focus = base0D;
-                  accent = base0C;
-                };
-                color = with config.palette; builtins.mapAttrs (_: builtins.mapAttrs (_: mkColorRef)) {
-                  red.main = base08;
-                  red.deep = base0F;
-                  red.bright = base12;
+                background =
+                  with config.palette;
+                  builtins.mapAttrs (_: mkColorRef) {
+                    main = base00;
+                    status = base01;
+                    selection = base02;
+                    secondary = base10;
+                    tertiary = base11;
+                  };
+                foreground =
+                  with config.palette;
+                  builtins.mapAttrs (_: mkColorRef) {
+                    main = base05;
+                    status = base04;
+                    secondary = base06;
+                    tertiary = base07;
+                  };
+                category =
+                  with config.palette;
+                  builtins.mapAttrs (_: mkColorRef) {
+                    inactive = base06;
+                    critical = base0F;
+                    error = base08;
+                    warn = base09;
+                    alert = base0A;
+                    okay = base0B;
+                    focus = base0D;
+                    accent = base0C;
+                  };
+                color =
+                  with config.palette;
+                  builtins.mapAttrs (_: builtins.mapAttrs (_: mkColorRef)) {
+                    red.main = base08;
+                    red.deep = base0F;
+                    red.bright = base12;
 
-                  orange.main = base09;
-                  orange.bright = base13;
+                    orange.main = base09;
+                    orange.bright = base13;
 
-                  yellow.main = base0A;
+                    yellow.main = base0A;
 
-                  green.main = base0B;
-                  green.bright = base14;
+                    green.main = base0B;
+                    green.bright = base14;
 
-                  cyan.main = base0C;
-                  cyan.bright = base15;
+                    cyan.main = base0C;
+                    cyan.bright = base15;
 
-                  blue.main = base0D;
-                  blue.bright = base16;
+                    blue.main = base0D;
+                    blue.bright = base16;
 
-                  magenta.main = base0E;
-                  magenta.bright = base17;
-                };
+                    magenta.main = base0E;
+                    magenta.bright = base17;
+                  };
               };
             };
           }
@@ -166,7 +174,7 @@ in
       default-scheme = "pastel-dark";
       schemes."pastel-dark" = {
         variant = "dark";
-        description = "lightly desaturate, bright bcolors, mint accents";
+        description = "lightly desaturate, bright colors, mint accents";
         palette = {
           base00 = "#161320";
           base01 = "#383956";
@@ -197,7 +205,7 @@ in
     };
 
     # standard 16-color map: https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
-    console.colors =
+    console.colors = lib.mkForce ( # TODO remove mkForce once nailed down where the duplicates come from
       with cfg.schemes."${cfg.tty}".mnemonics;
       lib.map glib.color.strip [
         background.main
@@ -217,6 +225,7 @@ in
         color.magenta.main # unused
         color.magenta.main # unused
         category.focus # motd + systemd service name
-      ];
+      ]
+      );
   };
 }

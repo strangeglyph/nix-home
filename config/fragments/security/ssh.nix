@@ -36,7 +36,7 @@ in
   config = mkIf config.glyph.ssh.enable {
     services.openssh = {
       enable = true;
-      openFirewall = false;
+      openFirewall = true;
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;

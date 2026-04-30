@@ -103,7 +103,7 @@ in
               scroll-step = 5;
               format = "{icon} {volume}%";
               format-muted = "󰝟 {volume}%";
-              on-click-right = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
+              on-click-right = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
               format-icons.default = [
                 ""
                 ""
