@@ -1,15 +1,11 @@
 {
-  lib,
   ...
 }:
 
 {
   imports = [
-    ./services/restic-backup.nix
     ./fragments
   ];
-
-  networking.hostName = "aeolus";
 
   glyph = {
     users.lschuetze.privileged = true;

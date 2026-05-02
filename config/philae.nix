@@ -1,4 +1,4 @@
-all@{
+{
   config,
   pkgs,
   lib,
@@ -10,23 +10,8 @@ let
 in
 {
   imports = [
-    ./presets/server.nix
-    ./services/acme.nix
-    #    ./services/fompf.nix
-    ./services/cookbook.nix
-    ./services/cartograph.nix
-    ./services/nextcloud.nix
-    ./services/minecraft.nix
-    ./services/kanidm.nix
-    ./services/oauth2_proxy.nix
-    ./services/headscale.nix
-    ./services/tailscale.nix
-    ./services/vaultwarden.nix
-    ./services/forgejo.nix
-    ./services/paperless.nix
-    ./services/spacebar.nix
-    ./services/actualbudget.nix
-    #    ./services/syncproxy.nix
+    ./fragments
+    ./services
     #    ./utils/pgsql_update.nix
     #    ./tests/oauth2-proxy.nix
   ];
@@ -36,30 +21,10 @@ in
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
 
-  networking.hostName = "philae";
-  networking.interfaces.ens3.useDHCP = true;
-
-  nix = {
-    settings.trusted-users = [
-      "root"
-      "@wheel"
-    ];
-    nrBuildUsers = 100;
-  };
-
-  security.acme = {
-    http-challenge-host = "acme.strangegly.ph";
-    certs."${globals.domains.base}" = {
-      domain = "*.${globals.domains.base}";
-      extraDomainNames = [ "*.${globals.services.headscale.net.domain}" ];
-      group = "acme";
-    };
-    certs."acme.strangegly.ph" = {
-      extraDomainNames = [ "cookbook.strangegly.ph" ];
-    };
-  };
-
   glyph = {
+    users.glyph.privileged = true;
+
+    nginx-public.enable = true;
     nextcloud.enable = true;
     kanidm.enable = true;
     headscale.enable = true;
@@ -67,7 +32,6 @@ in
     minecraft.enable = false;
     forgejo.enable = true;
     paperless.enable = true;
-    spacebar.enable = true;
     actualbudget.enable = true;
   };
 
@@ -80,34 +44,6 @@ in
       acme-uses-dns = true;
       acme-host = "${globals.domains.base}";
     };
-    nginx.virtualHosts = {
-      "cookbook.strangegly.ph" = {
-        forceSSL = true;
-        useACMEHost = config.security.acme.http-challenge-host;
-        globalRedirect = "cookbook.${globals.domains.base}";
-      };
-      "wo-ist-ole.strangegly.ph" = {
-        forceSSL = true;
-        useACMEHost = config.security.acme.http-challenge-host;
-        globalRedirect = "wo-ist-ole.${globals.domains.base}";
-      };
-      "cloud.strangegly.ph" = {
-        forceSSL = true;
-        useACMEHost = config.security.acme.http-challenge-host;
-        globalRedirect = "cloud.${globals.domains.base}";
-      };
-      "~^(.*\.)?${config.globals.services.headscale.net.domain}$" = {
-        forceSSL = true;
-        useACMEHost = config.globals.domains.base;
-        locations."/(.*)".return = "200 '${builtins.readFile ../assets/interstice-landing.html}'";
-      };
-    }
-    // lib.mkMerge (
-      config.glyph.transpose-here [
-        "nginx"
-        "virtualHosts"
-      ]
-    );
     cartograph = {
       enable = true;
       vhost = "wo-ist-ole.${globals.domains.base}";
@@ -118,33 +54,5 @@ in
       package = pkgs.nextcloud32;
     };
     postgresql.package = pkgs.postgresql_16;
-    tailscale.enable = true;
   };
-
-  users.users = {
-    glyph = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" ];
-      shell = pkgs.fish;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILRwfYnEBA8Pdsqui9xxLkk7KYpKjA01YvzHx8Sfe1PW lschuetze@aeolus"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICFCfbpXsvpFUdCa6QL9PMloDtbTyqvvxLML7o/7w2Pi glyph@rosetta"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBUkBx2KFNuQ4K6h7RSxzHNE7Iq/cpiuCD7y97NMq6l2 glyph@pathfinder"
-      ];
-    };
-    fompf = {
-      isNormalUser = true;
-      shell = pkgs.fish;
-    };
-    minecraft = {
-      isNormalUser = true;
-      shell = pkgs.fish;
-    };
-  };
-
-  home-manager.users.root.imports = [ ../home/philae/root.nix ];
-  home-manager.users.glyph.imports = [ ../home/philae/glyph.nix ];
-  home-manager.users.minecraft.imports = [ ../home/philae/minecraft.nix ];
-
-  system.stateVersion = "21.05";
 }

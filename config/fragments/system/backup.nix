@@ -63,8 +63,6 @@ in
                 {
                   lib,
                   pkgs,
-                  decrypt,
-                  deps,
                   ...
                 }:
                 ''

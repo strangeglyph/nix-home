@@ -1,5 +1,4 @@
 {
-  pkgs,
   lib,
   config,
   ...
@@ -17,9 +16,17 @@ in
     };
   };
 
-  config.users.groups.acme.members = [ "nginx" ];
+  config = {
+    networking.firewall.allowedTCPPorts = [
+      80
+      443
+    ];
+    networking.firewall.allowedUDPPorts = [
+      443 # quic
+    ];
 
-  config.services.nginx = {
+    users.groups.acme.members = [ "nginx" ];
+
     recommendedGzipSettings = true;
     recommendedBrotliSettings = true;
     recommendedUwsgiSettings = true;
@@ -45,9 +52,9 @@ in
           };
         };
       })
-      ({
+      {
         "aaaa.honeytrap.apophenic.net".globalRedirect = "ash-speed.hetzner.com/10GB.bin";
-      })
+      }
     ];
   };
 }

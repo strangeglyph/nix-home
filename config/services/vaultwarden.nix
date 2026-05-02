@@ -1,4 +1,4 @@
-all@{ config, lib, ... }:
+{ config, lib, ... }:
 let
   cfg = config.services.vaultwarden;
   globals_vw = config.globals.services.vaultwarden;
@@ -11,7 +11,7 @@ in
 
   options.glyph.vaultwarden.enable = lib.mkEnableOption { };
 
-  config = lib.mkIf config.glyph.vaultwarden.enable {
+  config = lib.mkIf cfg.enable {
     age.secrets.vaultwarden_env = {
       rekeyFile = ../../secrets/sources/vaultwarden_env.age;
     };

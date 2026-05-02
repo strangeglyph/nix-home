@@ -2,12 +2,10 @@
   pkgs,
   config,
   lib,
-  nodes,
   ...
 }:
 let
   cfg = config.services.kanidm;
-  acme = config.security.acme;
 
   json = pkgs.formats.json { };
 

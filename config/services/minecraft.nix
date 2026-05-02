@@ -13,7 +13,7 @@ in
     enable = mkEnableOption "minecraft service";
   };
 
-  config = mkIf config.glyph.minecraft.enable {
+  config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [ config.globals.services.minecraft.port ];
 
     systemd.services.minecraft = {

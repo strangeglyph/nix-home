@@ -1,14 +1,11 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
 with lib;
 let
   cfg = config.services.nextcloud;
-  acme = config.security.acme;
-  further-cfg = config.services.nextcloud-personal;
 in
 {
   imports = [

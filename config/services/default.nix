@@ -1,0 +1,21 @@
+{
+  imports = [
+    ./acme.nix
+    ./actualbudget.nix
+    ./cartograph.nix
+    ./cookbook.nix
+    ./fompf.nix
+    ./forgejo.nix
+    ./headscale.nix
+    ./kanidm.nix
+    ./minecraft.nix
+    ./nextcloud.nix
+    ./nginx-public.nix
+    ./oauth2_proxy.nix
+    ./paperless.nix
+    ./restic-server.nix
+    ./spacebar.nix
+    ./syncproxy.nix
+    ./vaultwarden.nix
+  ];
+}

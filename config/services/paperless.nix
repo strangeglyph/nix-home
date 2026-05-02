@@ -55,7 +55,7 @@ in
               basic_secret="$(${decrypt} ${lib.escapeShellArg deps.basic_secret.file})"
 
               echo -n PAPERLESS_SOCIALACCOUNT_PROVIDERS=
-              read -r replaced <<< $(echo $PAPERLESS_SOCIALACCOUNT_PROVIDERS | jq -c ".openid_connect.APPS.[0].secret = \"$basic_secret\"")
+              read -r replaced <<< $(echo $PAPERLESS_SOCIALACCOUNT_PROVIDERS | ${pkgs.jq}/bin/jq -c ".openid_connect.APPS.[0].secret = \"$basic_secret\"")
               printf %q $replaced
             '';
         };

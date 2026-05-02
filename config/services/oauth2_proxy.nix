@@ -1,15 +1,11 @@
 {
-  pkgs,
   config,
   lib,
   nodes,
-  name,
-  inputs,
   ...
 }:
 let
   inherit (lib)
-    mkIf
     mkMerge
     mkOption
     types
@@ -17,7 +13,6 @@ let
   cfg = config.glyph.nginx.oauth2-gate;
 
   globals = config.globals;
-  globals_o2p = globals.services.oauth2-proxy;
 
   kanidm_host = globals.services.kanidm.machine;
 
@@ -175,7 +170,7 @@ in
         autoStart = true;
 
         config =
-          { container-config, pkgs, ... }:
+          { ... }:
           {
 
             users.users.oauth2-proxy.uid = config.users.users.oauth2-proxy.uid;
@@ -275,10 +270,7 @@ in
             let
               maybeQueryArg =
                 name: value:
-                if value == null then
-                  null
-                else
-                  "${name}=${lib.concatStringsSep "," (builtins.map lib.escapeURL value)}";
+                if value == null then null else "${name}=${lib.concatStringsSep "," (map lib.escapeURL value)}";
               allArgs = lib.mapAttrsToList maybeQueryArg {
                 inherit (settings) allowed_groups allowed_emails allowed_email_domains;
               };
