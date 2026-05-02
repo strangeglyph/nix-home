@@ -41,12 +41,12 @@ in
           enableACME = true;
 
           locations."~* \.(php)$" = {
-            return = "301 https://ash-speed.hetzner.com/10GB.bin";
+            return = "301 ash-speed.hetzner.com/10GB.bin";
           };
         };
       })
       ({
-        "aaaa.honeytrap.apophenic.net".globalRedirect = "https://ash-speed.hetzner.com/10GB.bin";
+        "aaaa.honeytrap.apophenic.net".globalRedirect = "ash-speed.hetzner.com/10GB.bin";
       })
     ];
   };

@@ -51,10 +51,6 @@ let
   actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
 {
-  imports = [
-    ./transpose.nix
-  ];
-
   options.globals = lib.mkOption {
     description = "Global settings";
     #type = lib.types.any;
@@ -163,7 +159,7 @@ in
           host = kanidm_host;
           domain = kanidm_domain;
           vpn_domain = "${kanidm_host}.${tailnet_domain}";
-          
+
           machine = "philae";
           bindaddr = "[::1]";
           bindport = 49741;
