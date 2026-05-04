@@ -134,6 +134,7 @@ in
         headscale = {
           host = headscale_host;
           domain = headscale_domain;
+          address_space = "100.64.0.0/10";
 
           net = {
             name = tailnet;

@@ -5,6 +5,7 @@
 }:
 let
   inherit (lib) mkOption mkIf types;
+  gservices = config.globals.services;
 in
 {
   options.glyph = {
@@ -42,6 +43,11 @@ in
         PasswordAuthentication = false;
       };
       allowSFTP = false;
+
+      extraConfig = lib.mkAfter ''
+        Match Address ${gservices.headscale.address_space}
+          PermitRootLogin yes
+      '';
     };
 
     users.users = config.glib.eachHumanUser (
