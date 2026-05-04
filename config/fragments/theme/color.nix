@@ -205,7 +205,7 @@ in
     };
 
     # standard 16-color map: https://en.wikipedia.org/wiki/ANSI_escape_code#8-bit
-    console.colors = lib.mkForce ( # TODO remove mkForce once nailed down where the duplicates come from
+    console.colors =
       with cfg.schemes."${cfg.tty}".mnemonics;
       lib.map glib.color.strip [
         background.main
@@ -225,7 +225,6 @@ in
         color.magenta.main # unused
         color.magenta.main # unused
         category.focus # motd + systemd service name
-      ]
-      );
+      ];
   };
 }
