@@ -6,7 +6,8 @@
 let
   inherit (lib) mkOption mkIf types;
   cfg = config.glyph.power;
-in {
+in
+{
   options.glyph.power = {
     enable = mkOption {
       description = "Power management settings";

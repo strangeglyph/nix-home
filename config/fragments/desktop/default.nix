@@ -16,6 +16,7 @@ in
     ./power.nix
     ./wallpapers.nix
     ./sway
+    ./niri
     ./term
   ];
 
