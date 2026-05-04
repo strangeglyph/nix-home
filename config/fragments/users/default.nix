@@ -59,6 +59,9 @@ in
     # usb stick mounting, required for udiskie
     services.udisks2.enable = true;
 
+    # user management
+    services.userborn.enable = true;
+
     home-manager.users = lib.mkMerge [
       {
         root = {
