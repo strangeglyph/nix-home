@@ -13,6 +13,7 @@ in
   imports = [
     ./networkmanager.nix
     ./sound.nix
+    ./power.nix
     ./sway
     ./term
   ];
@@ -45,13 +46,13 @@ in
         touchpad.naturalScrolling = true;
         touchpad.disableWhileTyping = true;
       };
-
-      acpid.enable = true;
-      logind.settings.Login.HandlePowerKey = "suspend";
     };
 
     # Backlight control
     programs.light.enable = true;
+
+    # Bluetooth
+    hardware.bluetooth.enable = true;
 
     environment.systemPackages = with pkgs; [
       # Screen mirroring for presentations
