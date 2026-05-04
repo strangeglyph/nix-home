@@ -56,7 +56,7 @@ in
       flip mapAttrsToList config.glyph.restic (
         repo-name: _: {
           "restic_auth_${repo-name}" = {
-            rekeyFile = ../../secrets/sources/restic/repo_auth_${repo-name}.age;
+            rekeyFile = ../../../secrets/sources/restic/repo_auth_${repo-name}.age;
             owner = "restic";
             generator = {
               script =
@@ -72,7 +72,7 @@ in
             };
           };
           "restic_crypt_${repo-name}" = {
-            rekeyFile = ../../secrets/sources/restic/repo_crypt_${repo-name}.age;
+            rekeyFile = ../../../secrets/sources/restic/repo_crypt_${repo-name}.age;
             owner = "restic";
             generator.script = "alnum";
           };
