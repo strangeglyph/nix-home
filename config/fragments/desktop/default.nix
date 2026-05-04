@@ -14,6 +14,7 @@ in
     ./networkmanager.nix
     ./sound.nix
     ./power.nix
+    ./wallpapers.nix
     ./sway
     ./term
   ];
