@@ -8,7 +8,10 @@
   ];
 
   glyph = {
-    users.lschuetze.privileged = true;
+    users.lschuetze = {
+      privileged = true;
+      with-pw = true;
+    };
     tailscale.operator = "lschuetze";
 
     keyboard = "qwerty";
@@ -24,7 +27,14 @@
 
     security.dnssec.enable = false; # Causes issues on mpi net
 
-    dm.enable = true;
+    dm = {
+      enable = true;
+
+      noctalia = {
+        enable = true;
+        animations = false;
+      };
+    };
 
     dev = {
       rust = true;

@@ -22,7 +22,10 @@ in
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
 
   glyph = {
-    users.glyph.privileged = true;
+    users.glyph = {
+      privileged = true;
+      with-pw = true;
+    };
 
     nginx-public.enable = true;
     nextcloud.enable = true;

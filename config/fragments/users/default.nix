@@ -23,38 +23,41 @@ in
             default = false;
             type = types.bool;
           };
+          with-pw = lib.mkOption {
+            description = "Set a default password to enable use of `passwd` and `sudo`";
+            default = false;
+            type = types.bool;
+          };
         };
       }
     );
   };
 
   config = {
-    users.users = mkMerge [
-      {
-        root.shell = pkgs.fish;
-      }
-      (config.glib.eachHumanUser (
-        name: cfg:
-        mkMerge [
-          {
-            isNormalUser = true;
-            extraGroups = [
-              "networkmanager"
-              "scanner"
-              "lp"
-              "audio"
-              "video"
-              "input"
-            ]
-            ++ lib.optionals cfg.privileged [
-              "wheel"
-              "wireshark"
-            ];
-          }
-        ]
-      ))
 
-    ];
+    users.users = config.glib.eachHumanUser (
+      name: cfg:
+      mkMerge [
+        {
+          isNormalUser = true;
+          home = "/home/${name}";
+
+          extraGroups = [
+            "networkmanager"
+            "scanner"
+            "lp"
+            "audio"
+            "video"
+            "input"
+          ]
+          ++ lib.optionals cfg.privileged [
+            "wheel"
+            "wireshark"
+          ];
+          initialHashedPassword = if cfg.with-pw then config.glyph.confidentials.initial-unix-pw else null;
+        }
+      ]
+    );
 
     # usb stick mounting, required for udiskie
     services.udisks2.enable = true;

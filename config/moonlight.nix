@@ -8,7 +8,10 @@ in
   ];
 
   glyph = {
-    users.glyph.privileged = true;
+    users.glyph = {
+      privileged = true;
+      with-pw = true;
+    };
 
     restic-server.enable = true;
   };
