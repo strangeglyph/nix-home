@@ -50,6 +50,15 @@ in
       };
     };
 
+    i18n.inputMethod = {
+      enable = true;
+      type = "ibus";
+      ibus.engines = with pkgs.ibus-engines; [
+        table
+        table-others
+      ];
+    };
+
     # Backlight control
     programs.light.enable = true;
 
