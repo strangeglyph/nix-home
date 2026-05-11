@@ -43,6 +43,7 @@
       rage
       sops
       npins
+      comma
     ];
   };
 }
