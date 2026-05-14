@@ -27,9 +27,6 @@ let
   };
 in
 {
-  imports = [
-    ./restic-backup.nix
-  ];
 
   options = {
     glyph.paperless.enable = mkEnableOption { description = "glyph paperless settings"; };

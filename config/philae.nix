@@ -21,6 +21,9 @@ in
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
 
+  services.qemuGuest.enable = true;
+
+
   glyph = {
     users.glyph = {
       privileged = true;

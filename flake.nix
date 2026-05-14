@@ -160,7 +160,7 @@
           }:
           {
             deployment = {
-              targetHost = "philae.apophenic.net";
+              targetHost = "philae.interstice.apophenic.net";
               tags = [
                 "interstice-server"
                 "interstice-client"

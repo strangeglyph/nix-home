@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  nodes,
   ...
 }:
 let
@@ -24,9 +23,6 @@ let
 
   kanidm_host = "gate";
   kanidm_domain = "${kanidm_host}.${base}";
-
-  oauth2-proxy_host = "portcullis";
-  oauth2-proxy_domain = "${oauth2-proxy_host}.${base}";
 
   vaultwarden_host = "vault";
   vaultwarden_domain = "${vaultwarden_host}.${tailnet_domain}";

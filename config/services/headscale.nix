@@ -63,6 +63,7 @@ in
           ];
         };
         oidc = {
+          only_start_if_oidc_is_available = false; # Kanidm can be flaky and we don't want to kill our network access
           client_secret_path = config.age.secrets.kanidm_oauth_interstice.path;
           client_id = globals_hs.net.name;
           issuer = globals.services.kanidm.makeOidc globals_hs.net.name;

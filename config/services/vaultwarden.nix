@@ -1,12 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.services.vaultwarden;
+  cfg = config.glyph.vaultwarden;
   globals_vw = config.globals.services.vaultwarden;
 in
 {
   imports = [
     ./nginx-common.nix
-    ./restic-backup.nix
   ];
 
   options.glyph.vaultwarden.enable = lib.mkEnableOption { };

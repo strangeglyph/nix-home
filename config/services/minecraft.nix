@@ -6,7 +6,7 @@
 }:
 with lib;
 let
-  cfg = config.services.minecraft;
+  cfg = config.glyph.minecraft;
 in
 {
   options.glyph.minecraft = {

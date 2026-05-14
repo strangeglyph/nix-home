@@ -24,7 +24,7 @@ in
     enable = mkOption {
       description = "Set up a graphic desktop environment";
       type = lib.types.bool;
-      default = true;
+      default = false;
     };
     default-wm = mkOption {
       description = "Default window manager to start for graphical sessions";

@@ -16,6 +16,7 @@
           "flakes"
           "pipe-operator"
         ];
+        http2 = false; # Hopefully fix some flaky requests to the cache
         nix-path = [ "nixpkgs=flake:nixpkgs" ];
       };
       gc = {
@@ -35,6 +36,16 @@
     nixpkgs = {
       config.allowUnfree = true;
       flake.source = inputs.nixpkgs.outPath;
+
+      overlays = [
+        # Fix for https://github.com/NixOS/nixpkgs/issues/387010
+        # Dependency for paperless
+        (final: prev: {
+          valkey = prev.valkey.overrideAttrs (old: {
+              doCheck = false;
+          });
+        })
+      ];
     };
 
     programs.nix-index.enable = true;

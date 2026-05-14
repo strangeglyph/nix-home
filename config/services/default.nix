@@ -14,7 +14,7 @@
     ./oauth2_proxy.nix
     ./paperless.nix
     ./restic-server.nix
-    ./spacebar.nix
+    #./spacebar.nix
     ./syncproxy.nix
     ./vaultwarden.nix
   ];

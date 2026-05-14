@@ -17,7 +17,7 @@ in
   config = mkIf cfg {
     environment.systemPackages = with pkgs; [
       texstudio
-      texlive.combined.scheme-full
+      texliveFull
     ];
   };
 }

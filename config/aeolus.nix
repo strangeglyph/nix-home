@@ -46,6 +46,7 @@
       graphics = true;
       "3d-printing" = true;
       science = true;
+      gaming = true;
     };
   };
 }

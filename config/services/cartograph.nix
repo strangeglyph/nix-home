@@ -8,7 +8,6 @@
 with lib;
 let
   cfg = config.services.cartograph;
-  acme = config.security.acme;
   state-dir = "/var/lib/${cfg.state-dir-name}";
   cartograph-config = pkgs.writeText "config.json" (
     builtins.toJSON {
@@ -39,8 +38,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    security.acme.certs."${acme.http-challenge-host}".extraDomainNames = [ cfg.vhost ];
-
     users.groups.www-data.members = [
       "nginx"
       "uwsgi"
@@ -56,23 +53,25 @@ in
     services.nginx = {
       enable = true;
 
-      virtualHosts."${cfg.vhost}" = {
-        forceSSL = true;
-        useACMEHost = acme.http-challenge-host;
-        locations."/static/".alias = "${pkgs.cartograph}/static/";
-        locations."/static/photos/" = {
-          alias = "${state-dir}/photos/";
-          extraConfig = ''
-            expires 7d;
-            add_header Cache-Control "public";
-          '';
+      virtualHosts."${cfg.vhost}" =
+        config.globals.services.nginx.mkDefault {
+          acme_host = null;
+        }
+        // {
+          locations."/static/".alias = "${pkgs.cartograph}/static/";
+          locations."/static/photos/" = {
+            alias = "${state-dir}/photos/";
+            extraConfig = ''
+              expires 7d;
+              add_header Cache-Control "public";
+            '';
+          };
+          locations."/" = {
+            extraConfig = ''
+              uwsgi_pass unix:${config.services.uwsgi.runDir}/cartograph.sock;
+            '';
+          };
         };
-        locations."/" = {
-          extraConfig = ''
-            uwsgi_pass unix:${config.services.uwsgi.runDir}/cartograph.sock;
-          '';
-        };
-      };
     };
 
     services.uwsgi = {
