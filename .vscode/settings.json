@@ -7,5 +7,6 @@
                 "command": ["nixfmt"]
             }
         }
-    }
+    },
+    "editor.formatOnSave": true,
 }

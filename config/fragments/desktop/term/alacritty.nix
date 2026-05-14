@@ -33,7 +33,7 @@ in
               size = fonts.sizes.terminal;
             };
             window = {
-              opacity = 0.8;
+              opacity = 0.65;
               blur = true;
               padding = {
                 x = 5;

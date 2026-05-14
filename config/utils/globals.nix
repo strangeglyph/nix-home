@@ -11,6 +11,9 @@ let
 
   smtp_server = "smtp.migadu.com";
 
+  nextcloud_host = "cloud";
+  nextcloud_domain = "${nextcloud_host}.${base}";
+
   headscale_host = "ouroboros";
   headscale_domain = "${headscale_host}.${base}";
   tailnet = "interstice";
@@ -116,6 +119,11 @@ in
                 };
               }
             );
+        };
+
+        nextcloud = {
+          host = nextcloud_host;
+          domain = nextcloud_domain;
         };
 
         vaultwarden = {

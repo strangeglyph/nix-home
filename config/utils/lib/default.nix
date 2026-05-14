@@ -67,6 +67,9 @@ let
     };
 in
 {
+  imports = [
+    ./kdl.nix
+  ];
 
   options.glib = lib.mkOption {
     description = "glyph user lib";
@@ -79,6 +82,8 @@ in
         eachHumanUser' = mkRo eachHumanUser';
         eachHumanUserAndRoot = mkRo eachHumanUserAndRoot;
         eachHumanUserAndRoot' = mkRo eachHumanUserAndRoot';
+
+        flakeRootPath = mkRo (path: ../../../${path});
 
         str = {
           is-sluglike = mkRo is-sluglike;

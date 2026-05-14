@@ -45,23 +45,12 @@ in
       glib.humanUsers
       |> filter (n: config.glyph.users.${n}.wallpaper.sync.enable)
       |> map (n: {
-        "${config.networking.hostName}/${n}/nextcloud/user" = { };
-        "${config.networking.hostName}/${n}/nextcloud/pass" = { };
-      })
-      |> zipAttrsWith (
-        _: vals:
-        assert (length vals == 1);
-        head vals
-      );
-
-    sops.templates =
-      glib.humanUsers
-      |> filter (n: config.glyph.users.${n}.wallpaper.sync.enable)
-      |> map (n: {
-        "${config.networking.hostName}/${n}/nextcloud/env".content = ''
-          NC_USER=${config.sops.placeholder."${config.networking.hostName}/${n}/nextcloud/user"}
-          NC_PASSWORD=${config.sops.placeholder."${config.networking.hostName}/${n}/nextcloud/pass"}
-        '';
+        "${config.networking.hostName}/${n}/nextcloud/user" = {
+          owner = n;
+        };
+        "${config.networking.hostName}/${n}/nextcloud/pass" = {
+          owner = n;
+        };
       })
       |> zipAttrsWith (
         _: vals:
@@ -72,6 +61,10 @@ in
     home-manager.users = glib.eachHumanUser (
       name: cfg: hm-args:
       mkIf (cfg.wallpaper.sync.enable) {
+        systemd.user.tmpfiles.rules = [
+          "d ${hm-args.config.home.homeDirectory}/Wallpapers 0700 ${name} - - -"
+        ];
+
         systemd.user = {
           services.wallpaper-autosync = {
             Unit = {
@@ -79,12 +72,23 @@ in
               After = "network-online.target";
             };
             Service = {
+              ExecStart = pkgs.writeShellScript "wallpaper-sync" ''
+                export NC_USER="$(cat $CREDENTIALS_DIRECTORY/user)"
+                export NC_PASSWORD="$(cat $CREDENTIALS_DIRECTORY/pass)"
+
+                ${pkgs.nextcloud-client}/bin/nextcloudcmd \
+                  --non-interactive \
+                  --path /Wallpapers '${hm-args.config.home.homeDirectory}/Wallpapers' \
+                  https://${config.globals.services.nextcloud.domain}
+              '';
               Type = "simple";
-              ExecStart = "${pkgs.nextcloud-client}/bin/nextcloudcmd --non-interactive --path /Wallpapers '${hm-args.config.home.homeDirectory}/Wallpapers' https://${config.services.nextcloud.hostName}";
               TimeoutStopSec = "180";
               KillMode = "process";
               KillSignal = "SIGINT";
-              EnvironmentFile = config.sops.templates."${config.networking.hostName}/${name}/nextcloud/env".path;
+              LoadCredential = [
+                "user:${config.sops.secrets."${config.networking.hostName}/${name}/nextcloud/user".path}"
+                "pass:${config.sops.secrets."${config.networking.hostName}/${name}/nextcloud/pass".path}"
+              ];
             };
             Install.WantedBy = [ "multi-user.target" ];
           };

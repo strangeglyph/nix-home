@@ -70,12 +70,16 @@ in
           home.username = "root";
           home.homeDirectory = "/root";
           home.stateVersion = "21.05";
+
+          xdg.enable = true;
         };
       }
       (config.glib.eachHumanUser (
         name: cfg: {
           home.username = name;
           home.homeDirectory = "/home/${name}";
+
+          xdg.enable = true;
 
           home.stateVersion = "21.05";
 

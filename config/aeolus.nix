@@ -7,6 +7,7 @@
     users.lschuetze = {
       privileged = true;
       with-pw = true;
+      wallpaper.sync.enable = true;
     };
     tailscale.operator = "lschuetze";
 
@@ -25,6 +26,10 @@
 
     dm = {
       enable = true;
+
+      niri = {
+        enable = true;
+      };
 
       noctalia = {
         enable = true;

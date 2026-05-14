@@ -54,7 +54,7 @@ in
       site-name = "Wo Ist Ole?";
     };
     nextcloud = {
-      hostName = "cloud.${globals.domains.base}";
+      hostName = globals.services.nextcloud.domain;
       package = pkgs.nextcloud33;
     };
     postgresql.package = pkgs.postgresql_18;

@@ -1,0 +1,49 @@
+layout {
+  border {
+    active-gradient \
+      from="{{ colors.primary.default.hex }}" \
+      to="{{ colors.primary.default.hex | rotate_hue 45 }}" \
+      angle=150 \
+      relative-to="workspace-view" \
+      in="oklch shorter hue"
+    inactive-gradient \
+      from="{{ colors.secondary.default.hex | darken 0.2 }}" \
+      to="{{ colors.secondary.default.hex | rotate_hue 45 | darken 0.2 }}" \
+      angle=150 \
+      relative-to="workspace-view" \
+      in="oklch shorter hue"
+    urgent-gradient \
+      from="{{ colors.error.default.hex }}" \
+      to="{{ colors.error.default.hex | rotate_hue 45 | darken 0.2 }}" \
+      angle=150 \
+      relative-to="workspace-view" \
+      in="oklch shorter hue"
+  }
+
+  shadow {
+    color "{{ colors.shadow.default.hex }}7f"
+  }
+
+  insert-hint {
+    gradient \
+      from="{{ colors.tertiary.default.hex | lighten 0.2 }}7f" \
+      to="{{ colors.tertiary.default.hex | rotate_hue 45 | lighten 0.2 }}7f" \
+      angle=150 \
+      relative-to="workspace-view" \
+      in="oklch shorter hue"
+  }
+}
+
+overview {
+  backdrop-color "{{ colors.surface.default.hex }}"
+  workspace-shadow {
+    color "{{ colors.shadow.default.hex }}7f"
+  }
+}
+
+recent-windows {
+  highlight {
+    active-color "{{ colors.primary.default.hex }}"
+    urgent-color "{{ colors.error.default.hex }}"
+  }
+}
