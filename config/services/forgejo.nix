@@ -134,7 +134,7 @@ in
 
             if (${forgejoCmd} admin auth list | ${awk} 'BEGIN{c=1}$2=="kanidm"{c=0}END{exit c}'); then
               AUTH_SOURCE_ID=$(${forgejoCmd} admin auth list | ${awk} '$2=="kanidm"{print $1}')
-              echo "Auth source 'kanidm' already exists (with id $AUTH_SOURCE_ID)"
+              echo "Auth source 'kanidm' already exists (with id $AUTH_SOURCE_ID), updating"
               FORGEJO_SUBCOMMAND="update-oauth --id $AUTH_SOURCE_ID"
             fi
 
@@ -144,7 +144,7 @@ in
               --key "forgejo" \
               --secret "$BASIC_SECRET" \
               --auto-discover-url "${makeOidc "forgejo"}/.well-known/openid-configuration" \
-              --skip-local-2fa true \
+              --skip-local-2fa \
               --group-claim-name "groups" \
               --admin-group "forgejo_admins@${globals.services.kanidm.domain}"
           '';
