@@ -3,10 +3,6 @@
 }:
 
 {
-  imports = [
-    ./fragments
-  ];
-
   glyph = {
     users.lschuetze = {
       privileged = true;

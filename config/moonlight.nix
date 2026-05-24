@@ -3,7 +3,6 @@ let
 in
 {
   imports = [
-    ./fragments
     ./services
   ];
 

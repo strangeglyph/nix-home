@@ -10,7 +10,6 @@ let
 in
 {
   imports = [
-    ./fragments
     ./services
     #    ./utils/pgsql_update.nix
     #    ./tests/oauth2-proxy.nix

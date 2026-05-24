@@ -111,6 +111,9 @@
               agenix-rekey.nixosModules.default
               sops-nix.nixosModules.sops
               ./config/utils
+              ./config/fragments
+              ./packages
+              ./highlevel_modules
               ./hw/${name}.nix
               ./config/${name}.nix
             ];
