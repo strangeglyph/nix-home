@@ -37,7 +37,6 @@ in
       displayManager = {
         gdm = {
           enable = true;
-          wayland = true;
           banner = "Once more unto the breach";
         };
         defaultSession = cfg.default-wm;
@@ -59,9 +58,6 @@ in
       ];
     };
 
-    # Backlight control
-    programs.light.enable = true;
-
     # Bluetooth
     hardware.bluetooth.enable = true;
 
@@ -73,7 +69,8 @@ in
       inputs.firefox.packages.${pkgs.stdenv.hostPlatform.system}.firefox-nightly-bin
 
       # password safe
-      bitwarden-desktop
+      # (bitwarden-desktop currently relies on an EOL electron version https://github.com/bitwarden/clients/pull/20448)
+      # bitwarden-desktop
 
       # terminal
       alacritty

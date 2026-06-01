@@ -202,6 +202,10 @@ in
               email.domains = [ "*" ];
               setXauthrequest = true;
               reverseProxy = true;
+              trustedProxyIP = [
+                "127.0.0.1"
+                "::1"
+              ];
 
               extraConfig = {
                 provider-display-name = "[-門-]";

@@ -11,7 +11,7 @@ in
 {
   imports = [
     ./services
-    #    ./utils/pgsql_update.nix
+    ./utils/pgsql_update.nix
     #    ./tests/oauth2-proxy.nix
   ];
 
@@ -21,7 +21,6 @@ in
   boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
 
   services.qemuGuest.enable = true;
-
 
   glyph = {
     users.glyph = {

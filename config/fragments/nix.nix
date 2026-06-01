@@ -42,7 +42,7 @@
         # Dependency for paperless
         (final: prev: {
           valkey = prev.valkey.overrideAttrs (old: {
-              doCheck = false;
+            doCheck = false;
           });
         })
       ];

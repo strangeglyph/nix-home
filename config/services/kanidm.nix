@@ -71,25 +71,36 @@ in
     services.kanidm = {
       package = pkgs.kanidmWithSecretProvisioning_1_10;
 
-      enableClient = true;
-      clientSettings = {
-        uri = cfg.serverSettings.origin;
+      client = {
+        enable = true;
+        settings = {
+          uri = cfg.serverSettings.origin;
+        };
       };
 
-      enableServer = true;
-      serverSettings = {
-        bindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.bindport}";
-        ldapbindaddress = "${globals.services.headscale.myAddr}:${toString g_kanidm.ldapbindport}";
-        trust_x_forward_for = true;
-        domain = domain;
-        origin = "https://${domain}";
-        tls_chain = globals.acme.mkChain g_kanidm.domain;
-        tls_key = globals.acme.mkKey g_kanidm.domain;
+      server = {
+        enable = true;
+        settings = {
+          bindaddress = "${g_kanidm.bindaddr}:${toString g_kanidm.bindport}";
+          ldapbindaddress = "${globals.services.headscale.myAddr}:${toString g_kanidm.ldapbindport}";
 
-        online_backup = {
-          path = "/var/backups/kanidm";
-          schedule = "13 * * * *";
-          versions = 1;
+          http_client_address_info = {
+            x-forward-for = [
+              "127.0.0.1"
+              "::1"
+            ];
+          };
+
+          domain = domain;
+          origin = "https://${domain}";
+          tls_chain = globals.acme.mkChain g_kanidm.domain;
+          tls_key = globals.acme.mkKey g_kanidm.domain;
+
+          online_backup = {
+            path = "/var/backups/kanidm";
+            schedule = "13 * * * *";
+            versions = 1;
+          };
         };
       };
 

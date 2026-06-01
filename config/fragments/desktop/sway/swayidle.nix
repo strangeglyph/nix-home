@@ -14,12 +14,9 @@ in
     home-manager.users = glib.eachHumanUser' (name: {
       services.swayidle = {
         enable = true;
-        events = [
-          {
-            event = "before-sleep";
-            command = lock-with-effects;
-          }
-        ];
+        events = {
+          before-sleep = lock-with-effects;
+        };
         timeouts = [
           {
             timeout = 300;

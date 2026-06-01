@@ -21,8 +21,8 @@ in
     security.acme = {
       http-challenge-host = "acme.strangegly.ph";
       certs."acme.strangegly.ph" = {
-        extraDomainNames = [ 
-          "cookbook.strangegly.ph" 
+        extraDomainNames = [
+          "cookbook.strangegly.ph"
           "wo-ist-ole.strangegly.ph"
           "cloud.strangegly.ph"
         ];
@@ -47,7 +47,7 @@ in
             useACMEHost = config.security.acme.http-challenge-host;
             globalRedirect = "cloud.${globals.domains.base}";
           };
-          "~^(.*\.)?${config.globals.services.headscale.net.domain}$" = {
+          "~^(.*\\.)?${config.globals.services.headscale.net.domain}$" = {
             forceSSL = true;
             useACMEHost = config.globals.domains.base;
             locations."/(.*)".return = "200 '${builtins.readFile ../../assets/interstice-landing.html}'";

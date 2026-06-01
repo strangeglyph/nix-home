@@ -48,7 +48,7 @@ in
         "${cfg.http-challenge-host}" = {
           enableACME = true;
 
-          locations."~* \.(php)$" = {
+          locations."~* \\.(php)$" = {
             return = "301 https://ash-speed.hetzner.com/10GB.bin";
           };
         };

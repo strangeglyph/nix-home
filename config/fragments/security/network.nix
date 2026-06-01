@@ -45,9 +45,9 @@ in
     networking.firewall.enable = true;
     networking.nftables.enable = true;
 
-    services.resolved = mkIf config.glyph.security.dnssec.enable {
-      dnssec = "true";
-      dnsovertls = "opportunistic";
+    services.resolved.settings = mkIf config.glyph.security.dnssec.enable {
+      Resolve.DNSSEC = "true";
+      Resolve.DNSOverTLS = "opportunistic";
     };
   };
 }
