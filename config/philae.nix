@@ -11,7 +11,7 @@ in
 {
   imports = [
     ./services
-    ./utils/pgsql_update.nix
+    # ./utils/pgsql_update.nix
     #    ./tests/oauth2-proxy.nix
   ];
 
@@ -57,6 +57,6 @@ in
       hostName = "cloud.${globals.domains.base}";
       package = pkgs.nextcloud32;
     };
-    postgresql.package = pkgs.postgresql_17;
+    postgresql.package = pkgs.postgresql_18;
   };
 }
