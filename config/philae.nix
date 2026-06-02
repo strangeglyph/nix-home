@@ -57,6 +57,6 @@ in
       hostName = "cloud.${globals.domains.base}";
       package = pkgs.nextcloud32;
     };
-    postgresql.package = pkgs.postgresql_16;
+    postgresql.package = pkgs.postgresql_17;
   };
 }
