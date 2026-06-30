@@ -74,7 +74,7 @@ in
       client = {
         enable = true;
         settings = {
-          uri = cfg.serverSettings.origin;
+          uri = cfg.server.settings.origin;
         };
       };
 
@@ -109,13 +109,13 @@ in
           {
             enable = true;
             # see https://github.com/oddlama/kanidm-provision/issues/26#issuecomment-3232578427
-            instanceUrl = "https://${cfg.serverSettings.bindaddress}";
+            instanceUrl = "https://${cfg.server.settings.bindaddress}";
             acceptInvalidCerts = true;
 
             persons = {
               "glyph" = {
                 displayName = "glyph";
-                mailAddresses = [ "glyph@dummy.apophenic.net" ];
+                mailAddresses = [ config.glyph.confidentials.emails.kanidm.glyph ];
                 groups = [
                   "interstice_users"
                   "forgejo_users"
@@ -126,29 +126,29 @@ in
                 ];
               };
               "o" = {
-                displayName = "O.";
-                mailAddresses = [ "o@dummy.apophenic.net" ];
+                displayName = config.glyph.confidentials.displayNames.kanidm.o;
+                mailAddresses = [ config.glyph.confidentials.emails.kanidm.o ];
                 groups = [
                   "interstice_users"
                 ];
               };
               "h" = {
-                displayName = "H.";
-                mailAddresses = [ "h@dummy.apophenic.net" ];
+                displayName = config.glyph.confidentials.displayNames.kanidm.h;
+                mailAddresses = [ config.glyph.confidentials.emails.kanidm.h ];
                 groups = [
                   "interstice_users"
                 ];
               };
               "m" = {
-                displayName = "M.";
-                mailAddresses = [ "m@dummy.apophenic.net" ];
+                displayName = config.glyph.confidentials.displayNames.kanidm.m;
+                mailAddresses = [ config.glyph.confidentials.emails.kanidm.m ];
                 groups = [
                   "interstice_users"
                 ];
               };
               "g" = {
-                displayName = "G.";
-                mailAddresses = [ "g@dummy.apophenic.net" ];
+                displayName = config.glyph.confidentials.displayNames.kanidm.g;
+                mailAddresses = [ config.glyph.confidentials.emails.kanidm.g ];
                 groups = [
                   "interstice_users"
                 ];
