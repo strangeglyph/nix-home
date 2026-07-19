@@ -29,6 +29,7 @@
 
       niri = {
         enable = true;
+        # candy.animations = false;
       };
 
       noctalia = {

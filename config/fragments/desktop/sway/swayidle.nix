@@ -14,6 +14,9 @@ in
     home-manager.users = glib.eachHumanUser' (name: {
       services.swayidle = {
         enable = true;
+        systemdTargets = [
+          "sway-session.target"
+        ];
         events = {
           before-sleep = lock-with-effects;
         };

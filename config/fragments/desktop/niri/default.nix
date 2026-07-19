@@ -103,7 +103,7 @@ in
             prefer-no-csd
 
             input {
-              focus-follows-mouse
+              focus-follows-mouse max-scroll-amount="0%"
 
               keyboard {
                 repeat-delay 200
@@ -180,11 +180,18 @@ in
               Mod+Down                                    { focus-window-or-monitor-down; }
               Mod+Up                                      { focus-window-or-monitor-up; }
               Mod+Right                                   { focus-column-or-monitor-right; }
-
+              
               Mod+Shift+Left                              { move-column-left-or-to-monitor-left; }
               Mod+Shift+Down                              { move-window-down; }
               Mod+Shift+Up                                { move-window-up; }
               Mod+Shift+Right                             { move-column-right-or-to-monitor-right; }
+              
+              Mod+Prior                                   { focus-workspace-up; }
+              Mod+Next                                    { focus-workspace-down; }
+              Mod+Shift+Prior                             { move-workspace-up; }
+              Mod+Shift+Next                              { move-workspace-down; }
+              Mod+Shift+Bracketleft                       { move-window-to-workspace-up; }
+              Mod+Shift+Bracketright                      { move-window-to-workspace-down; }
 
               Mod+Ctrl+Left                               { focus-monitor-left; }
               Mod+Ctrl+Down                               { focus-monitor-down; }
@@ -200,25 +207,32 @@ in
               Mod+Shift+Alt+Down                          { move-workspace-to-monitor-down; }
               Mod+Shift+Alt+Up                            { move-workspace-to-monitor-up; }
               Mod+Shift+Alt+Right                         { move-workspace-to-monitor-right; }
-
-              Mod+1                                       { focus-workspace "term"; }
-              Mod+2                                       { focus-workspace "writing"; }
-              Mod+3                                       { focus-workspace "notes"; }
-              Mod+4                                       { focus-workspace "editor"; }
+              
+              Mod+1                                       { focus-workspace 1; }
+              Mod+2                                       { focus-workspace 2; }
+              Mod+3                                       { focus-workspace 3; }
+              Mod+4                                       { focus-workspace 4; }
               Mod+5                                       { focus-workspace 5; }
               Mod+6                                       { focus-workspace 6; }
               Mod+7                                       { focus-workspace 7; }
-              Mod+8                                       { focus-workspace "firefox"; }
-              Mod+9                                       { focus-workspace "mail"; }
-              Mod+Shift+1                                 { move-column-to-workspace "term"; }
-              Mod+Shift+2                                 { move-column-to-workspace "writing"; }
-              Mod+Shift+3                                 { move-column-to-workspace "notes"; }
-              Mod+Shift+4                                 { move-column-to-workspace "editor"; }
+              Mod+8                                       { focus-workspace 8; }
+              
+              // TODO niri#914
+              Mod+9                                       { spawn-sh "niri msg action focus-workspace 255 && niri msg action focus-workspace-up"; }
+              Mod+0                                       { focus-workspace 255; }
+              
+              Mod+Shift+1                                 { move-column-to-workspace 1; }
+              Mod+Shift+2                                 { move-column-to-workspace 2; }
+              Mod+Shift+3                                 { move-column-to-workspace 3; }
+              Mod+Shift+4                                 { move-column-to-workspace 4; }
               Mod+Shift+5                                 { move-column-to-workspace 5; }
               Mod+Shift+6                                 { move-column-to-workspace 6; }
               Mod+Shift+7                                 { move-column-to-workspace 7; }
-              Mod+Shift+8                                 { move-column-to-workspace "firefox"; }
-              Mod+Shift+9                                 { move-column-to-workspace "mail"; }
+              Mod+Shift+8                                 { move-column-to-workspace 8; }
+              
+              // TODO niri#914
+              Mod+Shift+9                                 { spawn-sh "niri msg action move-column-to-workspace 255 && niri msg action move-colum-to-workspace-up"; }
+              Mod+Shift+0                                 { move-column-to-workspace 255; }
 
               Mod+Comma                                   { consume-or-expel-window-left; }
               Mod+Period                                  { consume-or-expel-window-right; }
@@ -244,12 +258,12 @@ in
             }
 
             layout {
-              gaps 16
+              gaps 8
               struts {
                 top 0
-                bottom 8
-                left 16
-                right 16
+                bottom 4
+                left 8
+                right 8
               }
               center-focused-column "on-overflow"
               always-center-single-column
@@ -287,16 +301,15 @@ in
               }
             }
 
-            workspace "term" {}
-            workspace "writing" {}
-            workspace "notes" {}
-            workspace "editor" {}
+            workspace "nixos" {}
             workspace "firefox" {}
+            workspace "writing" {}
+            workspace "project" {}
+            workspace "notes" {}
             workspace "mail" {}
 
             clipboard { disable-primary; }
 
-            spawn-at-startup "noctalia"
             spawn-at-startup "${lib.getExe pkgs.alacritty}"
             spawn-at-startup "firefox-nightly"
             spawn-at-startup "${lib.getExe pkgs.thunderbird}"
@@ -395,13 +408,12 @@ in
 
             window-rule {
               match app-id="^code$"
-              open-on-workspace "editor";
               open-maximized true
             }
 
             // Floating Noctalia settings window.
             window-rule {
-              match app-id="dev.noctalia.Noctalia.Settings"
+              match app-id="dev.noctalia.Noctalia" title="Noctalia Settings"
               open-floating true
               default-column-width { fixed 1080; }
               default-window-height { fixed 920; }
@@ -448,14 +460,14 @@ in
             layer-rule {
               match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
               background-effect {
-                xray false
+                xray true
               }
             }
 
-            include "animations.kdl"
+            include optional=true "animations.kdl"
             include optional=true "colors.kdl"
           '';
-        xdg.configFile."niri/animations.kdl".text = ''
+        xdg.configFile."niri/animations.kdl".text = mkIf false ''
           animations {
             window-open {
               duration-ms 100

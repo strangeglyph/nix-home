@@ -67,8 +67,8 @@ in
       enable = true;
       package = inputs.firefox.packages.${pkgs.stdenv.hostPlatform.system}.firefox-nightly-bin;
       preferences = {
-        "browser.tabs.allow_transparent_browser" = true;
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        # "browser.tabs.allow_transparent_browser" = true;
+        # "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
 
         "browser.shell.checkDefaultBrowser" = false;
         "browser.shell.defaultBrowserCheckCount" = 1;

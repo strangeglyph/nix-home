@@ -1,20 +1,20 @@
 layout {
   border {
     active-gradient \
-      from="{{ colors.primary.default.hex }}" \
-      to="{{ colors.primary.default.hex | rotate_hue 45 }}" \
+      from="{{ colors.primary.default.hex | rotate_hue -15 }}" \
+      to="{{ colors.primary.default.hex | rotate_hue 15 }}" \
       angle=150 \
       relative-to="workspace-view" \
       in="oklch shorter hue"
     inactive-gradient \
-      from="{{ colors.secondary.default.hex | darken 0.2 }}" \
-      to="{{ colors.secondary.default.hex | rotate_hue 45 | darken 0.2 }}" \
+      from="{{ colors.secondary.default.hex | rotate_hue -15 | darken 0.3 }}" \
+      to="{{ colors.secondary.default.hex | rotate_hue 15 | darken 0.3 }}" \
       angle=150 \
       relative-to="workspace-view" \
       in="oklch shorter hue"
     urgent-gradient \
-      from="{{ colors.error.default.hex }}" \
-      to="{{ colors.error.default.hex | rotate_hue 45 | darken 0.2 }}" \
+      from="{{ colors.error.default.hex | rotate_hue -15 | lighten 0.2 }}" \
+      to="{{ colors.error.default.hex | rotate_hue 15 | darken 0.3 }}" \
       angle=150 \
       relative-to="workspace-view" \
       in="oklch shorter hue"
@@ -26,8 +26,8 @@ layout {
 
   insert-hint {
     gradient \
-      from="{{ colors.tertiary.default.hex | lighten 0.2 }}7f" \
-      to="{{ colors.tertiary.default.hex | rotate_hue 45 | lighten 0.2 }}7f" \
+      from="{{ colors.tertiary.default.hex | rotate_hue -15 | lighten 0.3 }}6f" \
+      to="{{ colors.tertiary.default.hex | rotate_hue 15 | lighten 0.3 }}6f" \
       angle=150 \
       relative-to="workspace-view" \
       in="oklch shorter hue"

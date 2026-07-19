@@ -45,16 +45,17 @@ in
           inputs.noctalia.homeModules.default
         ];
 
+        systemd.user.services.noctalia.Unit.PartOf = lib.mkForce [ "niri-session.target" ];
+
         programs = {
           noctalia = {
             enable = true;
-            systemd.enable = false;
+            systemd.enable = true;
             # nb. Noctalia v5 has GUI override files which may shadow values here
             # Consider merging GUI overrides here regularly
             settings = {
               shell = {
                 niri_overview_type_to_launch_enabled = true;
-                ui_scale = 1.0;
                 font_family = "Sans Serif";
                 time_format = "{:%H:%M}";
                 date_format = "%A, %x";
@@ -84,22 +85,28 @@ in
                   borders = true;
                   shadow = cfg.shadows;
 
-                  launcher_placement = "centered";
-                  clipboard_placement = "centered";
+                  launcher_placement = "floating";
+                  launcher_position = "centered";
+                  clipboard_placement = "floating";
+                  clipboard_position = "centered";
+
                   control_center_placement = "attached";
                   wallpaper_placement = "attached";
-                  session_placement = "centered";
+
+                  session_placement = "floating";
+                  session_position = "centered";
 
                   open_near_click_control_center = true;
                   open_near_click_launcher = false;
 
-                  launcher_categories = false;
-                  launcher_show_icons = true;
-                  launcher_compact = true;
-
                   open_near_click_wallpaper = false;
                   open_near_click_clipboard = false;
                   open_near_click_session = false;
+                };
+
+                launcher = {
+                  categories = false;
+                  show_icons = false;
                 };
 
                 session = {
@@ -119,6 +126,7 @@ in
                 position = "top_right";
                 orientation = "horizontal";
                 scale = 1.0;
+                background_opacity = 0.6;
 
                 kinds = {
                   volume = true;
@@ -134,9 +142,74 @@ in
                 };
               };
               lockscreen = {
-                blurred_desktop = true;
-                blur_intensity = 0.5;
-                tint_intensity = 0.5;
+                blurred_desktop = false;
+                blur_intensity = 0;
+                tint_intensity = 0;
+              };
+              lockscreen_widget = {
+                enabled = true;
+                schema_version = 2;
+                widget_order = [
+                  "login-box@eDP-1"
+                  "login-box@DP-4"
+                  "login-box@DP-5"
+                  "clock@eDP-1"
+                  "clock@DP-4"
+                  "clock@DP-5"
+                ];
+                grid = {
+                  cell_size = 16;
+                  major_interval = 4;
+                  visible = true;
+                };
+                widget =
+                  let
+                    mk-login-box = output: cy: {
+                      type = "login_box";
+                      box_height = 64.0;
+                      box_width = 448.0;
+                      cx = 232.5;
+                      cy = cy;
+                      output = output;
+                      rotation = 0.0;
+                      settings = {
+                        background_color = "surface_variant";
+                        background_opacity = 0.0;
+                        background_radius = 0.0;
+                        center_password_text = false;
+                        input_opacity = 1.0;
+                        input_radius = 0.0;
+                        show_caps_lock = true;
+                        show_keyboard_layout = true;
+                        show_login_button = false;
+                        show_password_hint = false;
+                      };
+                    };
+                    mk-clock = output: cy: {
+                      box_height = 256.0;
+                      box_width = 512.0;
+                      cx = 232.5;
+                      cy = cy;
+                      output = output;
+                      rotation = 0.0;
+                      type = "clock";
+                      settings = {
+                        background_opacity = 0.0;
+                        center_text = true;
+                        color = "tertiary";
+                        font_family = "Jost*";
+                        shadow = true;
+                      };
+                    };
+                  in
+                  {
+                    "login-box@eDP-1" = mk-login-box "eDP-1" 939;
+                    "login-box@DP-4" = mk-login-box "DP-4" 1039;
+                    "login-box@DP-5" = mk-login-box "DP-5" 1039;
+                    "clock@eDP-1" = mk-clock "eDP-1" 827;
+                    "clock@DP-4" = mk-clock "DP-4" 927;
+                    "clock@DP-5" = mk-clock "DP-5" 927;
+                  };
               };
               bar = {
                 order = [ "main" ];
@@ -149,7 +222,7 @@ in
                   layer = "top";
 
                   thickness = 48;
-                  background_opacity = 0.9;
+                  background_opacity = 0.6;
                   border = "outline";
                   border_width = 2;
 
@@ -167,15 +240,14 @@ in
 
                   capsule = false;
                   capsule_fill = "surface_variant"; # material UI key
-                  capsule_opacity = 1.0;
+                  capsule_opacity = 0.3;
 
                   start = [
-                    "launcher"
                     "group:sysmon-group"
                     "network"
                     "media"
                   ];
-                  center = [ "workspace" ];
+                  center = [ "my-workspaces" ];
                   end = [
                     "brightness"
                     "volume"
@@ -193,9 +265,13 @@ in
                         "sysmon-mem"
                         "sysmon-disk"
                       ];
+                      opacity = 0.0;
                     }
                   ];
                 };
+              };
+              dock = {
+                background_opacity = 0.6;
               };
               widget = {
                 launcher = {
@@ -206,22 +282,19 @@ in
                   type = "sysmon";
                   stat = "cpu_usage";
                   display = "gauge";
-                  gauge_color = "primary";
                   show_label = false;
                 };
                 sysmon-disk = {
                   type = "sysmon";
-                  stat = "disk_pct";
+                  stat = "disk_used_pct";
                   path = "/";
                   display = "gauge";
-                  gauge_color = "secondary";
                   show_label = false;
                 };
                 sysmon-mem = {
                   type = "sysmon";
                   stat = "ram_pct";
                   display = "gauge";
-                  gauge_color = "tertiary";
                   show_label = false;
                 };
                 network = {
@@ -233,6 +306,17 @@ in
                   art_size = 32;
                   hide_when_no_media = true;
                   title_scroll = "always";
+                };
+                my-workspaces = {
+                  type = "glyph/niri-icon-workspaces:niri-workspaces";
+                  workspace = {
+                    nixos = "north-star";
+                    firefox = "brand-firefox";
+                    mail = "mail";
+                    project = "code";
+                    writing = "align-justified";
+                    notes = "pencil";
+                  };
                 };
                 workspace = {
                   type = "taskbar";
@@ -252,12 +336,12 @@ in
                   type = "volume";
                   scroll_step = 5;
                   show_label = true;
+                  mute_color = "on_surface";
                 };
                 battery = {
                   type = "battery";
                   display_mode = "graphic";
                   show_label = true;
-                  warning_threshold = 20;
                 };
                 notifications = {
                   type = "notifications";
@@ -312,7 +396,7 @@ in
               theme = {
                 mode = "dark";
                 source = "wallpaper";
-                wallpaper_scheme = "m3-fruit-salad";
+                wallpaper_scheme = "faithful";
                 templates = {
                   enable_builtin_templates = true;
                   builtin_ids = [
@@ -353,10 +437,11 @@ in
               };
               idle = {
                 pre_action_fade_seconds = 2.0;
+                behavior_order = [ "lock" ];
                 behavior = {
                   lock = {
                     timeout = 300;
-                    command = "noctalia:session lock";
+                    command = "lock";
                     enabled = true;
                   };
                 };
@@ -364,7 +449,7 @@ in
               nightlight = {
                 enabled = true;
               };
-              notifications = {
+              notification = {
                 enable_daemon = true;
                 show_app_name = true;
                 position = "top_right";
@@ -375,10 +460,6 @@ in
                 offset_y = 16;
                 collapse_on_dismiss = true;
                 blacklist = [ ];
-                allowed_urgencies = [
-                  "normal"
-                  "critical"
-                ];
               };
               system = {
                 monitor = {
@@ -387,6 +468,16 @@ in
                   memory_poll_seconds = 2.0;
                   disk_poll_seconds = 10.0;
                 };
+              };
+              plugins = {
+                enabled = [ "glyph/niri-icon-workspaces" ];
+                source = [
+                  {
+                    name = "glyph-dev";
+                    kind = "path";
+                    location = "~/Projects/noctalia-plugins";
+                  }
+                ];
               };
             };
           };

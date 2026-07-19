@@ -9,6 +9,8 @@ in
       services.swaync = {
         enable = true;
       };
+
+      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
     });
   };
 }
