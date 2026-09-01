@@ -2,6 +2,7 @@
   inputs,
   lib,
   config,
+  pkgs,
   ...
 }:
 let
@@ -39,6 +40,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.hicolor-icon-theme ]; # Soft-required by noctalia
+
     home-manager.users = glib.eachHumanUser' (
       name: hm_args: {
         imports = [
@@ -62,7 +65,6 @@ in
                 offline_mode = false;
                 polkit_agent = false; # conflict with other agents
                 settings_show_advanced = true;
-                middle_click_opens_widget_settings = true;
                 show_location = false;
                 app_icon_colorize = true;
                 app_icon_color = "on_surface"; # material UI key
@@ -146,7 +148,7 @@ in
                 blur_intensity = 0;
                 tint_intensity = 0;
               };
-              lockscreen_widget = {
+              lockscreen_widgets = {
                 enabled = true;
                 schema_version = 2;
                 widget_order = [
@@ -173,6 +175,7 @@ in
                       output = output;
                       rotation = 0.0;
                       settings = {
+                        layout = "compact";
                         background_color = "surface_variant";
                         background_opacity = 0.0;
                         background_radius = 0.0;
@@ -182,7 +185,10 @@ in
                         show_caps_lock = true;
                         show_keyboard_layout = true;
                         show_login_button = false;
-                        show_password_hint = false;
+                        show_session_buttons = false;
+                        show_media = false;
+                        show_weather = false;
+                        show_unlock_hint = false;
                       };
                     };
                     mk-clock = output: cy: {
@@ -242,10 +248,13 @@ in
                   capsule_fill = "surface_variant"; # material UI key
                   capsule_opacity = 0.3;
 
+                  dead_zone.actions = {
+                    middle = "settings-open-widget";
+                  };
+
                   start = [
                     "group:sysmon-group"
                     "network"
-                    "media"
                   ];
                   center = [ "my-workspaces" ];
                   end = [
@@ -281,21 +290,21 @@ in
                 sysmon-cpu = {
                   type = "sysmon";
                   stat = "cpu_usage";
-                  display = "gauge";
-                  show_label = false;
+                  visualization = "gauge";
+                  show_value = false;
                 };
                 sysmon-disk = {
                   type = "sysmon";
                   stat = "disk_used_pct";
                   path = "/";
-                  display = "gauge";
-                  show_label = false;
+                  visualization = "gauge";
+                  show_value = false;
                 };
                 sysmon-mem = {
                   type = "sysmon";
                   stat = "ram_pct";
-                  display = "gauge";
-                  show_label = false;
+                  visualization = "gauge";
+                  show_value = false;
                 };
                 network = {
                   type = "network";
@@ -329,14 +338,20 @@ in
                 };
                 brightness = {
                   type = "brightness";
-                  scroll_step = 10;
                   show_label = true;
+                  actions = {
+                    scroll_up = "brightness-up 10%";
+                    scroll_down = "brightness-down 10%";
+                  };
                 };
                 volume = {
                   type = "volume";
-                  scroll_step = 5;
                   show_label = true;
                   mute_color = "on_surface";
+                  actions = {
+                    scroll_up = "volume-up 5%";
+                    scroll_down = "volume-down 5%";
+                  };
                 };
                 battery = {
                   type = "battery";
@@ -436,11 +451,11 @@ in
                 enabled = false;
               };
               idle = {
-                pre_action_fade_seconds = 2.0;
+                pre_action_fade_seconds = 10.0;
                 behavior_order = [ "lock" ];
                 behavior = {
-                  lock = {
-                    timeout = 300;
+                  "idle-behavior" = {
+                    timeout = 600;
                     command = "lock";
                     enabled = true;
                   };

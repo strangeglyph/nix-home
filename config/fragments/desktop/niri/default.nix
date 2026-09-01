@@ -155,26 +155,12 @@ in
               Mod+Shift+Slash      repeat=false           { show-hotkey-overlay; }
 
               Mod+Return hotkey-overlay-title="Open terminal" { spawn "alacritty"; }
-              Mod+D hotkey-overlay-title="Open launcher"  { 
-                ${
-                  if config.glyph.dm.noctalia.enable then
-                    ''spawn-sh "noctalia msg panel-toggle launcher"''
-                  else
-                    ''spawn "dmenu"''
-                }; 
-              }
+              Mod+D hotkey-overlay-title="Open launcher"  { spawn-sh "noctalia msg panel-toggle launcher || dmenu"; }
               ${lib.optionalString config.glyph.dm.noctalia.enable ''
                 Mod+S hotkey-overlay-title="Open Noctalia control panel" { spawn-sh "noctalia msg panel-toggle control-panel"; }
                 Mod+Shift+S hotkey-overlay-title="Open Noctalia settings" { spawn-sh "noctalia msg settings-toggle"; }
               ''}
-              Mod+L hotkey-overlay-title="Lock screen"    { 
-                ${
-                  if config.glyph.dm.noctalia.enable then
-                    ''spawn-sh "noctalia msg session lock"''
-                  else
-                    ''spawn-sh "swaylock -f"''
-                };
-              }
+              Mod+L hotkey-overlay-title="Lock screen"    { spawn-sh "noctalia msg session lock || swaylock -f"; }
               
               Mod+Left                                    { focus-column-or-monitor-left; }
               Mod+Down                                    { focus-window-or-monitor-down; }
@@ -257,13 +243,17 @@ in
               hot-corners { off; }
             }
 
+            switch-events {
+              lid-close { spawn "systemctl" "suspend"; }
+            }
+
             layout {
               gaps 8
               struts {
                 top 0
                 bottom 4
-                left 8
-                right 8
+                left 16
+                right 16
               }
               center-focused-column "on-overflow"
               always-center-single-column
