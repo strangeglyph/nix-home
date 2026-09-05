@@ -63,8 +63,9 @@ in
       generator.script =
         { pkgs, lib, ... }:
         ''
+          set -euo
           key=$(${lib.getExe pkgs.openssl} rand -base64 32)
-          printf '{ "SECRET_KEY": "%s" }\n'
+          printf '{ "SECRET_KEY": "%s" }\n' "$key"
         '';
     };
 
