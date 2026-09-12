@@ -16,11 +16,13 @@ in
       dbus = {
         packages = [ nemo ];
       };
+      gvfs.enable = true;
     };
 
     environment.systemPackages = [
       pkgs.file-roller # compression gui
       nemo
+      pkgs.jmtpfs
     ];
 
     xdg = {
