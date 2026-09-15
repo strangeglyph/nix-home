@@ -2,6 +2,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   ...
 }:
 with lib;
@@ -15,6 +16,7 @@ let
       "dns"
     ]
   );
+  nixpkgs-unstable = import inputs.nixpkgs-unstable { };
 in
 {
   imports = [
@@ -44,6 +46,9 @@ in
     #networking.firewall.allowedUDPPorts = [ 3478 ];
 
     services.headscale = {
+      # TODO(26.11) remove once 0.29 hits stable
+      # ref https://github.com/tailscale/tailscale/issues/21128
+      package = nixpkgs-unstable.headscale;
       enable = true;
       address = globals_hs.bindaddr;
       port = globals_hs.bindport;
