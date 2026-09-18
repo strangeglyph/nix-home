@@ -12,3 +12,8 @@
 3. Install nixos, `nixos-anywhere -- --flake .#<hostname> --generate-hardware-config nixos-generate-config ./hw/<hostname>.nix --target-host root@<host-ip>` ( !! host-ip, not hostname, as hostname lookup may be lost )
 4. SSH into the machine, run `tailscale up --login-server=<globals.headscale_domain>`
 5. Future install/update with `colmena apply --on <hostname>`
+
+## Applying new disko options
+1. Edit disk information in hw/disko/<host>
+2. Rebuilt
+3. Run `disko-create` and `disko-mount`

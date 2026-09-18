@@ -117,6 +117,8 @@ in
                 displayName = "glyph";
                 mailAddresses = [ config.glyph.confidentials.emails.kanidm.glyph ];
                 groups = [
+                  # "immich_users" # for the role claim to work properly we can't be in two immich groups
+                  "immich_admins"
                   "interstice_users"
                   "forgejo_users"
                   "forgejo_admins"
@@ -129,6 +131,7 @@ in
                 displayName = config.glyph.confidentials.displayNames.kanidm.o;
                 mailAddresses = [ config.glyph.confidentials.emails.kanidm.o ];
                 groups = [
+                  "immich_users"
                   "interstice_users"
                 ];
               };
@@ -136,6 +139,7 @@ in
                 displayName = config.glyph.confidentials.displayNames.kanidm.h;
                 mailAddresses = [ config.glyph.confidentials.emails.kanidm.h ];
                 groups = [
+                  "immich_users"
                   "interstice_users"
                 ];
               };
@@ -143,6 +147,7 @@ in
                 displayName = config.glyph.confidentials.displayNames.kanidm.m;
                 mailAddresses = [ config.glyph.confidentials.emails.kanidm.m ];
                 groups = [
+                  "immich_users"
                   "interstice_users"
                 ];
               };
@@ -150,11 +155,14 @@ in
                 displayName = config.glyph.confidentials.displayNames.kanidm.g;
                 mailAddresses = [ config.glyph.confidentials.emails.kanidm.g ];
                 groups = [
+                  "immich_users"
                   "interstice_users"
                 ];
               };
             };
             groups = {
+              "immich_users" = { };
+              "immich_admins" = { };
               "interstice_users" = { };
               "forgejo_users" = { };
               "forgejo_admins" = { };

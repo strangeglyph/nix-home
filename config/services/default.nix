@@ -7,6 +7,7 @@
     ./fompf.nix
     ./forgejo.nix
     ./headscale.nix
+    ./immich.nix
     ./kanidm.nix
     ./minecraft.nix
     ./nextcloud.nix

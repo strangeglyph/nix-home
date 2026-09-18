@@ -74,6 +74,12 @@
                   "compress=zstd:2" # fast compression for media
                 ];
               };
+              "photos" = {
+                mountpoint = "/data/immich";
+                mountOptions = [
+                  "compress=zstd:20"
+                ];
+              };
             };
           };
         };

@@ -46,6 +46,9 @@ let
   spacebar_host = "satellite";
   spacebar_domain = "${spacebar_host}.${base}";
 
+  immich_host = "photos";
+  immich_domain = "${immich_host}.${base}";
+
   actualbudget_host = "budget";
   actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
@@ -228,6 +231,13 @@ in
             domain = "cdn.${spacebar_domain}";
             port = 34414;
           };
+        };
+
+        immich = {
+          host = immich_host;
+          domain = immich_domain;
+          internal_domain = "immich.${tailnet_domain}";
+          bindport = 34420;
         };
 
         actualbudget = {

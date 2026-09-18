@@ -1,21 +1,17 @@
 {
   lib,
-  config,
-  name,
   nodes,
   ...
 }:
 let
   inherit (lib)
     mkOption
-    mkMerge
-    mkIf
     types
     ;
 in
 {
   options.glyph.transpose = mkOption {
-    type = types.submodule ({
+    type = types.submodule {
       options = {
         kanidm = mkOption {
           type = types.listOf (
@@ -60,7 +56,7 @@ in
           default = { };
         };
       };
-    });
+    };
     description = "config options that should be transposed to a different machine";
     default = { };
   };
