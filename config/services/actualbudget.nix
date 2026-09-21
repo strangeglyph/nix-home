@@ -85,6 +85,7 @@ in
             "groups"
           ];
           imageFile = ../../assets/actualbudget-logo.svg;
+          enableLegacyCrypto = true; # cf github:actualbudget/actual#6524
         };
       }
     ];
