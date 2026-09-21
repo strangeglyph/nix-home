@@ -13,7 +13,6 @@
     environment.systemPackages = with pkgs; [
       direnv
       devenv
-      vscode-fhs
     ];
   };
 }
