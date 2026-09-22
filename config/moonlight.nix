@@ -13,6 +13,7 @@ in
     };
 
     restic-server.enable = true;
+    monitoring.grafana.enable = true;
     immich.enable = true;
   };
 

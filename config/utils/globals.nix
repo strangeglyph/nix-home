@@ -49,6 +49,9 @@ let
   immich_host = "photos";
   immich_domain = "${immich_host}.${base}";
 
+  grafana_host = "grafana";
+  grafana_domain = "${grafana_host}.${tailnet_domain}";
+
   actualbudget_host = "budget";
   actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
@@ -238,6 +241,13 @@ in
           domain = immich_domain;
           internal_domain = "immich.${tailnet_domain}";
           bindport = 34420;
+        };
+
+        grafana = {
+          host = grafana_host;
+          domain = grafana_domain;
+          bindaddr = "127.0.0.1";
+          bindport = 34430;
         };
 
         actualbudget = {

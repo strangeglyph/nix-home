@@ -6,6 +6,7 @@
     ./cookbook.nix
     ./fompf.nix
     ./forgejo.nix
+    ./grafana.nix
     ./headscale.nix
     ./immich.nix
     ./kanidm.nix
