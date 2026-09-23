@@ -20,6 +20,14 @@ in
     sops.secrets."grafana/oidc/secret" = {
       owner = "grafana";
     };
+    sops.secrets."grafana_datasource_prometheus_user" = {
+      key = "prometheus/auth/user";
+      owner = "grafana";
+    };
+    sops.secrets."grafana_datasource_prometheus_pass" = {
+      key = "prometheus/auth/pass";
+      owner = "grafana";
+    };
 
     services.grafana = {
       enable = true;
@@ -73,10 +81,16 @@ in
           datasources = [
             {
               name = "Prometheus";
+              uid = "prometheus-1";
               type = "prometheus";
-              url = "http://${gservices.prometheus.domain}:${toString gservices.prometheus.bindport}";
+              url = "https://${gservices.prometheus.domain}";
               isDefault = true;
               editable = false;
+              basicAuth = true;
+              basicAuthUser = "$__file{${config.sops.secrets."grafana_datasource_prometheus_user".path}}";
+              secureJsonData.basicAuthPassword = "$__file{${
+                config.sops.secrets."grafana_datasource_prometheus_pass".path
+              }}";
             }
           ];
         };

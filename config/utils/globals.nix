@@ -256,6 +256,7 @@ in
         prometheus = {
           host = prometheus_host;
           domain = prometheus_domain;
+          bindaddr = "127.0.0.1";
           bindport = 34440;
         };
 
