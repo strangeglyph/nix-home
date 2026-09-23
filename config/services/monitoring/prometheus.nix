@@ -4,7 +4,13 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkForce
+    mkIf
+    types
+    ;
   gservices = config.globals.services;
   cfg = config.glyph.monitoring.prometheus;
   prometheus-scrape-configs = lib.flatten (
@@ -18,8 +24,16 @@ in
   options.glyph.monitoring.prometheus.enable = mkEnableOption "prometheus metrics scraper";
 
   config = mkIf cfg.enable {
-    sops.secrets."prometheus/auth/user" = { };
-    sops.secrets."prometheus/auth/hash" = { };
+
+    sops.secrets."prometheus/auth/user" = {
+      owner = "prometheus";
+    };
+    sops.secrets."prometheus/auth/hash" = {
+      owner = "prometheus";
+    };
+    sops.secrets."prometheus/auth/pass" = {
+      owner = "prometheus";
+    };
     sops.templates."prometheus-basic-auth.yml" = {
       content = ''
         basic_auth_users:

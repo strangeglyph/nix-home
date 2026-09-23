@@ -29,6 +29,8 @@ in
     users.groups.acme.members = mkIf enable [ "nginx" ];
 
     services.nginx = {
+      serverNamesHashBucketSize = 128;
+
       recommendedGzipSettings = true;
       recommendedBrotliSettings = true;
       recommendedUwsgiSettings = true;
