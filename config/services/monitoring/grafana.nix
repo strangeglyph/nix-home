@@ -11,7 +11,7 @@ let
   glib = config.glib;
 in
 {
-  options.glyph.monitoring.grafana.enable = mkEnableOption "monitor system health";
+  options.glyph.monitoring.grafana.enable = mkEnableOption "grafana metrics dashboard";
 
   config = mkIf cfg.enable {
     sops.secrets."grafana/secret" = {
@@ -68,6 +68,18 @@ in
 
       provision = {
         enable = true;
+
+        datasources.settings = {
+          datasources = [
+            {
+              name = "Prometheus";
+              type = "prometheus";
+              url = "http://${gservices.prometheus.domain}:${toString gservices.prometheus.bindport}";
+              isDefault = true;
+              editable = false;
+            }
+          ];
+        };
       };
     };
 

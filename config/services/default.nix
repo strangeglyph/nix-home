@@ -6,11 +6,11 @@
     ./cookbook.nix
     ./fompf.nix
     ./forgejo.nix
-    ./grafana.nix
     ./headscale.nix
     ./immich.nix
     ./kanidm.nix
     ./minecraft.nix
+    ./monitoring
     ./nextcloud.nix
     ./nginx-public.nix
     ./oauth2_proxy.nix

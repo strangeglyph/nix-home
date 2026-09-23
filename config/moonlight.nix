@@ -14,6 +14,7 @@ in
 
     restic-server.enable = true;
     monitoring.grafana.enable = true;
+    monitoring.prometheus.enable = true;
     immich.enable = true;
   };
 

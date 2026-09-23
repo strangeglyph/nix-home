@@ -52,6 +52,9 @@ let
   grafana_host = "grafana";
   grafana_domain = "${grafana_host}.${tailnet_domain}";
 
+  prometheus_host = "prometheus";
+  prometheus_domain = "${prometheus_host}.${tailnet_domain}";
+
   actualbudget_host = "budget";
   actualbudget_domain = "${actualbudget_host}.${tailnet_domain}";
 in
@@ -248,6 +251,12 @@ in
           domain = grafana_domain;
           bindaddr = "127.0.0.1";
           bindport = 34430;
+        };
+
+        prometheus = {
+          host = prometheus_host;
+          domain = prometheus_domain;
+          bindport = 34440;
         };
 
         actualbudget = {

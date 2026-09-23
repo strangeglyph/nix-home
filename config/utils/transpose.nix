@@ -50,6 +50,11 @@ in
           description = "additional headscale dns entries to configure; use with `globals.services.headscale.mkDnsEntry`";
           default = [ ];
         };
+        prometheus.scrape = mkOption {
+          type = types.listOf (types.attrsOf types.anything);
+          description = "additional prometheus scrape targets to configure; use as `services.prometheus.scrapeConfigs`";
+          default = [ ];
+        };
         nginx.virtualHosts = mkOption {
           type = types.attrsOf types.anything;
           description = "additional vhosts to configure on the front-facing nginx";
