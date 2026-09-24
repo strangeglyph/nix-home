@@ -265,6 +265,11 @@ in
           };
         };
 
+        alertmanager = {
+          bindaddr = "127.0.0.1";
+          bindport = 34540;
+        };
+
         actualbudget = {
           host = actualbudget_host;
           domain = actualbudget_domain;
