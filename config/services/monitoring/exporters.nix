@@ -44,13 +44,11 @@ in
         };
       };
 
-      mkAcme = name: {
-        ${gservices.prometheus.mkMonitoringDomain name} = {
-          reloadServices = [ "nginx.service" ];
-          group = "nginx";
+      acme-config = optionalAttrs (length cfg > 0) {
+        "${host}.monitoring.${gservices.headscale.net.domain}" = {
+          domain = "*.${host}.monitoring.${gservices.headscale.net.domain}";
         };
       };
-      acme-config = mkMerge (map mkAcme cfg);
 
       mkExporter = name: {
         ${name} = {
@@ -71,7 +69,7 @@ in
           domain = "127.0.0.1";
           port = gservices.prometheus.exporters.${name}.port;
           listen = [ gservices.headscale.myAddr ];
-          acme_host = gservices.prometheus.mkMonitoringDomain name;
+          acme_host = "${host}.monitoring.${gservices.headscale.net.domain}";
         };
       };
       vhost-config = mkMerge (map mkVHost cfg);
@@ -104,6 +102,14 @@ in
             targets = [
               (gservices.prometheus.mkMonitoringDomain name)
             ];
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__address__" ];
+            regex = ".*";
+            target_label = "instance";
+            replacement = host;
           }
         ];
       };

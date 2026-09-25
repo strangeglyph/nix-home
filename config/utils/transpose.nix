@@ -1,5 +1,6 @@
 {
   lib,
+  config,
   nodes,
   ...
 }:
@@ -50,10 +51,42 @@ in
           description = "additional headscale dns entries to configure; use with `globals.services.headscale.mkDnsEntry`";
           default = [ ];
         };
-        prometheus.scrape = mkOption {
-          type = types.listOf (types.attrsOf types.anything);
-          description = "additional prometheus scrape targets to configure; use as `services.prometheus.scrapeConfigs`";
-          default = [ ];
+        prometheus = {
+          scrape = mkOption {
+            type = types.listOf (types.attrsOf types.anything);
+            description = "additional prometheus scrape targets to configure; use as `services.prometheus.scrapeConfigs`";
+            default = [ ];
+          };
+          rules = mkOption {
+            type = types.attrsOf (
+              types.submodule {
+                options = {
+                  records = mkOption {
+                    type = types.attrsOf types.str;
+                    description = "Recording rules, in <name> = <expr> format";
+                    default = { };
+                  };
+                  alerts = mkOption {
+                    type = types.attrsOf (
+                      types.submodule {
+                        freeformType = types.attrsOf types.anything;
+                        options = {
+                          expr = mkOption {
+                            type = types.str;
+                            description = "The expression to evaluate for the alert";
+                          };
+                        };
+                      }
+                    );
+                    description = "Alerting rules";
+                    default = { };
+                  };
+                };
+              }
+            );
+            description = "prometheus rules to configure";
+            default = { };
+          };
         };
         nginx.virtualHosts = mkOption {
           type = types.attrsOf types.anything;
@@ -76,5 +109,16 @@ in
         extract = _: nodeconf: lib.attrByPath attrpath { } nodeconf.config.glyph.transpose;
       in
       lib.mapAttrsToList extract nodes;
+  };
+
+  options.glyph.transposed = mkOption { type = types.attrsOf types.anything; };
+
+  config.glyph.transposed = {
+    prometheus.rules = lib.mkMerge (
+      config.glyph.transpose-here [
+        "prometheus"
+        "rules"
+      ]
+    );
   };
 }

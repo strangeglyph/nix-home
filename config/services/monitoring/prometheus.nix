@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -7,6 +8,8 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
+    flip
+    mapAttrsToList
     ;
   gservices = config.globals.services;
   cfg = config.glyph.monitoring.prometheus;
@@ -16,6 +19,26 @@ let
       "scrape"
     ]
   );
+  mkRecordingRule = name: expr: {
+    record = name;
+    expr = expr;
+  };
+  mkAlertingRule =
+    name: cfg:
+    {
+      alert = name;
+      expr = cfg.expr;
+    }
+    // cfg;
+  prometheus-rule-groups = flip mapAttrsToList config.glyph.transposed.prometheus.rules (
+    name: cfg: {
+      name = name;
+      rules = (mapAttrsToList mkRecordingRule cfg.records) ++ (mapAttrsToList mkAlertingRule cfg.alerts);
+    }
+  );
+  prometheus-rule-file = (pkgs.formats.yaml { }).generate "rules.yml" {
+    groups = prometheus-rule-groups;
+  };
 in
 {
   options.glyph.monitoring.prometheus.enable = mkEnableOption "prometheus metrics scraper";
@@ -66,6 +89,8 @@ in
 
       scrapeConfigs = prometheus-scrape-configs;
 
+      ruleFiles = [ prometheus-rule-file ];
+
       alertmanagers = [
         {
           basic_auth = {
@@ -111,6 +136,10 @@ in
             receiver = "mail";
             routes = [
               {
+                matchers = [ "severity=low" ];
+                repeat_interval = "7d";
+              }
+              {
                 matchers = [ "severity=critical" ];
                 receiver = "telegram";
               }
@@ -119,9 +148,24 @@ in
           inhibit_rules = [
             {
               source_matchers = [ "severity=critical" ];
-              target_matchers = [ "severity=warning" ];
+              target_matchers = [ "severity=~low|moderate|severe" ];
               equal = [
-                "alertname"
+                "service"
+                "host"
+              ];
+            }
+            {
+              source_matchers = [ "severity=severe" ];
+              target_matchers = [ "severity=~low|moderate" ];
+              equal = [
+                "service"
+                "host"
+              ];
+            }
+            {
+              source_matchers = [ "severity=moderate" ];
+              target_matchers = [ "severity=low" ];
+              equal = [
                 "service"
                 "host"
               ];

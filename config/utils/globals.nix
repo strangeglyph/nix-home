@@ -262,6 +262,8 @@ in
           bindport = 34440;
           exporters = {
             node.port = 34441;
+            smartctl.port = 34442;
+            systemd.port = 34443;
           };
         };
 

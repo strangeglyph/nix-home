@@ -26,6 +26,11 @@ in
       443 # quic
     ];
 
+    security.acme.defaults = mkIf config.services.nginx.enable {
+      reloadServices = [ "nginx" ];
+      group = "nginx";
+    };
+
     users.groups.acme.members = mkIf enable [ "nginx" ];
 
     services.nginx = {
