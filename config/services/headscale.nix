@@ -101,8 +101,8 @@ in
 
     systemd.tmpfiles.settings."10-headscale"."/var/backups/headscale".d = {
       user = "headscale";
-      group = "headscale";
-      mode = "0700";
+      group = "restic";
+      mode = "0760";
     };
 
     glyph.restic.headscale = {
