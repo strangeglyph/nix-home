@@ -77,12 +77,16 @@ in
           ProtectHome = false;
           BindPaths = [
             "${cfg.taildrop.directory}"
+            "/var/run/tailscale/tailscaled.sock"
           ];
         }
         {
           enable = true;
-          after = [ "network.target" ];
-          wantedBy = [ "multi-user.target" ];
+          after = [
+            "network.target"
+            "tailscaled.service"
+          ];
+          wantedBy = [ "tailscaled.service" ];
           description = "Persistent taildrop download service";
 
           enableStrictShellChecks = true;
