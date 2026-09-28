@@ -30,6 +30,11 @@ in
             type = types.attrsOf types.anything;
             default = { };
           };
+          extraSystemd = mkOption {
+            description = "Extra options to pass to the systemd service config";
+            type = types.attrsOf types.anything;
+            default = { };
+          };
         };
       }
     );
@@ -87,18 +92,27 @@ in
     services.restic.backups = mkMerge (
       flip mapAttrsToList config.glyph.restic (
         repo-name: settings: {
-          "${repo-name}" = {
-            user = "restic";
-            package = pkgs.writeShellScriptBin "restic" ''
-              exec /run/wrappers/bin/restic "$@"
-            '';
-            repository = "rest:https://${g_restic_server.domain}:${toString g_restic_server.bindport}/${repo-name}";
-            initialize = true;
-            paths = settings.paths;
-            passwordFile = config.age.secrets."restic_crypt_${repo-name}".path;
-            environmentFile = config.age.secrets."restic_auth_${repo-name}".path;
-          }
-          // settings.extra;
+          "${repo-name}" = mkMerge [
+            {
+              user = "restic";
+              package = pkgs.writeShellScriptBin "restic" ''
+                exec /run/wrappers/bin/restic "$@"
+              '';
+              repository = "rest:https://${g_restic_server.domain}:${toString g_restic_server.bindport}/${repo-name}";
+              initialize = true;
+              paths = settings.paths;
+              passwordFile = config.age.secrets."restic_crypt_${repo-name}".path;
+              environmentFile = config.age.secrets."restic_auth_${repo-name}".path;
+            }
+            settings.extra
+          ];
+        }
+      )
+    );
+    systemd.services = mkMerge (
+      flip mapAttrsToList config.glyph.restic (
+        repo-name: settings: {
+          "restic-backups-${repo-name}" = settings.extraSystemd;
         }
       )
     );

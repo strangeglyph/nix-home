@@ -101,18 +101,28 @@ in
 
     systemd.tmpfiles.settings."10-headscale"."/var/backups/headscale".d = {
       user = "headscale";
-      group = "restic";
-      mode = "0760";
     };
 
     glyph.restic.headscale = {
       paths = [ "/var/backups/headscale" ];
-      extra.backupPrepareCommand = ''
-        set -euo pipefail
+      extraSystemd = {
+        requires = [ "restic-backups-headscale-prepare.service" ];
+        after = [ "restic-backups-headscale-prepare.service" ];
+      };
+    };
+
+    systemd.services.restic-backups-headscale-prepare = {
+      enable = true;
+      serviceConfig = {
+        User = config.services.headscale.user;
+        Type = "oneshot";
+      };
+      enableStrictShellChecks = true;
+      script = ''
+        set -x
         ${lib.getExe pkgs.sqlite} "${cfg.settings.database.sqlite.path}" ".backup /var/backups/headscale/db.sqlite"
         cp "${cfg.settings.noise.private_key_path}" /var/backups/headscale/noise_private.key
       '';
     };
-
   };
 }
