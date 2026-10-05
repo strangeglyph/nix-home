@@ -104,6 +104,7 @@ in
           serviceConfig@{
             ProtectHome ? true, # Restrict access to home directories, allowed are (in order of severity) false, read-only, tmpfs, true
             ProtectSystem ? "strict", # Restrict access to system directories, allowed are (in order of severity) false, true, strict, full
+            ProtectProc ? "invisible", # Restrict access to /proc. Allowed are (in order of severity) default, noaccess, invisible, ptraceable
             PrivateTmp ? true, # Create a private tmpfs overlay
             DynamicUser ? true, # Allocate a dynamic user id (implies ProtectHome and ). UMask and BindPaths may help
             BindPaths ? [ ], # FS paths to make accessible (r/w) to the service (may contain mappings)
@@ -132,7 +133,7 @@ in
             SystemCallFilter ? [
               "~@cpu-emulation @debug @keyring @mount @obsolete @privileged @setuid"
             ],
-            SystemCallArchitecture ? "native",
+            SystemCallArchitectures ? "native",
           }:
           # Capability primer
           #   - https://man7.org/linux/man-pages/man7/capabilities.7.html
