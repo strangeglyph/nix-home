@@ -1,4 +1,5 @@
 {
+  pkgs,
   ...
 }:
 {
@@ -18,5 +19,9 @@
     security.sudo.extraConfig = "Defaults timestamp_timeout=30";
     security.polkit.enable = true;
     security.apparmor.enable = true;
+
+    environment.systemPackages = [
+      pkgs.bubblewrap
+    ];
   };
 }
