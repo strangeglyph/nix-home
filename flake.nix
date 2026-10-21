@@ -8,6 +8,9 @@
     nixpkgs-unstable = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
+    nixpkgs-small = {
+      url = "github:nixos/nixpkgs/nixos-26.05-small";
+    };
     flake-compat = {
       url = "https://git.lix.systems/lix-project/flake-compat/archive/main.tar.gz";
       flake = false;
