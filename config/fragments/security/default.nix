@@ -1,7 +1,11 @@
 {
   pkgs,
+  inputs,
   ...
 }:
+let
+  nixpkgs-small = import inputs.nixpkgs-small { };
+in
 {
   imports = [
     ./ssh.nix
@@ -22,6 +26,10 @@
 
     environment.systemPackages = [
       pkgs.bubblewrap
+    ];
+
+    # Security hotfixes
+    nixpkgs.overlays = [
     ];
   };
 }
