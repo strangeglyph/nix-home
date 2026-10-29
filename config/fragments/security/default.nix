@@ -33,7 +33,13 @@ in
       # https://github.com/NixOS/nixpkgs/pull/576865
       (final: prev: {
         inherit (nixpkgs-small)
-          php php82 php83 php84 php85 nextcloud;
+          php
+          php82
+          php83
+          php84
+          php85
+          nextcloud
+          ;
       })
     ];
   };
