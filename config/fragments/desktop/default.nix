@@ -17,6 +17,7 @@ in
     ./wallpapers.nix
     ./portal.nix
     ./cursor.nix
+    ./flatpak.nix
     ./sway
     ./niri
     ./term
