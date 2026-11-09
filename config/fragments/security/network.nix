@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -49,5 +50,7 @@ in
       Resolve.DNSSEC = "true";
       Resolve.DNSOverTLS = "opportunistic";
     };
+
+    environment.systemPackages = [ pkgs.nixos-firewall-tool ];
   };
 }
