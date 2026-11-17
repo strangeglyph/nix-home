@@ -24,6 +24,9 @@ let
     moonlight = "100.64.0.7";
   };
 
+  home-assistant_host = "home";
+  home-assistant_domain = "${home-assistant_host}.${tailnet_domain}";
+
   kanidm_host = "gate";
   kanidm_domain = "${kanidm_host}.${base}";
 
@@ -167,6 +170,12 @@ in
           };
 
           mkSub = host: "${host}.${tailnet_domain}";
+        };
+
+        home-assistant = {
+          host = home-assistant_host;
+          domain = home-assistant_domain;
+          bindport = 34390;
         };
 
         kanidm = {

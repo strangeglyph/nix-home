@@ -444,6 +444,18 @@
         "type": "github"
       }
     },
+    "nixpkgs-local": {
+      "locked": {
+        "lastModified": 1794934147,
+        "narHash": "sha256-H/3YHt13Nl5Fvc8cHxIjfg46Pldije8wCXrVDL+jM4U=",
+        "path": "/home/lschuetze/Projects/nixpkgs",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/lschuetze/Projects/nixpkgs",
+        "type": "path"
+      }
+    },
     "nixpkgs-small": {
       "locked": {
         "lastModified": 1794552581,

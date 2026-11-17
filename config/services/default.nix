@@ -7,6 +7,7 @@
     ./fompf.nix
     ./forgejo.nix
     ./headscale.nix
+    ./home-assistant
     ./immich.nix
     ./kanidm.nix
     ./minecraft.nix

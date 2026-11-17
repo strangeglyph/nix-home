@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  nodes,
   ...
 }:
 let
@@ -59,6 +60,15 @@ let
 
   color-strip = col: builtins.head (builtins.match "#?([[:xdigit:]]{6})" col);
 
+  # check if any host has an enable option set under the following attr path
+  # i.e. for nodes a, b, c, `anyEnables ["glyph" "headscale"]` checks if {a,b,c}.config.glyph.headscale.enable
+  anyEnables =
+    path:
+    let
+      fullPath = [ "config" ] ++ path ++ [ "enable" ];
+    in
+    builtins.any (lib.attrByPath fullPath false) (lib.attrValues nodes);
+
   mkRo =
     val:
     lib.mkOption {
@@ -95,6 +105,8 @@ in
         };
 
         mkRo = mkRo mkRo;
+
+        anyEnables = mkRo anyEnables;
 
         systemd.mkParanoid = mkRo (
           {

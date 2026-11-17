@@ -21,6 +21,7 @@ in
 {
   imports = [
     ./nginx-common.nix
+    ./headscale-domains.nix
   ];
 
   options.glyph.headscale.enable = mkEnableOption { };
