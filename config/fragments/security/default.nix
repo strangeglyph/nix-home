@@ -66,6 +66,14 @@ in
           nextcloud
           ;
       })
+      # https://github.com/NixOS/nixpkgs/pull/589970
+      (final: prev: {
+        inherit (nixpkgs-small)
+          nginx
+          nginxStable
+          nginxMainline
+          ;
+      })
     ];
   };
 }
